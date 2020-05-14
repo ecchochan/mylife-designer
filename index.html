@@ -8,7 +8,7 @@
   <script src="assets/js/fastclick.min.js"></script>
   <script src="assets/js/anime.min.js"></script>
   -->
-  <script src="https://unpkg.com/preload-it"></script>
+  <script src="https://unpkg.com/loadjs@latest/dist/loadjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
   <link type="text/css" rel="stylesheet" href="assets/css/style.css" />
@@ -19,10 +19,22 @@
 </head> 
 <body>
   <div id="app">
+    <div id="loading-wrapper">
+      <div>
+        Loading: <span id="load-percent">0</span>%
+      </div>
+
+
+    </div>
+
+
     <div id="desktop"><span>Use Desktop</span></div>
     <div id="mobile">
 
+
     </div>
+
+
 
 
   </div>  
