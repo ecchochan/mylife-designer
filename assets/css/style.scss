@@ -1,0 +1,229 @@
+
+$pc-media: 1060px;
+$pcs-media: 1059px;
+$pad-media: 768px;
+$pads-media: 767px;
+$phone-media: 480px;
+$phones-media: 479px;
+
+* {
+  box-sizing: border-box;
+}
+
+@function calculateRem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+
+@mixin font-size($size) {
+  font-size: $size;
+  font-size: calculateRem($size);
+}
+
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white,  20%), $hover-foreground-color: mix($foreground-color, black,  80%), $active-foreground-color: mix($foreground-color, black,  50%)) {
+  // For Google Chrome
+  &::-webkit-scrollbar {
+    width:  $size;
+    height: $size;
+    transition: 200ms all ease;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $foreground-color;
+
+    &:hover{
+      background: $hover-foreground-color; 
+    }
+    &:active{
+      background: $active-foreground-color; 
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $background-color;
+  }
+
+  // For Internet Explorer
+  & {
+    scrollbar-face-color: $foreground-color;
+    scrollbar-track-color: $background-color;
+
+    &:hover{
+      scrollbar-face-color: $hover-foreground-color; 
+    }
+    &:active{
+      scrollbar-track-color: $active-foreground-color; 
+    }
+
+  }
+}
+
+@mixin screen-large() {
+  @media all and (min-width: $pc-media) {
+    @content;
+  }
+}
+@mixin screen-medium() {
+  @media all and (min-width: $pad-media) {
+    @content;
+  }
+}
+@mixin screen-small() {
+  @media all and (max-width: $phones-media) {
+    @content;
+  }
+}
+
+
+@mixin responsive(
+  $property,
+  $large,
+  $medium: null,
+  $small: null) {
+  @if ($large) {
+    @include screen-large {#{$property}:$large;}
+  }
+  @if ($medium) {
+    @include screen-medium {#{$property}:$medium;}
+  }
+  @if ($small) {
+    @include screen-small {#{$property}:$small;}
+  }
+
+}
+
+.scrollable {
+  /*@include scrollbars(.5em, slategray);*/
+  overflow: overlay;
+}
+
+.scrollable.modern-scrollbar{
+  $bg-color: white;
+  $thumb-color: #ddd;
+
+  & {
+    background-color: $bg-color !important; 
+  }
+
+  &::-webkit-scrollbar { 
+    height: 16px; 
+    width: 16px; 
+    background: transparent; 
+    border-radius: 50%;
+  } 
+  
+  &::-webkit-scrollbar-thumb { 
+    background: $thumb-color; 
+    border: 6px solid $bg-color;
+    border-radius: 20px;
+  }
+}
+
+.show-children-slowly{
+	&.active {
+		& > * {
+			opacity: 1;
+		}
+		& > * {
+			@for $i from 1 through 10 {
+			    &:nth-child(#{$i}) {
+			        $td: ($i*.1+.3s);
+			        $ts: ($i*.08+.4s);
+			        transition: $ts cubic-bezier(.62,.02,.34,1) $td;
+			    }
+			}
+		}
+	}
+}
+
+body, html {
+  overflow: hidden;
+  font-family: 'Noto Sans TC', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  height:100vh;
+  width:100vw;
+}
+
+#desktop{
+  position: fixed;
+  display: none;
+  background:white;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+  align-items: center;
+  @include screen-medium {
+    display: flex;
+  }
+
+
+}
+
+#desktop > span {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  margin: auto;
+}
+
+.circle {
+  border-radius: 50%;
+}
+.square, .circle {
+  pointer-events: none;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  margin: 1px;
+  background-color: currentColor;
+  font-size: 14px;
+}
+
+#app{
+  position: relative;
+}
+
+#mobile{
+  display:flex;
+  margin:auto;
+  height:100%;
+  width: 100%;
+  vertical-align: middle;
+  align-items: center;
+  background:#fdd;
+
+}
+#loading-wrapper {
+  position:fixed;
+  background:white;
+  display:flex;
+  margin:auto;
+  height:100%;
+  width: 100%;
+  vertical-align: middle;
+  align-items: center;
+
+  > div {
+    margin:auto;
+
+    > span {
+      width: 50px; 
+    }
+
+
+  }
+
+}
+
+#float-top-right {
+  position:fixed;
+  top: 0;
+  right: 0;
+
+  #volume {
+    margin:30px;
+  }
+
+}

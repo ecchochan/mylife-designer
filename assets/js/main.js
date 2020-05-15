@@ -49,7 +49,7 @@ var mmax = 0.01;
 var playMusic = ()=>{
   if (!audio) audio = new Audio(MUSIC_URL);
   audio.play();
-  _AUDIO_VOL = MAX_AUDIO_VOL;
+  _AUDIO_VOL = 0;
 }
 var toggleMusic = ()=>{
   if (AUDIO_ON) {
