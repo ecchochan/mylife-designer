@@ -1,8 +1,14 @@
 
+function update_vh(){
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+update_vh();
 var userLang = navigator.language || navigator.userLanguage; 
 var isChinese = userLang.indexOf('zh') > -1;
 var lang = isChinese?'zh':'en';
 var doc = document;
+doc.getElementById('app').classList.remove('hidden');
 FastClick.attach(doc.body);
 var setLang = function(L){
   document.querySelectorAll('[en],[zh]').forEach(e=>{
