@@ -91,8 +91,16 @@
   transition: 1.2s cubic-bezier(0.62, 0.02, 0.34, 1) 1.3s;
 }
 
+:root {
+  -ms-touch-action: pan-x pan-y;
+      touch-action: pan-x pan-y;
+  height: 100%;
+}
+
 body, html {
   overscroll-behavior-y: contain;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
   overflow: hidden;
   font-family: 'Noto Sans TC', sans-serif;
   margin: 0;
