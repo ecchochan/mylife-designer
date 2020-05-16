@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <head>
   <title>MyLife</title>
+  <meta charset="UTF-8" />
   <meta name="viewport" content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' >
   <link rel="icon" type="image/png" href="">
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
@@ -12,14 +14,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.1/dist/alpine.min.js" defer></script>
-  <link type="text/css" rel="stylesheet" href="assets/css/style.min.css" />
+  <link type="text/css" rel="stylesheet" href="assets/css/style.css" />
 
 </head> 
 <body>
   <div id="app">
-    <div id="loading-wrapper">
+    <div id="loading-wrapper" class="wrapper">
       <div>
-        Loading: <span id="load-percent">0</span>%
+        <div>
+          <span en="Loading" zh="載入中"></span>: <span id="load-percent">0</span>%
+        </div>
       </div>
 
 
@@ -28,12 +32,52 @@
 
     <div id="desktop"><span>Use Desktop</span></div>
 
-    <div id="float-top-right">
-      <div id="volume">Volume</div>
+    <div id="float-top-right" class="hidden">
+      <div id="volume" class="on">Sound<br/></div>
 
     </div>
 
-    <div id="mobile">
+    <div id="mobile" class="wrapper">
+      <div id="intro" class="wrapper">
+        <div id="intro-text">
+          <div>
+            <p font-large en="" zh="探索你的旅程"></p>
+            <p en="" zh="透視你的內心世界"></p>
+          </div>
+        </div>
+        <div id="intro-start">
+          <span en="Start" zh="開始"></span>
+        </div>
+        <div id="intro-footer">
+          <span></span>
+        </div>
+      </div>
+
+      <div id="intro-tran" class="wrapper">
+        <div id="intro-tran-text" class="thin-body">
+          <div>
+            <p en="" zh="有一天下午，
+你收到一封信，信上寫著：
+「您受邀參加一趟悠長旅程，
+這趟旅程沒有任何限制，
+你可以隨心所欲地發掘自我。」
+去嗎？"></p>
+            <p en="" zh=""></p>
+            <p></p>
+            <p></p>
+          </div>
+        </div>
+        <div id="intro-tran-start">
+          <span en="Tap to continue" zh="點擊以繼續"></span>
+        </div>
+        <div id="intro-tran-footer">
+          <span></span>
+        </div>
+      </div>
+
+
+
+
 
 
     </div>

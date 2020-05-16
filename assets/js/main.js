@@ -1,3 +1,25 @@
+
+var userLang = navigator.language || navigator.userLanguage; 
+var isChinese = userLang.indexOf('zh') > -1;
+var lang = isChinese?'zh':'en';
+var doc = document;
+FastClick.attach(doc.body);
+var setLang = function(L){
+  document.querySelectorAll('[en],[zh]').forEach(e=>{
+    var EN = e.attributes['en'];
+    var ZH = e.attributes['zh'];
+    if (EN) EN = EN.value;
+    if (ZH) ZH = ZH.value;
+    if ((L == 'en' && EN) || (L == 'zh' && !ZH))
+      e.textContent = EN;
+    if ((L == 'zh' && ZH) || (L == 'en' && !EN))
+      e.textContent = ZH;
+  })
+
+}
+setLang(lang);
+
+
 window.mobilecheck = function () {
   var check = false;
   (function (a) {
@@ -5,7 +27,6 @@ window.mobilecheck = function () {
   })(navigator.userAgent || navigator.vendor || window.opera);
   return check;
 };
-var doc = document;
 var MUSIC_URL = 'https://www.bensound.com/bensound-music/bensound-beyondtheline.mp3';
 var MAX_AUDIO_VOL = 0.5;
 var files = ['https://www.hdwallpapers.in/walls/halloween_2013-wide.jpg', 'https://www.hdwallpapers.in/walls/2013_print_tech_lamborghini_aventador-wide.jpg', 'https://www.hdwallpapers.in/walls/ama_dablam_himalaya_mountains-wide.jpg', 'https://www.hdwallpapers.in/walls/arrow_tv_series-wide.jpg', 'https://www.hdwallpapers.in/walls/anna_in_frozen-wide.jpg', 'https://www.hdwallpapers.in/walls/frozen_elsa-wide.jpg', 'https://www.hdwallpapers.in/walls/shraddha_kapoor-wide.jpg', 'https://www.hdwallpapers.in/walls/sahara_force_india_f1_team-HD.jpg', 'https://www.hdwallpapers.in/walls/lake_sunset-wide.jpg', 'https://www.hdwallpapers.in/walls/2013_movie_cloudy_with_a_chance_of_meatballs_2-wide.jpg', 'https://www.hdwallpapers.in/walls/bates_motel_2013_tv_series-wide.jpg', 'https://www.hdwallpapers.in/walls/krrish_3_movie-wide.jpg', 'https://www.hdwallpapers.in/walls/universe_door-wide.jpg', 'https://www.hdwallpapers.in/walls/night_rider-HD.jpg', 'https://www.hdwallpapers.in/walls/tide_and_waves-wide.jpg', 'https://www.hdwallpapers.in/walls/2014_lamborghini_veneno_roadster-wide.jpg', 'https://www.hdwallpapers.in/walls/peeta_katniss_the_hunger_games_catching_fire-wide.jpg', 'https://www.hdwallpapers.in/walls/captain_america_the_winter_soldier-wide.jpg', 'https://www.hdwallpapers.in/walls/puppeteer_ps3_game-wide.jpg', 'https://www.hdwallpapers.in/walls/lunar_space_galaxy-HD.jpg', 'https://www.hdwallpapers.in/walls/2013_wheelsandmore_lamborghini_aventador-wide.jpg', 'https://www.hdwallpapers.in/walls/destiny_2014_game-wide.jpg', 'https://www.hdwallpapers.in/colors_of_nature-wallpapers.html', 'https://www.hdwallpapers.in/walls/sunset_at_laguna_beach-wide.jpg'];
@@ -14,6 +35,14 @@ var LOG = console.log;
 var LOGT = (e) => console.log('%c' + e, LOGT_STYLE);
 var files_loaded = 0;
 var files_total = files.length;
+var OPACITY = {
+  EASING: 'easeOutQuad',
+  DURATION: 500,
+};
+var TRANSITION = {
+  EASING: 'easeOutQuart',
+  DURATION: 500,
+};
 
 var load_counter = doc.getElementById('load-percent');
 var load_wrapper = doc.getElementById('loading-wrapper')
@@ -21,74 +50,160 @@ var increment_files_loaded = function () {
   load_counter.textContent = parseInt(++files_loaded / files_total * 100);
   if (files_loaded == files_total){
     LOGT('All assets loaded.');
+
     start();
   }
 };
 files.forEach(fn => loadjs(fn, increment_files_loaded));
 
-var start = function () {
+var goNextFade = function(delay, targets, callback){
   anime({
-    targets: load_wrapper,
+    targets: targets,
     opacity: 0,
     duration: 750,
-    easing: 'linear',
-    startDelay: 600,
+    easing: 'easeOutQuad',
+    delay: delay,
     complete: function (anim) {
-      load_wrapper.remove();
-      LOGT('Load wrapper removed.');
+      targets.remove();
+      callback();
     }
   });
+
 }
+var MOUSE = {
+  x:0,
+  y:0
+}
+function isMouseInBox(e) {
+  MOUSE.x = e.pageX;
+  MOUSE.y = e.pageY;
+}
+
+document.addEventListener('mousemove', function(e){
+    isMouseInBox(e);
+})
+
+
 
 var audio;
 var AUDIO_ON = false;
-var AUDIO_VOL = MAX_AUDIO_VOL;
-var _AUDIO_VOL = AUDIO_VOL;
-var meps = 0.001;
-var mmax = 0.01;
+var setVolume = (v)=>{
+  anime({
+    targets: audio,
+    volume: v,
+    duration: 500,
+    easing: 'easeOutQuad',
+  })
+
+};
 var playMusic = ()=>{
-  if (!audio) audio = new Audio(MUSIC_URL);
+  if (!audio) {
+    audio = new Audio(MUSIC_URL);
+    audio.volume = MAX_AUDIO_VOL;
+  }
+  
   audio.play();
-  _AUDIO_VOL = 0;
 }
 var toggleMusic = ()=>{
   if (AUDIO_ON) {
     AUDIO_ON = false;
-    _AUDIO_VOL = 0
+    setVolume(0);
+    volumeButton.classList.remove('on');
   }else{
     AUDIO_ON = true;
+    setVolume(MAX_AUDIO_VOL);
+    volumeButton.classList.add('on');
     playMusic();
   }
 }
-var musicVolStep = () => {
-  if (AUDIO_VOL != _AUDIO_VOL){
-    var diff = AUDIO_VOL - _AUDIO_VOL;
-    if ((diff > 0 && diff < meps) || (diff < 0 && -diff < meps)) AUDIO_VOL = _AUDIO_VOL
-    else{
-      diff *= 0.07;
-      if (diff > 0  && diff > mmax) diff = mmax;
-      if (diff < 0  && -diff > mmax) diff = -mmax;
-      if ((diff > 0 && diff < meps) || (diff < 0 && -diff < meps)) diff = meps;
-      AUDIO_VOL -= diff;
+
+var volumeButton = doc.getElementById('volume')
+volumeButton.onclick = toggleMusic;
+
+
+
+var listen_once = function(target, event, func){
+  var triggered = false;
+  var temp_func = function(e){
+    if (triggered) return;
+    try{
+      target.removeEventListener(event);
+    }catch(err){
+      triggered=true;
     }
-    if (AUDIO_VOL < 0) AUDIO_VOL = 0;
-    if (AUDIO_VOL > 1) AUDIO_VOL = 1;
-    audio.volume = AUDIO_VOL;
-    
-
+    func(e);
   }
-  window.requestAnimationFrame(musicVolStep);
+  target.addEventListener(event, temp_func)
+
 };
-window.requestAnimationFrame(musicVolStep);
 
-doc.getElementById('volume').onclick = toggleMusic;
+var _stages = [
+  'intro',
+  'intro-tran'
+];
+var stages = {};
 
-if ('addEventListener' in doc) {
-  doc.addEventListener('DOMContentLoaded', function () {
-    FastClick.attach(doc.body);
-    
-
-
-
-  }, false);
+for (var i=0;i<_stages.length;i++){
+  stages[_stages[i].replace(/\-/g,'_')] = document.getElementById(_stages[i]);
 }
+
+var setActive = function(a, b){
+  document.querySelectorAll('.active').forEach(e=>e.classList.remove('active'));
+  if (a) a.classList.add('active');
+  if (b) b.classList.add('active');
+}
+/*
+    Start
+*/
+var start = function () {
+  stages.intro.style.opacity = 1;
+  setActive(stages.intro);  
+  goNextFade(0, load_wrapper, e => {
+    LOGT('Load wrapper removed.');
+  });
+}
+/*
+    Intro
+*/
+
+
+listen_once(doc.getElementById('intro-start'),'click', function () {
+  LOGT('intro-start clicked');
+  setActive(stages.intro,stages.intro_tran);
+  goNextFade(0, stages.intro, e => {
+    LOGT('intro faded away');
+    doc.getElementById('float-top-right').classList.remove('hidden');
+    toggleMusic();
+    anime({
+      targets: stages.intro_tran,
+      opacity: 1,
+      duration: 750,
+      easing: 'easeOutQuad',
+      delay: 500,
+      complete: function (anim) {
+      }
+    });
+  });
+
+});
+
+
+listen_once(doc.getElementById('intro-tran-start'),'click', function () {
+  LOGT('intro-tran-start clicked');
+  setActive(stages.intro_tran);
+  goNextFade(0, stages.intro_tran, e => {
+    LOGT('intro faded away');
+    doc.getElementById('float-top-right').classList.remove('hidden');
+    return;
+    anime({
+      targets: stages.intro_tran,
+      opacity: 1,
+      duration: 750,
+      easing: 'easeOutQuad',
+      delay: 500,
+      complete: function (anim) {
+      }
+    });
+  });
+
+});
