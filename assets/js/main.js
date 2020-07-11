@@ -1,13 +1,98 @@
+import { makeCurtains }  from './curtain.min.js';
+/*
+
+  Configurations
+
+*/
+
+var DEBUG = false;
+
+var CARDS_PER_PAGE = 6;
+
+var MAX_AUDIO_VOL = 0.5;
+
+var OPACITY = {
+  EASING: 'easeOutQuad',
+  DURATION: 500,
+};
+var TRANSITION = {
+  EASING: 'easeOutQuart',
+  DURATION: 500,
+};
+
+/** 
+
+  Utils
+
+**/
+
+/**
+ * Shuffles array in place.
+ * @param {Array} a items An array containing the items.
+ */
+const shuffle = (a) => {
+  var j, x, i;
+  for (i = a.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      x = a[i];
+      a[i] = a[j];
+      a[j] = x;
+  }
+  return a;
+}
+
+
+const chunks = (arr, len) => {
+  var ret = [], i = 0, n = arr.length;
+  while (i < n)
+    ret.push(arr.slice(i, i += len));
+  return ret;
+}
+
+var doc = document;
+
+/*
+
+  Debug
+
+*/
+
+var LOGT_STYLE = 'padding:0.3em 0.7em;background: #ddd; color: #000;font-weight:900;';
+var LOG = console.log;
+var LOGT = (e) => console.log('%c' + e, LOGT_STYLE);
+function assert(condition, message) {
+  if (!condition) {
+      throw message || "Assertion failed";
+  }
+}
+
+if (!DEBUG){
+  doc.getElementById('debug').remove();
+}
+
+
+/*
+
+  Actual vh for css
+
+*/
 
 function update_vh(){
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 }
 update_vh();
+
+
+/*
+
+  Langs
+
+*/
+
 var userLang = navigator.language || navigator.userLanguage; 
 var isChinese = userLang.indexOf('zh') > -1;
 var lang = isChinese?'zh':'en';
-var doc = document;
 doc.getElementById('app').classList.remove('hidden');
 FastClick.attach(doc.body);
 var setLang = function(L){
@@ -25,6 +110,26 @@ var setLang = function(L){
 }
 setLang(lang);
 
+if (DEBUG){
+  document.querySelectorAll('#lang-switcher > span').forEach(e=>{
+    e.classList.remove('display-none');
+    e.addEventListener('click',function(e){
+      document.querySelectorAll('#lang-switcher > span').forEach(e=>e.classList.remove('display-none'));
+      this.classList.add('display-none');
+      setLang(this.textContent);
+  
+    })
+  });
+  document.querySelector('#lang-switcher > span').classList.add('display-none');
+  
+}
+
+/*
+
+  Check for mobile
+
+*/
+
 
 window.mobilecheck = function () {
   var check = false;
@@ -33,27 +138,175 @@ window.mobilecheck = function () {
   })(navigator.userAgent || navigator.vendor || window.opera);
   return check;
 };
+
+
+
+/*
+
+  Data
+
+*/
+
+var CARDS_RAW = `!內在滿足;;Intrinsic satisfaction
+精神層面上的滿足;;Mentally Satisfied
+與神有親密連繫;;Closely connected with God
+持續的認識自我;;Continuous self-exploration
+擁有自我內心的空間;;Have an inner space 
+安全感;;Sense of secure
+內心的平靜;;Have an inner peace 
+新鮮感;;Sense of freshness
+感到自在;;Feel comfortable 
+
+!人際關係;;Inter-personal relationship
+擁有自在舒適的人際關係;;Got a comfortable inter-personal relationship
+美滿婚姻;;Happy marriage
+有交心知己;;Have Best Friend Forever
+有親近的好朋友;;Have good friends
+親密的家庭;;A close family 
+孝順父母;;Filial Piety
+和一群人一起打拼;;Work hard with others
+讚賞及鼓勵別人;;Appreciate and encourage others
+有意義的愛情;;A meaningful love-relationship  
+幫助別人;;Help others
+
+!物質享受;;Materialistic
+有車 / 有樓;;Own a Car/House
+賺大錢;;Be wealthy
+時尚的打扮;;Fashionable dress up
+錢夠用 (沒有經濟上的擔憂);;Sufficient amount of money (without financial burden)
+追上科技潮流;;Catch up on technology   
+建立社會地位;;Have social status
+環遊世界;;Travel around the world
+食盡美食;;Enjoy food
+
+!生活模式;;Life style
+簡簡單單的生活;;Simple life
+參加藝文青活動;;Participate art and cultural activities 
+親親大自然;;Enjoy nature
+人生充滿樂趣;;Interesting life
+多姿多彩的生活;;Fruitful life
+參與宗教、政治、社團活動;;Participate in religions, politics and/or different societies
+什麼事都不做;;Do nothing
+規律的生活;;Regular daily life
+安穩的工作;;Stable job
+享受獨處的時光;;Enjoy being alone 
+做自己喜歡的事;;Do what you like
+持續地學習;;Continuous learning 
+休息與放鬆;;Rest and relaxing
+運動;;Exercises
+擁有健康;;Be healthy
+長久的生命;;A long life
+為夢想奮鬥;;Work hard on your dream
+冒險與刺激;;Adventure and excitement
+成為眾人焦點;;Be the focus of everyone 
+做善事;;Do good deed
+擁有自由;;Have freedom
+做自己;;Be yourself 
+生小朋友;;Have kids
+有意義的工作;;A meaningful job
+
+!自我形象;;Self-image 
+誠實正直;;Integrity
+心地善良;;Kind-hearted 
+公平、公正;;Be fair and impartial 
+擁有純潔及真摯的心;;Be pure and true
+勇於改變;;Dare to Change 
+有自信;;Confident
+有正義感;;Have a sense of justice
+義氣仔女;;Be loyal to friends 
+腳踏實地;;Be practical and down-to-earth
+勇於接受挑戰;;Dare to accept challenge
+努力向上;;Hard-working
+用心/盡力做事;;Do your best on everything
+有美感;;Be aesthetic 
+開放性的思維;;Open minded
+寛容;;Tolerance 
+廣闊的視野;;Have wide horizon
+獨立自主;;Independence
+有影響力;;Be an influential person
+事業有成;;Successful in your career
+能夠發揮所長;;Able to use your talent
+擁有一己之長;;Have your own talent`
+
+var SEP = ';;';
+var LANGS = ["zh","en"];
+var CARDS_NUM_LANGS = LANGS.length;
+var CARDS_TYPES = [];
+var CARDS_ITEMS = {};
+var CARDS = [];
+var _bucket = [];
+var _last_type;
+CARDS_RAW.split('\n').filter(e=>e.trim()).forEach(e=>{
+    var line, dat;
+    if (e.startsWith('!')){
+        if (_bucket.length > 0)
+            CARDS_ITEMS[_last_type] = _bucket
+        line = e.substr(1).split(SEP).map(e=>e.trim());
+        assert(line.length == CARDS_NUM_LANGS, "invalid data: "+line);
+        dat = {
+          id: CARDS_TYPES.length,
+          name: {}
+        }
+        LANGS.forEach((e, i)=>{dat.name[e] = line[i];} );
+        _last_type = dat.id;
+        CARDS_TYPES.push(dat);
+    }else{
+        line = e.split(SEP).map(e=>e.trim());
+        assert(line.length == CARDS_NUM_LANGS, "invalid data: "+line);
+        _bucket.push(line);
+        dat = {
+          id: CARDS.length,
+          name: {},
+          type: _last_type,
+          picked: false,
+          droped: false,
+        };
+        LANGS.forEach((e, i)=>{dat.name[e] = line[i];} );
+        CARDS.push(dat);
+    }
+});
+if (_bucket.length > 0)
+    CARDS_ITEMS[CARDS_TYPES[CARDS_TYPES.length-1].id] = _bucket
+    
+var CARDS_SHUFFLED = CARDS.slice(0);
+shuffle(CARDS_SHUFFLED);
+
+var CARDS_CHUNKS = chunks(CARDS_SHUFFLED, CARDS_PER_PAGE);
+
+
+
+
+
+window.CARDS = CARDS;
+window.CARDS_TYPES = CARDS_TYPES;
+window.CARDS_ITEMS = CARDS_ITEMS;
+window.CARDS_SHUFFLED = CARDS_SHUFFLED;
+window.CARDS_CHUNKS = CARDS_CHUNKS;
+
+
+
+
+
+
+
+/*
+
+  Resources Loading
+
+*/
+
+
+
 var MUSIC_URL = 'https://www.bensound.com/bensound-music/bensound-beyondtheline.mp3';
-var MAX_AUDIO_VOL = 0.5;
-var files = ['https://www.hdwallpapers.in/walls/halloween_2013-wide.jpg', 'https://www.hdwallpapers.in/walls/2013_print_tech_lamborghini_aventador-wide.jpg', 'https://www.hdwallpapers.in/walls/ama_dablam_himalaya_mountains-wide.jpg', 'https://www.hdwallpapers.in/walls/arrow_tv_series-wide.jpg', 'https://www.hdwallpapers.in/walls/anna_in_frozen-wide.jpg', 'https://www.hdwallpapers.in/walls/frozen_elsa-wide.jpg', 'https://www.hdwallpapers.in/walls/shraddha_kapoor-wide.jpg', 'https://www.hdwallpapers.in/walls/sahara_force_india_f1_team-HD.jpg', 'https://www.hdwallpapers.in/walls/lake_sunset-wide.jpg', 'https://www.hdwallpapers.in/walls/2013_movie_cloudy_with_a_chance_of_meatballs_2-wide.jpg', 'https://www.hdwallpapers.in/walls/bates_motel_2013_tv_series-wide.jpg', 'https://www.hdwallpapers.in/walls/krrish_3_movie-wide.jpg', 'https://www.hdwallpapers.in/walls/universe_door-wide.jpg', 'https://www.hdwallpapers.in/walls/night_rider-HD.jpg', 'https://www.hdwallpapers.in/walls/tide_and_waves-wide.jpg', 'https://www.hdwallpapers.in/walls/2014_lamborghini_veneno_roadster-wide.jpg', 'https://www.hdwallpapers.in/walls/peeta_katniss_the_hunger_games_catching_fire-wide.jpg', 'https://www.hdwallpapers.in/walls/captain_america_the_winter_soldier-wide.jpg', 'https://www.hdwallpapers.in/walls/puppeteer_ps3_game-wide.jpg', 'https://www.hdwallpapers.in/walls/lunar_space_galaxy-HD.jpg', 'https://www.hdwallpapers.in/walls/2013_wheelsandmore_lamborghini_aventador-wide.jpg', 'https://www.hdwallpapers.in/walls/destiny_2014_game-wide.jpg', 'https://www.hdwallpapers.in/colors_of_nature-wallpapers.html', 'https://www.hdwallpapers.in/walls/sunset_at_laguna_beach-wide.jpg'];
-var LOGT_STYLE = 'padding:0.3em 0.7em;background: #ddd; color: #000;font-weight:900;';
-var LOG = console.log;
-var LOGT = (e) => console.log('%c' + e, LOGT_STYLE);
+var files = [];
+
 var files_loaded = 0;
 var files_total = files.length;
-var OPACITY = {
-  EASING: 'easeOutQuad',
-  DURATION: 500,
-};
-var TRANSITION = {
-  EASING: 'easeOutQuart',
-  DURATION: 500,
-};
 
 var load_counter = doc.getElementById('load-percent');
 var load_wrapper = doc.getElementById('loading-wrapper')
 var increment_files_loaded = function () {
-  load_counter.textContent = parseInt(++files_loaded / files_total * 100);
+  load_counter.textContent = files_total?parseInt(++files_loaded / files_total * 100):100;
   if (files_loaded == files_total){
     LOGT('All assets loaded.');
 
@@ -61,6 +314,18 @@ var increment_files_loaded = function () {
   }
 };
 files.forEach(fn => loadjs(fn, increment_files_loaded));
+if (files_total == 0)
+document.addEventListener("DOMContentLoaded", increment_files_loaded);
+
+
+
+/*
+
+  Resources Loading
+
+*/
+
+
 
 var goNextFade = function(delay, targets, callback){
   anime({
@@ -110,21 +375,25 @@ var playMusic = ()=>{
   
   audio.play();
 }
+
 var toggleMusic = ()=>{
   if (AUDIO_ON) {
     AUDIO_ON = false;
     setVolume(0);
-    volumeButton.classList.remove('on');
+    volumeSwitchContainer.classList.remove('switchOn');
+    volumeSwitchContainer.classList.add('switchOff');
   }else{
     AUDIO_ON = true;
     setVolume(MAX_AUDIO_VOL);
-    volumeButton.classList.add('on');
+    volumeSwitchContainer.classList.add('switchOn');
+    volumeSwitchContainer.classList.remove('switchOff');
     playMusic();
   }
 }
 
-var volumeButton = doc.getElementById('volume')
+var volumeButton = doc.getElementById('volume');
 volumeButton.onclick = toggleMusic;
+var volumeSwitchContainer = volumeButton.querySelector('.switchContainer');
 
 
 
@@ -143,10 +412,14 @@ var listen_once = function(target, event, func){
 
 };
 
-var _stages = [
-  'intro',
-  'intro-tran'
-];
+
+var stage_divs = Array.from(document.getElementsByClassName('stage'));
+
+var _stages = stage_divs.map(e=>e.id);
+
+LOGT('_stages');
+LOG(_stages)
+
 var stages = {};
 
 for (var i=0;i<_stages.length;i++){
@@ -158,9 +431,11 @@ var setActive = function(a, b){
   if (a) a.classList.add('active');
   if (b) b.classList.add('active');
 }
+
 /*
     Start
 */
+
 var start = function () {
   stages.intro.style.opacity = 1;
   setActive(stages.intro);  
@@ -168,48 +443,10 @@ var start = function () {
     LOGT('Load wrapper removed.');
   });
 }
+
+
 /*
-    Intro
+    Generate Card Selection
 */
 
-
-listen_once(doc.getElementById('intro-start'),'click', function () {
-  LOGT('intro-start clicked');
-  setActive(stages.intro,stages.intro_tran);
-  goNextFade(0, stages.intro, e => {
-    LOGT('intro faded away');
-    doc.getElementById('float-top-right').classList.remove('hidden');
-    toggleMusic();
-    anime({
-      targets: stages.intro_tran,
-      opacity: 1,
-      duration: 750,
-      easing: 'easeOutQuad',
-      delay: 500,
-      complete: function (anim) {
-      }
-    });
-  });
-
-});
-
-
-listen_once(doc.getElementById('intro-tran-start'),'click', function () {
-  LOGT('intro-tran-start clicked');
-  setActive(stages.intro_tran);
-  goNextFade(0, stages.intro_tran, e => {
-    LOGT('intro faded away');
-    doc.getElementById('float-top-right').classList.remove('hidden');
-    return;
-    anime({
-      targets: stages.intro_tran,
-      opacity: 1,
-      duration: 750,
-      easing: 'easeOutQuad',
-      delay: 500,
-      complete: function (anim) {
-      }
-    });
-  });
-
-});
+makeCurtains(document.getElementById('stages') );
