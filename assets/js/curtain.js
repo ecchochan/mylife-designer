@@ -7,6 +7,11 @@ var css = `.curtain {pointer-events: none;position: absolute;z-index: 999;left: 
 styler('curtain-css', css);
 
 var makeCurtain = (function () {
+  var ua = window.navigator.userAgent;
+  var iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+  var webkit = !!ua.match(/WebKit/i);
+  var iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+
   const map = (value, inMin, inMax, outMin, outMax) => {
     return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
   };
@@ -20,10 +25,12 @@ var makeCurtain = (function () {
   const svgCircles = points => points.reduce((acc, point, i, a) =>
     `${acc} <circle cx="${point[0]}" cy="${point[1]}" r="2.5" class="svg-circles" v-for="p in pointsPositions"/>`, '')
 
+  const prec = 2;
+
   /*creates formated path string for SVG cubic path element*/
   function path(x1,y1,px1,py1,px2,py2,x2,y2)
   {
-    return x1+" "+y1+" C "+px1+" "+py1+" "+px2+" "+py2+" "+x2+" "+y2;
+    return x1.toFixed(prec)+" "+y1.toFixed(prec)+" C "+px1.toFixed(prec)+" "+py1.toFixed(prec)+" "+px2.toFixed(prec)+" "+py2.toFixed(prec)+" "+x2.toFixed(prec)+" "+y2.toFixed(prec);
   }
  
 
@@ -116,7 +123,18 @@ var makeCurtain = (function () {
   }
   
   
-  
+  var pointerEventToXY = function(e){
+    var out = {x:0, y:0};
+    if(e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
+      var touch = e.originalEvent?(e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]):e.changedTouches[0];
+      out.x = touch.pageX;
+      out.y = touch.pageY;
+    } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
+      out.x = e.pageX;
+      out.y = e.pageY;
+    }
+    return out;
+  };
   
 
   function min(a, b) {
@@ -245,19 +263,23 @@ var makeCurtain = (function () {
     self.x5 = right_pad * 2, self.y5 = self.startY;
 
     function update() {
+      try{
       var deltaX = (self.endX - self.startX);
       var deltaY = (self.endY - self.startY);
+      var stable = Math.abs(deltaX - self.x) < 1e-5;
+
       if (!self.start && self.x >= right_pad + but_size ){ 
         obj.style.display = 'none';
         requestAnimationFrame(update);
         return;
-      }else if (self.x < -width && !self.mousedown){
+      }else if ((self.x < -width && !self.mousedown) || stable){
         requestAnimationFrame(update);
         return;
         
       }else if (obj.style.display == 'none'){
         obj.style.display = '';
       }
+      
 
       if (self.start_ended) {
         if (deltaX > 0)
@@ -271,10 +293,11 @@ var makeCurtain = (function () {
       if (deltaY < deltaY_min)
         deltaY = deltaY_min;
 
+        
       if (!self.start && self.x > -1) {
         //requestAnimationFrame(update);
         //path_dom.setAttribute('d', "");
-        //return;
+        //return; 
         deltaX = 60;
       }
       if (deltaX < -width / but_over_ratio - 5)
@@ -296,7 +319,7 @@ var makeCurtain = (function () {
       percent_done = percent_done_real
       
       var far = percent_done * far_v;
-      // mix(friction,friction*6,percent_done, 0.1, 0.4)
+      
       self.x2 = lerp(self.x2, min(
         (self.x < -width ? -width : self.x), right_pad * 10), friction * 6); 
       self.x3 = lerp(self.x3, min(
@@ -373,7 +396,7 @@ var makeCurtain = (function () {
 
       var middle_zx2 = but_size / 7 - mix(mix(0, self.closing?width / 8:30, percent_done_real, mm, 1.0), 0, percent_done_real, 0.7, 1.0) +
         (self.closing ? (mix(mix(0, 9, percent_done_real, 0, mm), 0, percent_done_real, 0, 0.3)) :
-          mix(mix(0, 0, percent_done_real, 0, 0.4), 0, percent_done_real, 0.4, 0.6));
+          0);
       var middle_zx = width - right_pad - but_offset + self.x;
 
 
@@ -394,32 +417,7 @@ var makeCurtain = (function () {
         }
         return x
       }
-
-      function adjust_x2(_x) {
-        if (!self.closing) {
-          return _x - 10;
-        }
-        if (middle_zx < -min_x * 3) {
-          var p = 1 - (middle_zx / -min_x / 3);
-          var p2 = 1 + (middle_zx / -min_x); 
-          if (middle_zx < 0)
-            p *= (p2 * 2 - 1)
-          if (p > 1) {
-            p = 1
-          }
-          if (p < -1)
-            p = -1 + (-1 - p) * 3;
-          return _x - p * 15;
-        }
-        return _x;
-      }
-
-      function adjust_x3(_x) {
-        if (!self.closing) {
-          return _x - 4; 
-        }
-        return _x
-      }
+      var ad_x = adjust_x(middle_zx);
 
       let points = [
         [width + 200, but_y - height - 100],
@@ -431,8 +429,8 @@ var makeCurtain = (function () {
         [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y - middle_z4],
         [width - right_pad + self.x4 * but_over_ratio2 - middle_zx3, but_y - middle_z3],
         [width - right_pad - middle_zx2 + self.x2, but_y - middle_z2],
-        [adjust_x(middle_zx), but_y - middle_z],
-        [adjust_x(middle_zx), but_y + middle_z],
+        [ad_x, but_y - middle_z],
+        [ad_x, but_y + middle_z],
         [width - right_pad - middle_zx2 + self.x2, but_y + middle_z2],
         [width - right_pad + self.x4 * but_over_ratio2 - middle_zx3, but_y + middle_z3],
         [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y + middle_z4],
@@ -445,7 +443,7 @@ var makeCurtain = (function () {
       ];
       var tt = 7,
         L = points.length; 
-      var pp = 0.15;
+      var pp = 0.05;
       var nudge = mix(-1, 0, middle_zx, min_x/2, 0) * mix(0, -20, percent_done_real, 0.60, 0.70); 
       if (!self.closing){
         nudge = 0;
@@ -483,45 +481,73 @@ var makeCurtain = (function () {
         xMax: width
       })
       const path = svgPath(pointsPositions);
-      path_dom.setAttribute('d', path);
+      var changed = path_dom.getAttribute('d') != path;
+      
+      if (changed){
+        path_dom.setAttributeNS(null,'d', path);
+  
+        if (true){
+          /*
+          var temp = document.createElement('div');
+          obj.appendChild(temp);
+          obj.offsetHeight; 
+          temp.remove();
+          */
+          obj.style.display = 'inline-flex';
+          obj.offsetHeight; // no need to store this anywhere, the reference is enough
+          obj.style.display = 'flex';
+          
+        }
+        
+      }
+      
       if (debug)
         curtain.querySelector('g').innerHTML = svgCircles(pointsPositions);
 
       requestAnimationFrame(update);
+      
+      }catch(err){
+        console.error(err);
+      }
     }
 
     update();
-
 
     function moveCurtain(e) {
       if (!self.mousedown) {
         return;
       }
-      if (e.type.includes('touch')) {
-        self.endX = e.touches[0].pageX;
-        self.endY = e.touches[0].pageY;
-      } else {
-        self.endX = e.pageX;
-        self.endY = e.pageY;
-      }
+      var pos = pointerEventToXY(e);
+      self.endX = pos.x;
+      self.endY = pos.y;
     }
+    
 
     function between(x, a, b) {
       return x < b && x > a;
     }
 
+    var hasBeenTouchedRecently = false;
+
     function startCurtain(e) {
-      let _x, _y;
-      let next_curtain = self.obj.querySelector('.curtain-page');
-      if (self.closed || !self.start || (!self.obj.contains(e.path[0]) || (next_curtain && next_curtain.contains(e.path[0]))))
+      if(hasBeenTouchedRecently) {
         return;
-      if (e.type.includes('touch')) {
-        _x = e.touches[0].pageX;
-        _y = e.touches[0].pageY;
-      } else {
-        _x = e.pageX;
-        _y = e.pageY;
       }
+      hasBeenTouchedRecently = true;
+      setTimeout(() => { hasBeenTouchedRecently = false; }, 300);
+      e.preventDefault();
+      e.stopPropagation();
+      
+      let _x, _y;
+      let path = e.composedPath();
+      let next_curtain = self.obj.querySelector('.curtain-page');
+      
+      if (self.closed || !self.start || (!self.obj.contains(path[0]) || (next_curtain && next_curtain.contains(path[0]))))
+        return;
+        
+      var pos = pointerEventToXY(e);
+      _x = pos.x;
+      _y = pos.y;
       var opened = self.endX <= -width / 2;
       if (!opened) {
         if (!between(_y, but_y_pos_actual - but_size, but_y_pos_actual + but_size)) {
@@ -538,13 +564,12 @@ var makeCurtain = (function () {
         if (nextCurtain)
           nextCurtain.curtain.hide();
       }
-      e.stopPropagation();
-      e.preventDefault();
       self.closing = !opened;
 
       self.mousedown = true;
       self.startX = opened ? width : _x;
       self.startY = _y;
+      
       moveCurtain(e);
       return true;
     }
@@ -565,14 +590,14 @@ var makeCurtain = (function () {
     }
 
     function endCurtain(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
       let _x, _y;
-      if (e.type.includes('touch')) {
-        _x = e.changedTouches[0].pageX;
-        _y = e.changedTouches[0].pageY;
-      } else {
-        _x = e.pageX;
-        _y = e.pageY;
-      }
+      var pos = pointerEventToXY(e);
+      _x = pos.x;
+      _y = pos.y;
+      
       if (!self.mousedown)
         return;
       self.mousedown = false;
@@ -614,7 +639,7 @@ var makeCurtain = (function () {
       endCurtain(e)
     });
 
-    document.addEventListener('touchmove', moveCurtain);
+    document.addEventListener('touchmove', moveCurtain, { passive: false });
 
     return self;
 
@@ -643,8 +668,6 @@ function makeCurtains(wrapper) {
   });
 
 }
-
-
 export {
   makeCurtains
 };

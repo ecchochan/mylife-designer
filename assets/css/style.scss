@@ -146,12 +146,13 @@ $smooth:.62,.02,.34,1;
 	}
 }
 :root {
-  touch-action: pan-x pan-y;
+  touch-action: none;
   height: 100% ;
 }
 body, html {
   overscroll-behavior-y: contain;
-  touch-action: manipulation;
+  overscroll-behavior-x: none;
+  touch-action: none;
   overflow: hidden;
   font-family: 'Noto Sans TC', sans-serif;
   margin: 0;
@@ -321,6 +322,8 @@ p {
 }
 
 #intro-tran {
+  clip-path: url(#curtainClip-1);
+
   #intro-tran-text{
     flex: 4;
   }
@@ -332,7 +335,11 @@ p {
     flex: 2;
   }
 }
-
+body,
+html {
+  position: fixed;
+  touch-action: none;
+}
 
 
 #debug{
@@ -349,3 +356,9 @@ p {
   padding:0.5em;
 
 }
+
+*:not(input):not(textarea) {
+  -webkit-user-select: none; /* disable selection/Copy of UIWebView */
+  -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
+  
+}   
