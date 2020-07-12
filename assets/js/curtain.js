@@ -292,9 +292,11 @@ var makeCurtain = (function () {
       if (deltaY < deltaY_min)
         deltaY = deltaY_min;
 
-        
-      if (!self.start && self.x > -1) {
+      if (self.x > -30){
         closeNextCurtain();
+
+      }
+      if (!self.start && self.x > -1) {
         deltaX = 60;
       }
       if (deltaX < -width / but_over_ratio - 5)
@@ -318,13 +320,13 @@ var makeCurtain = (function () {
       var far = percent_done * far_v;
       
       self.x2 = lerp(self.x2, min(
-        (self.x < -width ? -width : self.x), right_pad*4), friction * 6); 
+        (self.x < -width ? -width : self.x), mix(0, right_pad*3, self.x, 0, 60)), friction * 6); 
       self.x3 = lerp(self.x3, min(
-        (self.x2 < -width ? -width : self.x2) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), right_pad*3), friction * follow_speed);
+        (self.x2 < -width ? -width : self.x2) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), mix(0, right_pad*2, self.x, 0, 60)), friction * follow_speed);
       self.x4 = lerp(self.x4, min(
-        ((self.x3 < -width ? -width : self.x3)) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), right_pad*2), friction * follow_speed);
+        ((self.x3 < -width ? -width : self.x3)) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), mix(0, right_pad*2, self.x, 0, 60)), friction * follow_speed);
       self.x5 = lerp(self.x5, min(
-        ((self.x4 < -width ? -width : self.x4)) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), right_pad*2), friction * follow_speed);
+        ((self.x4 < -width ? -width : self.x4)) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), mix(0, right_pad*2, self.x, 0, 60)), friction * follow_speed);
 
       if (self.start || self.x < -60) {
         if (self.x2 < self.x) { 
@@ -391,7 +393,7 @@ var makeCurtain = (function () {
         mix(0, self.closing ? 50 : -45, percent_done_real, 0, 0.7), 0, percent_done_real, 0.7, 1.0) +
         (self.closing ? 1 : 0) * mix(mix(0, width**1.5 / 1500, percent_done_real, 0, mm), 0, percent_done_real, 0, 1); 
 
-      var middle_zx2 = but_size / 7 - mix(mix(0, self.closing?width / 8:30, percent_done_real, mm, 1.0), 0, percent_done_real, 0.7, 1.0) +
+      var middle_zx2 = but_size / 7 - mix(mix(0, self.closing?width / 7:30, percent_done_real, mm, 1.0), 0, percent_done_real, 0.7, 1.0) +
         (self.closing ? (mix(mix(0, 9, percent_done_real, 0, mm), 0, percent_done_real, 0, 0.3)) :
           0);
       var middle_zx = width - right_pad - but_offset + self.x;
