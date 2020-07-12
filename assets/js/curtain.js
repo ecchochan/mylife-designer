@@ -623,7 +623,12 @@ var makeCurtain = (function () {
         return;
       self.mousedown = false;
       var opened = !self.closing;
-      var clicked = self.closing && self.startX == _x && self.startY == _y;
+      var clicked = (self.closing && 
+        (
+          (self.startX == _x && self.startY == _y) ||
+          Math.abs(self.startX - _x) < 3 && Math.abs(self.startY - _y) < 3
+        )
+      );
 
       if (clicked || (self.endX - self.startX < (!opened ? -width / 3 : -width * 2 / 3))) {
         self.startX = 0;
