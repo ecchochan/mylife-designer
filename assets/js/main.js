@@ -5,7 +5,7 @@ import { makeCurtains }  from './curtain.min.js';
 
 */
 
-var DEBUG = false;
+var DEBUG = true;
 
 var CARDS_PER_PAGE = 6;
 

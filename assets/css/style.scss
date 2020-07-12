@@ -1,8 +1,9 @@
 
 * {
+  /*
   transform: translate3d(0, 0, 0);
 	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
+	backface-visibility: hidden;*/
 }
 
 
@@ -276,6 +277,10 @@ p {
     }
   }
 
+  .stages{
+    transform: translate3d(0, 0, 0);
+  }
+
 }
 
 #loading-wrapper {
@@ -330,7 +335,6 @@ p {
 }
 
 #intro-tran {
-  clip-path: url(#curtainClip-1);
 
   #intro-tran-text{
     flex: 4;

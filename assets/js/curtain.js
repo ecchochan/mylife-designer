@@ -25,7 +25,7 @@ var makeCurtain = (function () {
   const svgCircles = points => points.reduce((acc, point, i, a) =>
     `${acc} <circle cx="${point[0]}" cy="${point[1]}" r="2.5" class="svg-circles" v-for="p in pointsPositions"/>`, '')
 
-  const prec = 2;
+  const prec = 3;
 
   /*creates formated path string for SVG cubic path element*/
   function path(x1,y1,px1,py1,px2,py2,x2,y2)
@@ -234,8 +234,20 @@ var makeCurtain = (function () {
     self.endX = self.startX;
     self.endY = self.startY;
     self.mousedown = false;
-    obj.style.clipPath = "url(#" + curtain_id + ")";
-    obj.style.webkitClipPath = "url(#" + curtain_id + ")";
+
+    const enableClipPath = function(){
+      var value = "url(#" + curtain_id + ")";
+      if (obj.style.clipPath == value) return;
+      obj.style.clipPath = value;
+      obj.style.webkitClipPath = value;
+    }
+    const disableClipPath = function(){
+      if (obj.style.clipPath == "") return;
+      obj.style.clipPath = "";
+      obj.style.webkitClipPath = "";
+    }
+    enableClipPath();
+    
     if (self.closed) {
       self.startX = 0;
       self.startY = 0;
@@ -243,8 +255,9 @@ var makeCurtain = (function () {
       self.endY = 0;
 
     }
-
+    
     obj.curtain = self;
+    clipPath.curtain = self;
     self.obj = obj
 
     setTimeout(function (e) {
@@ -263,6 +276,7 @@ var makeCurtain = (function () {
 
     function update() {
       try{
+      self.active = false;
       var deltaX = (self.endX - self.startX);
       var deltaY = (self.endY - self.startY);
       var stable = Math.abs(deltaX - self.x) < 1e-5;
@@ -271,14 +285,18 @@ var makeCurtain = (function () {
         obj.style.display = 'none';
         requestAnimationFrame(update);
         return;
-      }else if ((self.x < -width && !self.mousedown) || stable){
+      }else if ((self.x < -width && !self.mousedown)){
+        requestAnimationFrame(update);
+        disableClipPath();
+        return;
+      } else if (stable){
         requestAnimationFrame(update);
         return;
-        
       }else if (obj.style.display == 'none'){
         obj.style.display = '';
       }
-      
+      self.active = true;
+      enableClipPath();
 
       if (self.start_ended) {
         if (deltaX > 0)

@@ -1,10 +1,8 @@
 * {
-  -webkit-transform: translate3d(0, 0, 0);
-     -moz-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-       backface-visibility: hidden;
+  /*
+  transform: translate3d(0, 0, 0);
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;*/
 }
 
 .gp-header {
@@ -669,6 +667,12 @@ p {
   display: none;
 }
 
+#stages .stages {
+  -webkit-transform: translate3d(0, 0, 0);
+     -moz-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+
 #loading-wrapper {
   position: fixed;
   background: white;
@@ -722,11 +726,6 @@ p {
      -moz-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
-}
-
-#intro-tran {
-  -webkit-clip-path: url(#curtainClip-1);
-          clip-path: url(#curtainClip-1);
 }
 
 #intro-tran #intro-tran-text {

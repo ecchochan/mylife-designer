@@ -25,6 +25,14 @@
 
   <div id="debug">
     <div id="lang-switcher"><span>en</span><span>zh</span></div>
+    <div id="debug-message"></div>
+    <div id="curtain-active"></div>
+    <script>
+      setInterval(function(e){
+        var repl = Array.from(document.querySelectorAll('[id^="curtainClip"]')).filter(e=>e.curtain.active).map(e=>e.id.split('-')[1]).join(',');
+        document.getElementById('curtain-active').textContent = repl;
+      }, 400)
+    </script>
 
   </div>
 
@@ -164,7 +172,7 @@
 
   </div>  
   <script type="module" src="assets/js/main.min.js"></script>
+  <script src="http://192.168.128.95:8080/target/target-script-min.js#anonymous"></script>
   <!--
-    <script src="http://192.168.128.95:8080/target/target-script-min.js#anonymous"></script>
   -->
 </body>
