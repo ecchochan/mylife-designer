@@ -83,6 +83,7 @@ $color-slash: #d65f5f;
 }
 
 .togglerContainer{
+  margin: 12px;
   width: 36px;
   height: 36px;
   position: relative;
@@ -102,11 +103,12 @@ $color-slash: #d65f5f;
 }
 
 .music-score {
+  display:flex;
   color: $color-2;
   font-size: 40px;
   position: absolute;
   left: 10px;
-  top: 8px;
+  top: 9px;
   user-select: none;
   opacity: 1;
   transition: 300ms all cubic-bezier(0.18, -0.55, 0, 1.33);
@@ -123,7 +125,7 @@ $color-slash: #d65f5f;
 
 
 .music-score-slash {
-display: inline-block;
+    display: inline-block;
     position: absolute;
     top: 22px;
     left: 41px;

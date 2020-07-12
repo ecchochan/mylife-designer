@@ -108,7 +108,10 @@ var setLang = function(L){
   })
 
 }
-setLang(lang);
+
+doc.addEventListener("DOMContentLoaded", function(){
+  setLang(lang);
+});
 
 if (DEBUG){
   document.querySelectorAll('#lang-switcher > span').forEach(e=>{
@@ -356,8 +359,12 @@ document.addEventListener('mousemove', function(e){
 
 
 
+
+var volumeButton = doc.getElementById('volume');
+var volumeSwitchContainer = volumeButton.querySelector('.switchContainer');
+
 var audio;
-var AUDIO_ON = false;
+var AUDIO_ON = volumeSwitchContainer.classList.contains('switchOn');
 var setVolume = (v)=>{
   anime({
     targets: audio,
@@ -390,11 +397,7 @@ var toggleMusic = ()=>{
     playMusic();
   }
 }
-
-var volumeButton = doc.getElementById('volume');
 volumeButton.onclick = toggleMusic;
-var volumeSwitchContainer = volumeButton.querySelector('.switchContainer');
-
 
 
 var listen_once = function(target, event, func){
@@ -445,8 +448,95 @@ var start = function () {
 }
 
 
+
+
+
+/*
+  Curtain Behaviour
+
+  default: function (self) {
+      var obj = self.obj
+      setTimeout(function () {
+        var nextCurtain = obj.querySelector('.curtain-page');
+        if (nextCurtain)
+          nextCurtain.curtain.show();
+
+      }, self.opened ? 0 : 500);
+    }
+
+*/
+
+
+const timeline = function(frames){
+  if (frames.length == 0) return;
+  var index = 0;
+  var frame = frames[0];
+  const consumer = function(){
+    var func = frame.func || frame[0];
+    if (typeof func === 'function')
+      func();
+    
+    index += 1;
+    if (index < frames.length){
+      frame = frames[index];
+      setTimeout(consumer, frame.duration || frame[1] || 0);
+    }
+  }
+  setTimeout(consumer, frame.duration || frame[1] || 0)
+}
+
+
+
+const intro_next = function (self){
+  var obj = self.obj;
+  timeline([
+    [function () {
+      var nextCurtain = obj.querySelector('.curtain-page');
+      if (nextCurtain) nextCurtain.curtain.show();
+    }, self.opened ? 0 : 500],
+    [
+      function(){
+        document.getElementById('float-top-right').classList.remove('hidden');
+        playMusic();
+      }, 500
+    ]
+
+  ])
+}
+window.intro_next = intro_next
+
+
+
+
+
+
+
 /*
     Generate Card Selection
 */
 
-makeCurtains(document.getElementById('stages') );
+var colorPalette = 'ffac81-ff928b-fec3a6-efe9ae-cdeac0'.split('-')
+
+var colorPalette = 'd6f6dd-dac4f7-f4989c-ebd2a4-acecf7'.split('-')
+var cardSelectionTemplate = doc.getElementById('selection-1');
+
+CARDS_CHUNKS.forEach((chunk, i)=>{
+  var divClone = cardSelectionTemplate.cloneNode(true);
+  divClone.style.background = '#'+colorPalette[i%colorPalette.length];
+  divClone.id = 'selection-'+(i+1);
+  divClone.querySelector('.cards').innerHTML = chunk.map(e=>
+    `<li en="${e.name.en}" zh="${e.name.zh}"></li>`).join('');
+  console.log(chunk.map(e=>
+    `<li en="${e.name.en}" zh="${e.name.zh}"></li>`).join(''))
+  console.log(divClone.querySelector('.cards').innerHTML)
+  cardSelectionTemplate.parentNode.insertBefore(divClone, cardSelectionTemplate.nextSibling);
+});
+
+cardSelectionTemplate.remove();
+
+
+/*
+    Enable Curtains
+*/
+
+makeCurtains(doc.getElementById('stages') );

@@ -251,7 +251,6 @@ var makeCurtain = (function () {
       self.start_ended = true;
     }, 1000);
 
-
     curtain.setAttribute("width", width);
     curtain.setAttribute("height", height);
     curtain.setAttribute("viewbox", `0 0 ${width} ${height}`);
@@ -295,9 +294,7 @@ var makeCurtain = (function () {
 
         
       if (!self.start && self.x > -1) {
-        //requestAnimationFrame(update);
-        //path_dom.setAttribute('d', "");
-        //return; 
+        closeNextCurtain();
         deltaX = 60;
       }
       if (deltaX < -width / but_over_ratio - 5)
@@ -321,13 +318,13 @@ var makeCurtain = (function () {
       var far = percent_done * far_v;
       
       self.x2 = lerp(self.x2, min(
-        (self.x < -width ? -width : self.x), right_pad * 10), friction * 6); 
+        (self.x < -width ? -width : self.x), right_pad*4), friction * 6); 
       self.x3 = lerp(self.x3, min(
-        (self.x2 < -width ? -width : self.x2) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), right_pad * 10), friction * follow_speed);
+        (self.x2 < -width ? -width : self.x2) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), right_pad*3), friction * follow_speed);
       self.x4 = lerp(self.x4, min(
-        ((self.x3 < -width ? -width : self.x3)) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), right_pad * 10), friction * follow_speed);
+        ((self.x3 < -width ? -width : self.x3)) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), right_pad*2), friction * follow_speed);
       self.x5 = lerp(self.x5, min(
-        ((self.x4 < -width ? -width : self.x4)) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), right_pad * 10), friction * follow_speed);
+        ((self.x4 < -width ? -width : self.x4)) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), right_pad*2), friction * follow_speed);
 
       if (self.start || self.x < -60) {
         if (self.x2 < self.x) { 
@@ -527,6 +524,12 @@ var makeCurtain = (function () {
       return x < b && x > a;
     }
 
+    function closeNextCurtain(){
+      var nextCurtain = obj.querySelectorAll('.curtain-page');
+      nextCurtain.forEach(nextCurtain=>nextCurtain.curtain.hide());
+
+    }
+
     var hasBeenTouchedRecently = false;
 
     function startCurtain(e) {
@@ -560,9 +563,7 @@ var makeCurtain = (function () {
         return;
       }
       if (opened) {
-        var nextCurtain = obj.querySelector('.curtain-page');
-        if (nextCurtain)
-          nextCurtain.curtain.hide();
+        closeNextCurtain();
       }
       self.closing = !opened;
 

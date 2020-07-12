@@ -1,3 +1,12 @@
+
+* {
+  transform: translate3d(0, 0, 0);
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+
+
 @import 'toggler';
 
 
@@ -145,6 +154,8 @@ $smooth:.62,.02,.34,1;
 		}
 	}
 }
+
+
 :root {
   touch-action: none;
   height: 100% ;
@@ -291,9 +302,6 @@ p {
   transition: .45s cubic-bezier($smooth) .3s;
   z-index:999;
 
-  #volume {
-    margin: 12px;
-  }
 
 }
 
@@ -362,3 +370,8 @@ html {
   -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
   
 }   
+
+
+.cards {
+  text-align: left;
+}

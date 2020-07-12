@@ -260,6 +260,7 @@
 }
 
 .togglerContainer {
+  margin: 12px;
   width: 36px;
   height: 36px;
   position: relative;
@@ -286,11 +287,16 @@
 }
 
 .music-score {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
   color: #5fd698;
   font-size: 40px;
   position: absolute;
   left: 10px;
-  top: 8px;
+  top: 9px;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;

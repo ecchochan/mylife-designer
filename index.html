@@ -51,7 +51,7 @@
     <div id="float-top-right" class="hidden">
       <div id="volume" class="togglerContainer">
         <div class="toggler">
-          <div class="switchContainer" id="switchContainer">
+          <div class="switchContainer switchOn" id="switchContainer">
             <div class="switchBtn"></div>
           </div>
           <div class="music-score">
@@ -102,7 +102,7 @@
         -->
 
 
-        <div id="intro-tran" class="wrapper stage" curtain-config="{reversible:true}"  style="background: aliceblue;">
+        <div id="intro-tran" class="wrapper stage" curtain-config="{reversible:false,next:intro_next}"  style="background: aliceblue;">
           <div id="intro-tran-text" class="thin-body">
             <div>
               <p en="" zh="有一天下午，
@@ -131,6 +131,16 @@
         -->
 
         
+        <div id="selection-1" class="wrapper stage" curtain-config="{reversible:true}">
+          <div class="thin-body">
+            <div>
+              <p></p>
+              <p class="cards"></p>
+              <p></p>
+            </div>
+          </div>
+        </div>
+
 
         <!--
 
@@ -154,5 +164,7 @@
 
   </div>  
   <script type="module" src="assets/js/main.min.js"></script>
-  <!--<script src="http://192.168.128.95:8080/target/target-script-min.js#anonymous"></script>-->
+  <!--
+    <script src="http://192.168.128.95:8080/target/target-script-min.js#anonymous"></script>
+  -->
 </body>
