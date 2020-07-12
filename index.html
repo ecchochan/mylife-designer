@@ -23,11 +23,12 @@
 </head> 
 <body>
 
-  <div id="debug">
+  <div id="debug" style="display:none;">
     <div id="lang-switcher"><span>en</span><span>zh</span></div>
     <div id="debug-message"></div>
     <div id="curtain-active"></div>
     <script>
+      if (false)
       setInterval(function(e){
         var repl = Array.from(document.querySelectorAll('[id^="curtainClip"]')).filter(e=>e.curtain.active).map(e=>e.id.split('-')[1]).join(',');
         document.getElementById('curtain-active').textContent = repl;

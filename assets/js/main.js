@@ -5,7 +5,7 @@ import { makeCurtains }  from './curtain.min.js';
 
 */
 
-var DEBUG = true;
+var DEBUG = false;
 
 var CARDS_PER_PAGE = 6;
 
@@ -68,6 +68,8 @@ function assert(condition, message) {
 
 if (!DEBUG){
   doc.getElementById('debug').remove();
+}else{
+  doc.getElementById('debug').style.display = "";
 }
 
 
