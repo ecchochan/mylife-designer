@@ -573,6 +573,7 @@ window.intro_next = function (self){
 }
 const intro_drags = Array.from(document.querySelectorAll('#intro [drag]')).map(e=>[e, parseInt(e.getAttribute('drag'))]);
 window.coverUpdate = (p, p2)=>{
+  return;
   intro_drags.forEach(e=>{
     var t = e[0];
     var drag = e[1];
