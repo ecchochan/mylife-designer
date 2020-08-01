@@ -151,6 +151,9 @@ $smooth:.62,.02,.34,1;
   touch-action: none;
   height: 100% ;
 }
+html{
+  background: #547a41;
+}
 body, html {
   overscroll-behavior-y: contain;
   overscroll-behavior-x: none;
@@ -159,15 +162,45 @@ body, html {
   font-family: 'Noto Sans TC', sans-serif;
   margin: 0;
   padding: 0;
-  background: #fff;
   height:100vh;
   width:100vw;
   height: calc(var(--vh, 1vh) * 100);
+  box-shadow: 0 0 35px #0009;
 }
 
 p {
   white-space: pre;
+  margin: 0;
 }
+
+block {
+  flex-direction: column;
+}
+
+#assets {
+  display: none;
+}
+
+.clippath {
+  pointer-events: none;
+  position: absolute;
+  z-index: 999;
+  left: 0;
+  top: 0;
+}
+[flex-vert-center]{display:flex;align-items: center;}
+[flex-1]{flex:1;display:flex;}
+[flex-2]{flex:2;display:flex;}
+[flex-3]{flex:3;display:flex;}
+[flex-4]{flex:4;display:flex;}
+[flex-5]{flex:5;display:flex;}
+[flex-6]{flex:6;display:flex;}
+[width-100p]{width:100%;}
+[left-align]{text-align:left;margin-right: auto;}
+[right-align]{text-align:right;}
+[middle-align]{text-align:center;}
+[left-margin-small]{margin-left:2em;}
+[margin-auto]{margin:auto;}
 
 [font-large] {
   font-size: 2em;
@@ -175,6 +208,7 @@ p {
 
 #desktop{
   position: fixed;
+  left: 0;
   z-index: 99999;
   display: none;
   background:white;
@@ -209,14 +243,12 @@ p {
   vertical-align: middle;
   align-items: center;
   > * {
-    display: flex;
+    /*
     flex: 1;
+    text-align: center;*/
     align-items: center;
-    text-align: center;
+    display: flex;
     width:100%;
-    > * {
-      margin: auto;
-    }
   }
 }
 .display-none{
@@ -309,18 +341,25 @@ p {
 
 */
 
-
+background{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+cover{
+  background: url(../../assets/img/cover.png);
+  background-position-x: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
 
 #intro {
-  #intro-text{
-    flex: 4;
-  }
+
   #intro-start{
     margin: auto;
-    flex: 1;
-  }
-  #intro-footer{
-    flex: 1;
+    flex: 2;
   }
 }
 
@@ -369,3 +408,4 @@ html {
 .cards {
   text-align: left;
 }
+

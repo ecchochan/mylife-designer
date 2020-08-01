@@ -39,14 +39,16 @@
 
 
   <div id="assets">
-    
+    <svg id="arrow-svg" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+      <g><path d="M761.5,180.8L447,499.5l314.5,318.6c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5c-4.9,12.2-12.2,23.1-21.9,32.8C742,979.9,718.8,990,691.7,990c-27.1,0-50.3-10.1-69.8-30.2L241.9,576.5c-9.7-9.7-17.3-21.4-22.9-34.9c-5.6-13.6-8.7-27.3-9.4-41.2c-0.7-13.9,1-27.2,5.3-40.1c4.2-12.8,11.1-23.5,20.8-31.8L622,39.1C641.4,19.7,664.7,10,691.7,10c27.1,0,50.3,9.7,69.7,29.1c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5C778.5,160.1,771.2,171.1,761.5,180.8L761.5,180.8z"/></g>
+      </svg>
   </div>
 
 
   <div id="app" class="hidden">
     <div id="loading-wrapper" class="wrapper">
       <div>
-        <div>
+        <div margin-auto>
           <span en="Loading" zh="載入中"></span>: <span id="load-percent">0</span>%
         </div>
       </div>
@@ -89,18 +91,30 @@
         -->
 
         <div id="intro" class="stage wrapper">
-          <div id="intro-text">
+          <background>
+            <cover></cover>
+          </background>
+          <div flex-1 id="intro-text">
             <div>
-              <p font-large en="" zh="探索你的旅程"></p>
-              <p en="" zh="透視你的內心世界"></p>
+              
+              
             </div>
           </div>
-          <div id="intro-start">
-            <span en="" zh=""></span> 
-          </div>
-          <div id="intro-footer">
-            <span></span>
-          </div>
+          <block drag="40" flex-1 style="clip-path: url(#cover-wave);-webkit-clip-path: url(#cover-wave);background-color: #FAC668;">
+            <div flex-3 >
+            </div>
+            <div drag="40" flex-vert-center flex-5 width-100p left-align left-margin-small>
+              <p font-large en="EXPLORE
+YOUR
+JOURNEY" zh="探索你的旅程"></p>
+            </div>
+            <div drag="40" flex-2 width-100p left-align left-margin-small>
+              <p en="Test your inner values" zh="透視你的內心世界"></p>
+            </div>
+            <div flex-1>
+              <span></span> 
+            </div>
+          </block>
 
         </div>
 
@@ -111,25 +125,23 @@
         -->
 
 
-        <div id="intro-tran" class="wrapper stage" curtain-config="{reversible:false,next:intro_next}"  style="background: aliceblue;">
-          <div id="intro-tran-text" class="thin-body">
-            <div>
-              <p en="" zh="有一天下午，
-  你收到一封信，信上寫著：
-  「您受邀參加一趟悠長旅程，
-  這趟旅程沒有任何限制，
-  你可以隨心所欲地發掘自我。」
-  去嗎？"></p>
-              <p en="" zh=""></p>
-              <p></p>
-              <p></p>
+        <div id="intro-tran" class="wrapper stage" curtain-config="{update:coverUpdate, reversible:false,next:intro_next}"  style="background: #547A41;">
+          <div flex-1 >
+          </div>
+          <div middle-align id="intro-tran-text" class="thin-body">
+            <div width-100p>
+              <p en="One day afternoon,
+you received a letter, it wrote,
+“You are invited to join a long journey, which has no limit, and you can explore yourself as you want.”
+Why not give it a try? " zh="有一天下午，
+你收到一封信，信上寫著：
+「您受邀參加一趟悠長旅程，
+這趟旅程沒有任何限制，
+你可以隨心所欲地發掘自我。」
+去嗎？"></p>
             </div>
           </div>
-          <div id="intro-tran-start">
-            <span en="" zh=""></span>
-          </div>
-          <div id="intro-tran-footer">
-            <span></span>
+          <div flex-1>
           </div>
         </div>
 
@@ -140,9 +152,9 @@
         -->
 
         
-        <div id="selection-1" class="wrapper stage" curtain-config="{reversible:true}">
+        <div id="selection-1" class="wrapper stage" curtain-config="{reversible:false,next:stage_next}">
           <div class="thin-body">
-            <div>
+            <div flex-1>
               <p></p>
               <p class="cards"></p>
               <p></p>
@@ -176,4 +188,9 @@
   <!--
   <script src="http://192.168.128.95:8080/target/target-script-min.js#anonymous"></script>
   -->
+  <svg class="clippath" full-width-abs full-height-abs viewbox="0 0 100 100">
+    <clipPath id="cover-wave" clipPathUnits="objectBoundingBox">
+      <path fill="#000" viewbox="0 0 100 100" width='100%' height='100%'  d="M 0 0.175 C 0.150 0.250 0.300 0.250 0.300 0.250 C 0.550 0.250 0.630 0.01 1 0 L 1 1 L 0 1 z "></path>
+    </clipPath>
+  </svg>
 </body>

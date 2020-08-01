@@ -1,0 +1,18 @@
+{
+  "easycompile.compile": {
+    "minifyJsOnSave": false,
+    "minifyCssOnSave": false,
+  },
+  "easycompile.sass": {
+    "autoprefixer": "cover 99.5%",
+  },
+  "easycompile.css": {
+    // "outDir": "${workspaceRoot}/dist",
+    "outExt": ".min.css",
+    "compress": {
+      "passes": 1
+    }
+  },
+  "es6-css-minify.minifyOnSave": "yes",
+  "es6-css-minify.enableAutoprefixer": true,
+}

@@ -489,6 +489,10 @@
   height: 100%;
 }
 
+html {
+  background: #547a41;
+}
+
 body, html {
   overscroll-behavior-y: contain;
   overscroll-behavior-x: none;
@@ -498,16 +502,157 @@ body, html {
   font-family: 'Noto Sans TC', sans-serif;
   margin: 0;
   padding: 0;
-  background: #fff;
   height: 100vh;
   width: 100vw;
   height: -webkit-calc(var(--vh, 1vh) * 100);
   height: -moz-calc(var(--vh, 1vh) * 100);
   height: calc(var(--vh, 1vh) * 100);
+  -webkit-box-shadow: 0 0 35px #0009;
+     -moz-box-shadow: 0 0 35px #0009;
+          box-shadow: 0 0 35px #0009;
 }
 
 p {
   white-space: pre;
+  margin: 0;
+}
+
+block {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+     -moz-box-orient: vertical;
+     -moz-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#assets {
+  display: none;
+}
+
+.clippath {
+  pointer-events: none;
+  position: absolute;
+  z-index: 999;
+  left: 0;
+  top: 0;
+}
+
+[flex-vert-center] {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+     -moz-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+[flex-1] {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+     -moz-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+[flex-2] {
+  -webkit-box-flex: 2;
+  -webkit-flex: 2;
+     -moz-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+[flex-3] {
+  -webkit-box-flex: 3;
+  -webkit-flex: 3;
+     -moz-box-flex: 3;
+      -ms-flex: 3;
+          flex: 3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+[flex-4] {
+  -webkit-box-flex: 4;
+  -webkit-flex: 4;
+     -moz-box-flex: 4;
+      -ms-flex: 4;
+          flex: 4;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+[flex-5] {
+  -webkit-box-flex: 5;
+  -webkit-flex: 5;
+     -moz-box-flex: 5;
+      -ms-flex: 5;
+          flex: 5;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+[flex-6] {
+  -webkit-box-flex: 6;
+  -webkit-flex: 6;
+     -moz-box-flex: 6;
+      -ms-flex: 6;
+          flex: 6;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+[width-100p] {
+  width: 100%;
+}
+
+[left-align] {
+  text-align: left;
+  margin-right: auto;
+}
+
+[right-align] {
+  text-align: right;
+}
+
+[middle-align] {
+  text-align: center;
+}
+
+[left-margin-small] {
+  margin-left: 2em;
+}
+
+[margin-auto] {
+  margin: auto;
 }
 
 [font-large] {
@@ -516,6 +661,7 @@ p {
 
 #desktop {
   position: fixed;
+  left: 0;
   z-index: 99999;
   display: none;
   background: white;
@@ -581,27 +727,20 @@ p {
 }
 
 .wrapper > * {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-     -moz-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+  /*
+    flex: 1;
+    text-align: center;*/
   -webkit-box-align: center;
   -webkit-align-items: center;
      -moz-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
   width: 100%;
-}
-
-.wrapper > * > * {
-  margin: auto;
 }
 
 .display-none {
@@ -696,29 +835,30 @@ p {
   Stages
 
 */
-#intro #intro-text {
-  -webkit-box-flex: 4;
-  -webkit-flex: 4;
-     -moz-box-flex: 4;
-      -ms-flex: 4;
-          flex: 4;
+background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+cover {
+  background: url(../../assets/img/cover.png);
+  background-position-x: center;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+          background-size: cover;
+  height: 100%;
+  width: 100%;
 }
 
 #intro #intro-start {
   margin: auto;
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-     -moz-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-}
-
-#intro #intro-footer {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-     -moz-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+  -webkit-box-flex: 2;
+  -webkit-flex: 2;
+     -moz-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
 }
 
 #intro-tran #intro-tran-text {

@@ -20,6 +20,10 @@ var TRANSITION = {
   DURATION: 500,
 };
 
+
+const urlParams = new URLSearchParams(window.location.search);
+console.log(urlParams)
+
 /** 
 
   Utils
@@ -40,7 +44,6 @@ const shuffle = (a) => {
   }
   return a;
 }
-
 
 const chunks = (arr, len) => {
   var ret = [], i = 0, n = arr.length;
@@ -78,12 +81,52 @@ if (!DEBUG){
   Actual vh for css
 
 */
+const BODY_MAX_WIDTH = 480;
 
-function update_vh(){
-  let vh = window.innerHeight * 0.01;
+function update_vh() {
+  let height = window.innerHeight;
+  let width = window.innerWidth;
+  let vh = height * 0.01;
+  let vw = width * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
+  document.documentElement.style.setProperty('--vw', `${vw}px`);
+  if (width > BODY_MAX_WIDTH){
+    document.body.style.width = BODY_MAX_WIDTH+"px"
+    document.body.style.marginLeft = parseInt((width - BODY_MAX_WIDTH) /  2) + 'px';
+    width = BODY_MAX_WIDTH;
+
+  }else{
+    document.body.style.width = ""
+    document.body.style.marginLeft =  '';
+  }
+  
+  document.documentElement.style.setProperty('--window-height', `${height}`);
+  document.documentElement.style.setProperty('--window-width', `${width}`);
+  document.querySelectorAll('[full-width-abs]').forEach(e=>{
+    if (e.tagName == "svg")
+      e.setAttribute("width", width);
+    else
+      e.style.width = width + 'px';
+  })
+  document.querySelectorAll('[full-height-abs]').forEach(e=>{
+    if (e.tagName == "svg")
+      e.setAttribute("height", height);
+    else
+      e.style.height = height + 'px';
+  })
+
+  window.dispatchEvent(new Event('curtain-resize'));
+  
 }
-update_vh();
+var onresize = function (event) {
+  update_vh();
+};
+if (window.attachEvent) {
+  window.attachEvent('onresize', onresize);
+} else if (window.addEventListener) {
+  window.addEventListener('resize', onresize, true);
+}
+
 
 
 /*
@@ -113,6 +156,7 @@ var setLang = function(L){
 
 doc.addEventListener("DOMContentLoaded", function(){
   setLang(lang);
+  update_vh();
 });
 
 if (DEBUG){
@@ -127,6 +171,9 @@ if (DEBUG){
   });
   document.querySelector('#lang-switcher > span').classList.add('display-none');
   
+  if (lang == 'zh'){
+    document.querySelector('#lang-switcher > span:not([class])').click();
+  }
 }
 
 /*
@@ -446,10 +493,23 @@ var start = function () {
   setActive(stages.intro);  
   goNextFade(0, load_wrapper, e => {
     LOGT('Load wrapper removed.');
+    curtains[0].show();
   });
 }
 
 
+
+
+/*
+    Stage Defaults
+*/
+
+const defaultNextCutain = (self) => {
+  return [function () {
+    var nextCurtain = self.obj.querySelector('.curtain-page');
+    if (nextCurtain) nextCurtain.curtain.show();
+  }, self.opened ? 0 : 500];
+}
 
 
 
@@ -460,8 +520,7 @@ var start = function () {
       var obj = self.obj
       setTimeout(function () {
         var nextCurtain = obj.querySelector('.curtain-page');
-        if (nextCurtain)
-          nextCurtain.curtain.show();
+        if (nextCurtain) nextCurtain.curtain.show();
 
       }, self.opened ? 0 : 500);
     }
@@ -473,29 +532,36 @@ const timeline = function(frames){
   if (frames.length == 0) return;
   var index = 0;
   var frame = frames[0];
-  const consumer = function(){
-    var func = frame.func || frame[0];
+  const handler = (result)=>setTimeout(()=>consumer(result), frame.duration || frame[1] || 0);
+  const consumer = function(result){
+    var func = frame.func || frame[0] || frame;
+    var ret;
     if (typeof func === 'function')
-      func();
-    
+      ret = func(result);
+    else
+      throw "timeline contains non-callable elements";
+     
     index += 1;
     if (index < frames.length){
       frame = frames[index];
-      setTimeout(consumer, frame.duration || frame[1] || 0);
+      if (ret && ret.then)
+        ret.then((result)=>handler(result))
+      else
+        handler();
     }
   }
-  setTimeout(consumer, frame.duration || frame[1] || 0)
+  handler();
 }
 
 
 
-const intro_next = function (self){
+window.intro_next = function (self){
   var obj = self.obj;
   timeline([
-    [function () {
-      var nextCurtain = obj.querySelector('.curtain-page');
-      if (nextCurtain) nextCurtain.curtain.show();
-    }, self.opened ? 0 : 500],
+    [
+      function(){}, 1000
+    ],
+    defaultNextCutain(self),
     [
       function(){
         document.getElementById('float-top-right').classList.remove('hidden');
@@ -505,10 +571,15 @@ const intro_next = function (self){
 
   ])
 }
-window.intro_next = intro_next
+const intro_drags = Array.from(document.querySelectorAll('#intro [drag]')).map(e=>[e, parseInt(e.getAttribute('drag'))]);
+window.coverUpdate = (p, p2)=>{
+  intro_drags.forEach(e=>{
+    var t = e[0];
+    var drag = e[1];
+    t.style.transform = "translateX("+-drag*p2+"px)";
 
-
-
+  })
+}
 
 
 
@@ -519,7 +590,7 @@ window.intro_next = intro_next
 
 var colorPalette = 'ffac81-ff928b-fec3a6-efe9ae-cdeac0'.split('-')
 
-var colorPalette = 'd6f6dd-dac4f7-f4989c-ebd2a4-acecf7'.split('-')
+var colorPalette = '547A41-d6f6dd-dac4f7-f4989c-ebd2a4-acecf7'.split('-')
 var cardSelectionTemplate = doc.getElementById('selection-1');
 
 CARDS_CHUNKS.forEach((chunk, i)=>{
@@ -528,17 +599,57 @@ CARDS_CHUNKS.forEach((chunk, i)=>{
   divClone.id = 'selection-'+(i+1);
   divClone.querySelector('.cards').innerHTML = chunk.map(e=>
     `<li en="${e.name.en}" zh="${e.name.zh}"></li>`).join('');
-  console.log(chunk.map(e=>
-    `<li en="${e.name.en}" zh="${e.name.zh}"></li>`).join(''))
-  console.log(divClone.querySelector('.cards').innerHTML)
+  //console.log(chunk.map(e=>`<li en="${e.name.en}" zh="${e.name.zh}"></li>`).join(''))
+  //console.log(divClone.querySelector('.cards').innerHTML)
   cardSelectionTemplate.parentNode.insertBefore(divClone, cardSelectionTemplate.nextSibling);
 });
 
 cardSelectionTemplate.remove();
 
 
+
+
+/*
+    Stage Trigger
+*/
+
+
+const stage_next = function(self){
+  var obj = self.obj;
+  timeline([
+    ()=>{
+      return new Promise(function(resolve, reject) {
+        setTimeout(() => {
+          console.log('promise done');
+          resolve("done");
+        }, 1000);
+      })
+    },
+    (ret)=>{
+      return new Promise(function(resolve, reject) {
+        setTimeout(() => {
+          console.log(ret+' good');
+          resolve(ret+' good');
+        }, 1000);
+      })
+    },
+    defaultNextCutain(self),
+
+  ])
+}
+window.stage_next = stage_next
+
+
+
+
+
+
+
+
+
+
 /*
     Enable Curtains
 */
 
-makeCurtains(doc.getElementById('stages') );
+var curtains = makeCurtains(doc.getElementById('stages') );

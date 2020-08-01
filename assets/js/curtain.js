@@ -2,7 +2,7 @@ import {
   styler
 } from "./styler.min.js"
 
-var css = `.curtain {pointer-events: none;position: absolute;z-index: 999;left: 0;top: 0;-webkit-transform-origin: top left;transform-origin: top left;}`
+var css = `.curtain {pointer-events: none;position: absolute;z-index: 999;left: 0;top: 0;-webkit-transform-origin: top left;transform-origin: top left;}.arrow{position: absolute;pointer-events: none;width: 25px;z-index:999;opacity: 0;transform: translate(-50%,-50%) rotateY(180deg);}`
 
 styler('curtain-css', css);
 
@@ -155,12 +155,12 @@ var makeCurtain = (function () {
   var width;
 
   function update_vh() {
-    height = window.innerHeight;
-    width = window.innerWidth;
-    vh = window.innerHeight * 0.01;
-    vw = window.innerWidth * 0.01;
+    height = parseInt(document.documentElement.style.getPropertyValue('--window-height') || window.innerHeight);
+    width = parseInt(document.documentElement.style.getPropertyValue('--window-width') || window.innerWidth);
+    vh = height * 0.01;
+    vw = width * 0.01;
   }
-  update_vh();
+  window.addEventListener('curtain-resize', update_vh, false);
   var onresize = function (event) {
     update_vh();
   };
@@ -169,13 +169,14 @@ var makeCurtain = (function () {
   } else if (window.addEventListener) {
     window.addEventListener('resize', onresize, true);
   }
+  update_vh();
 
 
   var index = 0;
   var debug = false; 
   let but_drag = 1.2;
   let but_size = 50;
-  let right_pad = 6;
+  let right_pad = 18;
   let smoothing = 0.15;
   let but_horiz_offset = 0.9;
   let but_horiz_offset2 = 1.3;
@@ -213,7 +214,9 @@ var makeCurtain = (function () {
     index += 1
     var current_index = index;
     var curtain_id = "curtainClip-" + index;
-    var arrow = document.createElement('span');
+    var arrow = document.createElementNS(ns, 'svg');
+    arrow.setAttribute("viewbox", `0 0 1000 1000`);
+    arrow.innerHTML = `<use xlink:href="#arrow-svg"></use>`;
     arrow.classList.add('arrow');
     var curtain = document.createElementNS(ns, 'svg');
     var path_dom = document.createElementNS(ns, 'path');
@@ -223,11 +226,11 @@ var makeCurtain = (function () {
     curtain.appendChild(clipPath);
     curtain.appendChild(document.createElementNS(ns, 'g'));
     clipPath.appendChild(path_dom);
-    path_dom.setAttribute('fill', '#9300bb');
+    path_dom.setAttribute('fill', '#000');
     curtain.classList.add('curtain');
     document.body.appendChild(curtain);
 
-    document.body.appendChild(arrow);
+    obj.appendChild(arrow);
     var self = Object.assign({}, defaults, config);
     self.curtain = curtain;
     self.path_dom = path_dom;
@@ -274,27 +277,42 @@ var makeCurtain = (function () {
     self.x4 = right_pad * 2, self.y4 = self.startY;
     self.x5 = right_pad * 2, self.y5 = self.startY;
 
+    var last_width = width;
+    var last_height = height;
+
     function update() {
       try{
       self.active = false;
-      var deltaX = (self.endX - self.startX);
+      var endX = self.endX;
+      if (endX < -width- 3)
+        endX = -width- 3
+      var deltaX = (endX - self.startX);
       var deltaY = (self.endY - self.startY);
       var stable = Math.abs(deltaX - self.x) < 1e-5;
+      var force_update = false;
+      if ((width == last_width && height == last_height) || ! self.start){
+        if (!self.start && self.x >= right_pad + but_size ){ 
+          obj.style.display = 'none';
+          requestAnimationFrame(update);
+          return;
+        }else if ((self.x < -width && !self.mousedown)){
+          requestAnimationFrame(update);
+          disableClipPath();
+          return;
+        } else if (stable){
+          requestAnimationFrame(update);
+          return;
+        }else if (obj.style.display == 'none'){
+          obj.style.display = '';
+        }
 
-      if (!self.start && self.x >= right_pad + but_size ){ 
-        obj.style.display = 'none';
-        requestAnimationFrame(update);
-        return;
-      }else if ((self.x < -width && !self.mousedown)){
-        requestAnimationFrame(update);
-        disableClipPath();
-        return;
-      } else if (stable){
-        requestAnimationFrame(update);
-        return;
-      }else if (obj.style.display == 'none'){
-        obj.style.display = '';
+      }else{
+        last_width = width;
+        force_update = true;
+        if (current_index == 1)
+          console.log(1)
       }
+
       self.active = true;
       enableClipPath();
 
@@ -324,27 +342,27 @@ var makeCurtain = (function () {
       self.y = lerp(self.y, deltaY, friction);
 
       var but_y = but_y_pos_actual + self.y;
+      var arrow_x = (1-min(1,max(0,self.x) / (right_pad+but_size/2))) *  (right_pad/2+50) -50;
+      arrow.style.top = but_y_pos_actual + 'px';
+      arrow.style.right = arrow_x + 'px';
+      arrow.style.opacity = 1 - Math.abs(self.x) / (right_pad+but_size/2);
 
       var follow_speed = 6;
 
-      var percent_done_real = -self.x / width;
-      if (percent_done_real < 0) percent_done_real = 0; 
-      if (percent_done_real > 1) percent_done_real = 1;
-      var percent_done = -self.x / min(500, width);
-      if (percent_done < 0) percent_done = 0;
+      var percent_done = -self.x / width;
+      if (percent_done < 0) percent_done = 0; 
       if (percent_done > 1) percent_done = 1;
-      percent_done = percent_done_real
       
       var far = percent_done * far_v;
       
       self.x2 = lerp(self.x2, min(
         (self.x < -width ? -width : self.x), mix(0, right_pad*3, self.x, 0, 60)), friction * 6); 
       self.x3 = lerp(self.x3, min(
-        (self.x2 < -width ? -width : self.x2) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), mix(0, right_pad*2, self.x, 0, 60)), friction * follow_speed);
+        (self.x2 < -width ? -width : self.x2) * mix(self.closing ? 0.1 : 1, 1, percent_done, 0.2, 1.0), mix(0, right_pad*2, self.x, 0, 60)), friction * follow_speed);
       self.x4 = lerp(self.x4, min(
-        ((self.x3 < -width ? -width : self.x3)) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), mix(0, right_pad*2, self.x, 0, 60)), friction * follow_speed);
+        ((self.x3 < -width ? -width : self.x3)) * mix(self.closing ? 0.1 : 1, 1, percent_done, 0.2, 1.0), mix(0, right_pad*2, self.x, 0, 60)), friction * follow_speed);
       self.x5 = lerp(self.x5, min(
-        ((self.x4 < -width ? -width : self.x4)) * mix(self.closing ? 0.1 : 1, 1, percent_done_real, 0.2, 1.0), mix(0, right_pad*2, self.x, 0, 60)), friction * follow_speed);
+        ((self.x4 < -width ? -width : self.x4)) * mix(self.closing ? 0.1 : 1, 1, percent_done, 0.2, 1.0), mix(0, right_pad*2, self.x, 0, 60)), friction * follow_speed);
 
       if (self.start || self.x < -60) {
         if (self.x2 < self.x) { 
@@ -387,32 +405,33 @@ var makeCurtain = (function () {
       var mm = 0.06; 
 
       var middle_z4 = but_size / but_scale * but_drag * 2 +
-        mix(far * 2, far * 5, percent_done_real, 0.7, 1.0) + far_v * 3 +
-        ((self.closing ? 1: 0.25) *mix(far, far * 6, percent_done_real, 0.0, 0.3)) -
-        (self.closing ? (mix(mix(0, 130, percent_done_real, 0, mm), 0, percent_done_real, 0, 0.7)) : 0) +
-          mix(mix(0,200,percent_done_real,mm,0.5),0,percent_done_real,0.3,0.7);
+        mix(far * 1.2, far *2, percent_done, mm, 1.0) +
+        mix(far * 2, far * 5, percent_done, 0.7, 1.0) + far_v * 3 +
+        ((self.closing ? 1: 0.25) *mix(far, far * 6, percent_done, 0.0, 0.3)) -
+        (self.closing ? (mix(mix(0, 130, percent_done, 0, mm), 0, percent_done, 0, 0.7)) : 0) +
+          mix(mix(0,200,percent_done,mm,0.5),0,percent_done,0.3,0.7);
       var middle_z3 = but_size / but_scale * but_drag * 2 +
-        mix(far * 1.2, far *2, percent_done_real, mm, 1.0) +
-        mix(far * 2, far * 3, percent_done_real, 0.7, 1.0) + far_v / 3 +
-        ((self.closing ? 1: 0.25) * mix(0, far * 6, percent_done_real, 0.0, 1.0)) -
-        (self.closing ? (mix(mix(0, 30, percent_done_real, 0, mm), 0, percent_done_real, 0, 0.7)) : 0);
+        mix(far * 1.2, far *2, percent_done, mm, 1.0) +
+        mix(far * 2, far * 3, percent_done, 0.7, 1.0) + far_v / 3 +
+        ((self.closing ? 1: 0.25) * mix(0, far * 6, percent_done, 0.0, 1.0)) -
+        (self.closing ? (mix(mix(0, 30, percent_done, 0, mm), 0, percent_done, 0, 0.7)) : 0);
       var middle_z2 = but_size / but_scale * but_drag +
-        mix(far * 1.2, far *2, percent_done_real, mm, 1.0) +
-        (self.closing ? 1 : 0.3) * mix(0, far * mix(4, 5, percent_done_real, 0.25, 0.85), percent_done_real, 0.0, 1.0) +
-        (self.closing ? (mix(mix(0, 17, percent_done_real, 0, mm), 0, percent_done_real, 0, 0.5)) : 0);
-      var middle_z = but_size / but_scale / mix(2, 3, percent_done_real, 0, mm) + far ** 0.8 +
-        (self.closing ? mix(0, far / 4, percent_done_real, 0.8, 1.0) : 0) +
-        (self.closing ? 1 : 0.3) * mix(0, far*2, percent_done_real, 0.0, 1.0) +
-        (self.closing ? 1 : 0.6) * mix(mix(0, 13, percent_done_real, 0, mm), 0, percent_done_real, 0, 0.5); 
+        mix(far * 1.2, far *2, percent_done, mm, 1.0) +
+        (self.closing ? 1 : 0.3) * mix(0, far * mix(4, 5, percent_done, 0.25, 0.85), percent_done, 0.0, 1.0) +
+        (self.closing ? (mix(mix(0, 17, percent_done, 0, mm), 0, percent_done, 0, 0.5)) : 0);
+      var middle_z = but_size / but_scale / mix(2, 3, percent_done, 0, mm) + far ** 0.8 +
+        (self.closing ? mix(0, far / 4, percent_done, 0.8, 1.0) : 0) +
+        (self.closing ? 1 : 0.3) * mix(0, far*2, percent_done, 0.0, 1.0) +
+        (self.closing ? 1 : 0.6) * mix(mix(0, 13, percent_done, 0, mm), 0, percent_done, 0, 0.5); 
 
  
-      var middle_zx4 = mix(mix(0, self.closing?20:-50, percent_done_real, 0.0, 0.7), 0, percent_done_real, 0.7, 1.0);
+      var middle_zx4 = mix(mix(0, self.closing?20:-50, percent_done, 0.0, 0.7), 0, percent_done, 0.7, 1.0);
       var middle_zx3 = mix(
-        mix(0, self.closing ? 50 : -45, percent_done_real, 0, 0.7), 0, percent_done_real, 0.7, 1.0) +
-        (self.closing ? 1 : 0) * mix(mix(0, width**1.5 / 1500, percent_done_real, 0, mm), 0, percent_done_real, 0, 1); 
+        mix(0, self.closing ? 50 : -45, percent_done, 0, 0.7), 0, percent_done, 0.7, 1.0) +
+        (self.closing ? 1 : 0) * mix(mix(0, width**1.5 / 1500, percent_done, 0, mm), 0, percent_done, 0, 1); 
 
-      var middle_zx2 = but_size / 7 - mix(mix(0, self.closing?width / 7:30, percent_done_real, mm, 1.0), 0, percent_done_real, 0.7, 1.0) +
-        (self.closing ? (mix(mix(0, 9, percent_done_real, 0, mm), 0, percent_done_real, 0, 0.3)) :
+      var middle_zx2 = but_size / 7 - mix(mix(0, self.closing?width / 7:30, percent_done, mm, 1.0), 0, percent_done, 0.7, 1.0) +
+        (self.closing ? (mix(mix(0, 9, percent_done, 0, mm), 0, percent_done, 0, 0.3)) :
           0);
       var middle_zx = width - right_pad - but_offset + self.x;
 
@@ -422,7 +441,7 @@ var makeCurtain = (function () {
 
       function adjust_x(x) {
         if (!self.closing) {
-          return mix(x, x - min_x - right_pad * 2, percent_done_real, 0.3, 0.7);
+          return mix(x, x - min_x - right_pad * 2, percent_done, 0.3, 0.7);
         }
         
         var offset = 0.045;
@@ -440,9 +459,9 @@ var makeCurtain = (function () {
         [width + 200, but_y - height - 100],
         [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y - height - 100],
         [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y - height - 100],
-        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y - middle_z4 - mix(500,700,percent_done_real,0,0.6)],
-        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y - middle_z4 - mix(300,500,percent_done_real,0,0.6)],
-        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y - middle_z4 - mix(200,300,percent_done_real,0,0.6)],
+        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y - middle_z4 - mix(500,700,percent_done,0,0.6)],
+        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y - middle_z4 - mix(300,500,percent_done,0,0.6)],
+        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y - middle_z4 - mix(200,300,percent_done,0,0.6)],
         [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y - middle_z4],
         [width - right_pad + self.x4 * but_over_ratio2 - middle_zx3, but_y - middle_z3],
         [width - right_pad - middle_zx2 + self.x2, but_y - middle_z2],
@@ -451,9 +470,9 @@ var makeCurtain = (function () {
         [width - right_pad - middle_zx2 + self.x2, but_y + middle_z2],
         [width - right_pad + self.x4 * but_over_ratio2 - middle_zx3, but_y + middle_z3],
         [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y + middle_z4],
-        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y + middle_z4 + mix(100,300,percent_done_real,0,0.6)],
-        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y + middle_z4 + mix(300,500,percent_done_real,0,0.6)],
-        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y + middle_z4 + mix(500,700,percent_done_real,0,0.6)],
+        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y + middle_z4 + mix(100,300,percent_done,0,0.6)],
+        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y + middle_z4 + mix(300,500,percent_done,0,0.6)],
+        [width - right_pad + self.x5 * but_over_ratio2 - middle_zx4, but_y + middle_z4 + mix(500,700,percent_done,0,0.6)],
         [width - right_pad + self.x5 * but_over_ratio2, but_y + height + 100],
         [width - right_pad + self.x5 * but_over_ratio2, but_y + height + 100],
         [width + 200, height + 200],
@@ -461,25 +480,25 @@ var makeCurtain = (function () {
       var tt = 7,
         L = points.length; 
       var pp = 0.05;
-      var nudge = mix(-1, 0, middle_zx, min_x/2, 0) * mix(0, -20, percent_done_real, 0.60, 0.70); 
+      var nudge = mix(-1, 0, middle_zx, min_x/2, 0) * mix(0, -20, percent_done, 0.60, 0.70); 
       if (!self.closing){
         nudge = 0;
       }
       
       if (true) {
         if (points[tt][0] < points[tt + 1][0]) points[tt][0] = points[tt + 1][0];
-        points[tt][0] = mix(points[tt][0], points[tt + 1][0] - nudge, percent_done_real, pp, 1.0);
-        points[tt - 1][0] = mix(points[tt - 1][0], points[tt + 1][0] - nudge , percent_done_real, pp, 1.0);
-        points[tt - 2][0] = mix(points[tt - 2][0], points[tt + 1][0] - nudge, percent_done_real, pp, 1.0);
-        points[tt - 3][0] = mix(points[tt - 3][0], points[tt + 1][0] - nudge, percent_done_real, pp, 1.0);
-        points[tt - 4][0] = mix(points[tt - 4][0], points[tt + 1][0] - nudge, percent_done_real, pp, 1.0);
+        points[tt][0] = mix(points[tt][0], points[tt + 1][0] - nudge, percent_done, pp, 1.0);
+        points[tt - 1][0] = mix(points[tt - 1][0], points[tt + 1][0] - nudge , percent_done, pp, 1.0);
+        points[tt - 2][0] = mix(points[tt - 2][0], points[tt + 1][0] - nudge, percent_done, pp, 1.0);
+        points[tt - 3][0] = mix(points[tt - 3][0], points[tt + 1][0] - nudge, percent_done, pp, 1.0);
+        points[tt - 4][0] = mix(points[tt - 4][0], points[tt + 1][0] - nudge, percent_done, pp, 1.0);
         tt = L - tt - 1;
         if (points[tt][0] < points[tt - 1][0]) points[tt][0] = points[tt - 1][0];
-        points[tt][0] = mix(points[tt][0], points[tt - 1][0] - nudge, percent_done_real, pp, 1.0);
-        points[tt + 1][0] = mix(points[tt + 1][0], points[tt - 1][0] - nudge, percent_done_real, pp, 1.0);
-        points[tt + 2][0] = mix(points[tt + 2][0], points[tt - 1][0] - nudge , percent_done_real, pp, 1.0);
-        points[tt + 3][0] = mix(points[tt + 3][0], points[tt - 1][0] - nudge , percent_done_real, pp, 1.0); 
-        points[tt + 4][0] = mix(points[tt + 4][0], points[tt - 1][0] - nudge , percent_done_real, pp, 1.0);
+        points[tt][0] = mix(points[tt][0], points[tt - 1][0] - nudge, percent_done, pp, 1.0);
+        points[tt + 1][0] = mix(points[tt + 1][0], points[tt - 1][0] - nudge, percent_done, pp, 1.0);
+        points[tt + 2][0] = mix(points[tt + 2][0], points[tt - 1][0] - nudge , percent_done, pp, 1.0);
+        points[tt + 3][0] = mix(points[tt + 3][0], points[tt - 1][0] - nudge , percent_done, pp, 1.0); 
+        points[tt + 4][0] = mix(points[tt + 4][0], points[tt - 1][0] - nudge , percent_done, pp, 1.0);
       }
 
       tt = 8;
@@ -500,16 +519,16 @@ var makeCurtain = (function () {
       const path = svgPath(pointsPositions);
       var changed = path_dom.getAttribute('d') != path;
       
-      if (changed){
+      if (force_update || changed){
         path_dom.setAttributeNS(null,'d', path);
+
+        if (self.update){
+          self.update(percent_done, (percent_done/0.6)**3)
+        }
   
         if (true){
-          /*
-          var temp = document.createElement('div');
-          obj.appendChild(temp);
-          obj.offsetHeight; 
-          temp.remove();
-          */
+          
+
           obj.style.display = 'inline-flex';
           obj.offsetHeight; // no need to store this anywhere, the reference is enough
           obj.style.display = 'flex';
@@ -535,8 +554,9 @@ var makeCurtain = (function () {
         return;
       }
       var pos = pointerEventToXY(e);
-      self.endX = pos.x;
-      self.endY = pos.y;
+      var offset = curtain.getBoundingClientRect()
+      self.endX = pos.x - offset.x;
+      self.endY = pos.y - offset.y;
     }
     
 
@@ -569,8 +589,9 @@ var makeCurtain = (function () {
         return;
         
       var pos = pointerEventToXY(e);
-      _x = pos.x;
-      _y = pos.y;
+      var offset = curtain.getBoundingClientRect();
+      _x = pos.x - offset.x;
+      _y = pos.y - offset.y;
       var opened = self.endX <= -width / 2;
       if (!opened) {
         if (!between(_y, but_y_pos_actual - but_size, but_y_pos_actual + but_size)) {
@@ -616,8 +637,9 @@ var makeCurtain = (function () {
       
       let _x, _y;
       var pos = pointerEventToXY(e);
-      _x = pos.x;
-      _y = pos.y;
+      var offset = curtain.getBoundingClientRect();
+      _x = pos.x - offset.x;
+      _y = pos.y - offset.y;
       
       if (!self.mousedown)
         return;
@@ -632,7 +654,7 @@ var makeCurtain = (function () {
 
       if (clicked || (self.endX - self.startX < (!opened ? -width / 3 : -width * 2 / 3))) {
         self.startX = 0;
-        self.endX = -width / but_over_ratio - 3;
+        self.endX = -9999999;
         if (self.next)
           self.next(self)
 
@@ -673,8 +695,9 @@ var makeCurtain = (function () {
   return makeCurtain;
 })();
 
-function makeCurtains(wrapper) {
+function makeCurtains(wrapper, load_first) {
   var children = Array.from(wrapper.children);
+  var curtains = [];
   children.reverse();
 
   children.forEach((e, i) => {
@@ -684,7 +707,8 @@ function makeCurtains(wrapper) {
       children[i + 1].appendChild(e);
       e.classList.add('curtain-page')
       makeCurtain(e, config);
-      if (i == children.length - 2) {
+      curtains.push(e.curtain);
+      if (load_first && i == children.length - 2) {
         e.curtain.show();
       } else {
         e.curtain.hide();
@@ -692,6 +716,8 @@ function makeCurtains(wrapper) {
       }
     }
   });
+  curtains.reverse();
+  return curtains;
 
 }
 export {

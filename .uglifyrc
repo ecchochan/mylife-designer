@@ -1,0 +1,9 @@
+{
+  "output": {
+      "beautify": false
+  },
+  "mangle": true,
+  "toplevel": true,
+  "warnings": true
+
+}
