@@ -375,9 +375,14 @@
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  -webkit-tap-highlight-color: transparent;
   -ms-touch-action: manipulation;
       touch-action: manipulation;
+  /*
+  -webkit-tap-highlight-color:transparent;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  perspective: 1000;
+  */
   opacity: 1;
 }
 
@@ -660,7 +665,7 @@ block {
 }
 
 #desktop {
-  position: fixed;
+  position: absolute;
   left: 0;
   z-index: 99999;
   display: none;
@@ -799,14 +804,8 @@ block {
   display: none;
 }
 
-#stages .stages {
-  -webkit-transform: translate3d(0, 0, 0);
-     -moz-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0);
-}
-
 #loading-wrapper {
-  position: fixed;
+  position: absolute;
   background: white;
   z-index: 999;
 }
@@ -820,7 +819,7 @@ block {
 }
 
 #float-top-right {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   -webkit-transition: 0.45s cubic-bezier(0.62, 0.02, 0.34, 1) 0.3s;
@@ -886,16 +885,9 @@ cover {
           flex: 2;
 }
 
-body,
-html {
-  position: fixed;
-  -ms-touch-action: none;
-      touch-action: none;
-}
-
 #debug {
   display: block;
-  position: fixed;
+  position: absolute;
   z-index: 999999999;
   background: #5554;
 }

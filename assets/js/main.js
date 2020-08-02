@@ -1,4 +1,4 @@
-import { makeCurtains }  from './curtain.min.js';
+import { makeCurtains }  from './curtain.js';
 /*
 
   Configurations
@@ -21,7 +21,7 @@ var TRANSITION = {
 };
 
 
-const urlParams = new URLSearchParams(window.location.search);
+const urlParams = Object.fromEntries(new URLSearchParams(window.location.search));
 console.log(urlParams)
 
 /** 
@@ -53,6 +53,13 @@ const chunks = (arr, len) => {
 }
 
 var doc = document;
+
+const encode = (str)=>encodeURIComponent(btoa(unescape(encodeURIComponent(str))));
+window.encode = encode;
+const decode = (str)=>atob(str);
+window.decode = decode;
+const hash = (str)=>btoa(unescape(encodeURIComponent(str))).replace(/^=+|=+$|[\+/]/g, '').substr(0,5);
+window.hash = hash
 
 /*
 
@@ -300,6 +307,7 @@ CARDS_RAW.split('\n').filter(e=>e.trim()).forEach(e=>{
           name: {}
         }
         LANGS.forEach((e, i)=>{dat.name[e] = line[i];} );
+        dat.code = hash(dat.name[LANGS[0]]);
         _last_type = dat.id;
         CARDS_TYPES.push(dat);
     }else{
@@ -324,7 +332,7 @@ var CARDS_SHUFFLED = CARDS.slice(0);
 shuffle(CARDS_SHUFFLED);
 
 var CARDS_CHUNKS = chunks(CARDS_SHUFFLED, CARDS_PER_PAGE);
-
+console.log(CARDS_TYPES);
 
 
 
@@ -447,7 +455,7 @@ var toggleMusic = ()=>{
   }
 }
 volumeButton.onclick = toggleMusic;
-
+volumeButton.ontouchstart = toggleMusic;
 
 var listen_once = function(target, event, func){
   var triggered = false;
@@ -573,7 +581,6 @@ window.intro_next = function (self){
 }
 const intro_drags = Array.from(document.querySelectorAll('#intro [drag]')).map(e=>[e, parseInt(e.getAttribute('drag'))]);
 window.coverUpdate = (p, p2)=>{
-  return;
   intro_drags.forEach(e=>{
     var t = e[0];
     var drag = e[1];
@@ -582,30 +589,6 @@ window.coverUpdate = (p, p2)=>{
   })
 }
 
-
-
-
-/*
-    Generate Card Selection
-*/
-
-var colorPalette = 'ffac81-ff928b-fec3a6-efe9ae-cdeac0'.split('-')
-
-var colorPalette = '547A41-d6f6dd-dac4f7-f4989c-ebd2a4-acecf7'.split('-')
-var cardSelectionTemplate = doc.getElementById('selection-1');
-
-CARDS_CHUNKS.forEach((chunk, i)=>{
-  var divClone = cardSelectionTemplate.cloneNode(true);
-  divClone.style.background = '#'+colorPalette[i%colorPalette.length];
-  divClone.id = 'selection-'+(i+1);
-  divClone.querySelector('.cards').innerHTML = chunk.map(e=>
-    `<li en="${e.name.en}" zh="${e.name.zh}"></li>`).join('');
-  //console.log(chunk.map(e=>`<li en="${e.name.en}" zh="${e.name.zh}"></li>`).join(''))
-  //console.log(divClone.querySelector('.cards').innerHTML)
-  cardSelectionTemplate.parentNode.insertBefore(divClone, cardSelectionTemplate.nextSibling);
-});
-
-cardSelectionTemplate.remove();
 
 
 

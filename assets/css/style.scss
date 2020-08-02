@@ -12,8 +12,13 @@ $smooth:.62,.02,.34,1;
 * {
   box-sizing: border-box;
   user-select: none;
-  -webkit-tap-highlight-color:transparent;
   touch-action: manipulation;
+  /*
+  -webkit-tap-highlight-color:transparent;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  perspective: 1000;
+  */
   opacity: 1;
 }
 
@@ -207,7 +212,7 @@ block {
 }
 
 #desktop{
-  position: fixed;
+  position: absolute;
   left: 0;
   z-index: 99999;
   display: none;
@@ -299,14 +304,10 @@ block {
     }
   }
 
-  .stages{
-    transform: translate3d(0, 0, 0);
-  }
-
 }
 
 #loading-wrapper {
-  position:fixed;
+  position:absolute;
   background:white;
   z-index:999;
 
@@ -323,7 +324,7 @@ block {
 }
 
 #float-top-right {
-  position:fixed;
+  position:absolute;
   top: 0;
   right: 0;
   transition: .45s cubic-bezier($smooth) .3s;
@@ -376,16 +377,10 @@ cover{
     flex: 2;
   }
 }
-body,
-html {
-  position: fixed;
-  touch-action: none;
-}
-
 
 #debug{
   display:block;
-  position:fixed;
+  position:absolute;
   z-index:999999999;
   background: #5554;
   
