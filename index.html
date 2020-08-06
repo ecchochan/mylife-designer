@@ -92,24 +92,23 @@
 
         <div id="intro" class="stage wrapper">
           <background>
-            <cover></cover>
+            <bg style="display: flex; justify-content: center;">
+              <img drag="20" scale-to-fit-parent-width style="height:65%;transition:none;" src="assets/img/cover.png"/>
+            </bg>
           </background>
           <div flex-1 id="intro-text">
             <div>
               
-              
             </div>
           </div>
           <block drag="40" flex-1 style="clip-path: url(#cover-wave);-webkit-clip-path: url(#cover-wave);background-color: #FAC668;">
-            <div flex-3 >
+            <div flex-4>
             </div>
-            <div drag="40" flex-vert-center flex-5 width-100p left-align left-margin-small>
-              <p font-large en="EXPLORE
+            <div flex-column drag="40" flex-5 width-100p left-align left-margin-small>
+              <p font-large bold en="EXPLORE
 YOUR
 JOURNEY" zh="探索你的旅程"></p>
-            </div>
-            <div drag="40" flex-2 width-100p left-align left-margin-small>
-              <p en="Test your inner values" zh="透視你的內心世界"></p>
+              <p drag="-10" en="Test your inner values" zh="透視你的內心世界"></p>
             </div>
             <div flex-1>
               <span></span> 
@@ -128,17 +127,14 @@ JOURNEY" zh="探索你的旅程"></p>
         <div id="intro-tran" class="wrapper stage" curtain-config="{update:coverUpdate, reversible:false,next:intro_next}"  style="background: #547A41;">
           <div flex-1 >
           </div>
-          <div middle-align id="intro-tran-text" class="thin-body">
-            <div width-100p>
-              <p en="One day afternoon,
-you received a letter, it wrote,
-“You are invited to join a long journey, which has no limit, and you can explore yourself as you want.”
-Why not give it a try? " zh="有一天下午，
-你收到一封信，信上寫著：
-「您受邀參加一趟悠長旅程，
-這趟旅程沒有任何限制，
-你可以隨心所欲地發掘自我。」
-去嗎？"></p>
+          <div flex-4 middle-align id="intro-tran-text" class="thin-body">
+            <div width-100p flex-column>
+              <p en="One day afternoon" zh="有一天下午，"></p>
+              <p en="you received a letter, it wrote," zh="你收到一封信，信上寫著："></p>
+              <p en="“You are invited to join a long journey, " zh="「您受邀參加一趟悠長旅程，"></p>
+              <p en="which has no limit, and you can explore yourself as you want.”" zh="這趟旅程沒有任何限制，"></p>
+              <p en="and you can explore yourself as you want.”" zh="你可以隨心所欲地發掘自我。」"></p>
+              <p en="Why not give it a try? " zh="去嗎？"></p>
             </div>
           </div>
           <div flex-1>
@@ -152,15 +148,53 @@ Why not give it a try? " zh="有一天下午，
         -->
 
         
-        <div id="selection-1" class="wrapper stage" curtain-config="{reversible:false,next:stage_next}">
+        <div id="selection-1" class="wrapper stage selection" curtain-config="{reversible:false,next:stage_next}">
+          <background>
+            <cards>
+              <card>
+                <card-text>
+                  <p>Mentally<br/>Satisfied</p>
+                </card-text>
+              </card>
+              <card>
+                <card-text>
+                  <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                </card-text>
+              </card>
+              <card>
+                <card-text>
+                  <p>Closely<br/>connected<br/>with God</p>
+                </card-text>
+              </card>
+              <card>
+                <card-text>
+                  <p>Catch up on<br/>technology</p>
+                </card-text>
+              </card>
+              <card>
+                <card-text>
+                  <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                </card-text>
+              </card>
+              <card>
+                <card-text>
+                  <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                </card-text>
+              </card>
+            </cards>
+            <bg style="display: flex;">
+              <img style="height:100%;" src="assets/img/bg01.png"/>
+            </bg>
+          </background>
           <div class="thin-body">
-            <div flex-1>
-              <p></p>
-              <p class="cards"></p>
-              <p></p>
+            <div flex-1 flex-column>
+              <p en="Choose what you want," zh="按照你真實的想法，"></p>
+              <p en="according to your true thought …" zh="選出你想要的 …"></p>
             </div>
           </div>
+          <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
         </div>
+        
 
 
         <!--
@@ -182,15 +216,12 @@ Why not give it a try? " zh="有一天下午，
 
     </div>
 
+    <svg class="clippath" full-width-abs full-height-abs viewbox="0 0 100 100">
+      <clipPath id="cover-wave" clipPathUnits="objectBoundingBox">
+        <path fill="#000" viewbox="0 0 100 100" width='100%' height='100%'  d="M 0 0.175 C 0.150 0.250 0.300 0.250 0.300 0.250 C 0.550 0.250 0.630 0.01 1 0 L 1 1 L 0 1 z "></path>
+      </clipPath>
+    </svg>
 
   </div>  
   <script type="module" src="assets/js/main.min.js?v=1"></script>
-  <!--
-  <script src="http://192.168.128.95:8080/target/target-script-min.js#anonymous"></script>
-  -->
-  <svg class="clippath" full-width-abs full-height-abs viewbox="0 0 100 100">
-    <clipPath id="cover-wave" clipPathUnits="objectBoundingBox">
-      <path fill="#000" viewbox="0 0 100 100" width='100%' height='100%'  d="M 0 0.175 C 0.150 0.250 0.300 0.250 0.300 0.250 C 0.550 0.250 0.630 0.01 1 0 L 1 1 L 0 1 z "></path>
-    </clipPath>
-  </svg>
 </body>

@@ -2,7 +2,7 @@ import {
   styler
 } from "./styler.min.js"
 
-var css = `.curtain {pointer-events: none;position: absolute;z-index: 999;left: 0;top: 0;-webkit-transform-origin: top left;transform-origin: top left;}.arrow{position: absolute;pointer-events: none;width: 25px;z-index:999;opacity: 0;transform: translate(-50%,-50%) rotateZ(180deg);}`
+var css = `.curtain {pointer-events: none;position: absolute;z-index: 999;left: 0;top: 0;-webkit-transform-origin: top left;transform-origin: top left;}.arrow{color:white;position: absolute;pointer-events: none;width: 25px;z-index:999;opacity: 0;transform: translate(-50%,-50%) rotateZ(180deg);}`
 
 styler('curtain-css', css);
 
@@ -159,16 +159,18 @@ var makeCurtain = (function () {
     return (max - min) * fraction + min;
   }
 
-  var vh;
-  var vw;
+  var actual_height = window.innerHeight;
+  var actual_width = window.innerWidth;
   var height;
   var width;
+  var scale;
 
   function update_vh() {
     height = parseInt(document.documentElement.style.getPropertyValue('--window-height') || window.innerHeight);
     width = parseInt(document.documentElement.style.getPropertyValue('--window-width') || window.innerWidth);
-    vh = height * 0.01;
-    vw = width * 0.01;
+    actual_height = window.innerHeight;
+    actual_width = window.innerWidth;
+    scale = parseFloat(document.documentElement.style.getPropertyValue('--scale') || 1);
   }
   window.addEventListener('curtain-resize', update_vh, false);
   var onresize = function (event) {
@@ -184,7 +186,7 @@ var makeCurtain = (function () {
   var index = 0;
   var debug = false; 
   let but_drag = 1.2;
-  let but_size = 50;
+  let but_size = 40;
   let right_pad = 18;
   let smoothing = 0.15;
   let but_horiz_offset = 0.9;
@@ -252,7 +254,7 @@ var makeCurtain = (function () {
     document.body.appendChild(curtain);
 
     // TODO: update when curtain moves;
-    var offset = curtain.getBoundingClientRect();
+    var offset = obj.getBoundingClientRect();
 
     obj.insertBefore(arrow, obj.firstChild);
     var self = Object.assign({}, defaults, config);
@@ -327,6 +329,8 @@ var makeCurtain = (function () {
       }
       return x
     }
+
+    var arrow_opacity = 0;
     function _update() {
       try{
       var endX = self.endX;
@@ -382,8 +386,6 @@ var makeCurtain = (function () {
       }else{
         last_width = width;
         force_update = true;
-        if (current_index == 1)
-          console.log(1)
       }
 
       self.active = true;
@@ -403,10 +405,11 @@ var makeCurtain = (function () {
 
       var x = self.x;
       var but_y = but_y_pos_actual + self.y;
-      var arrow_x = (1-min(1,max(0,x) / (right_pad+but_size/2))) *  (right_pad/2+50) -50;
-      arrow.style.top = but_y_pos_actual + 'px';
+      var arrow_x = (1-min(1,max(0,x) / (right_pad+but_size/2))) *  (right_pad/4+50) -50;
+      arrow.style.top = but_y + 'px';
       arrow.style.right = arrow_x + 'px';
-      arrow.style.opacity = 1 - Math.abs(self.x) / (right_pad+but_size/2);
+      arrow_opacity = lerp(arrow_opacity, max(0,1 - Math.abs(self.x) / (right_pad+but_size/2)), 0.15);
+      arrow.style.opacity = arrow_opacity;
 
       var follow_speed = 6;
 
@@ -504,8 +507,8 @@ var makeCurtain = (function () {
       hh = width - right_pad + x5 - middle_zx4;
       let points = [
         [width + 200, but_y - height - 100],
-        [hh, but_y - height - 100],
-        [hh, but_y - height - 100],
+        [width - right_pad + x5, but_y - height - 100],
+        [width - right_pad + x5, but_y - height - 100],
         [hh, but_y - middle_z4 - mix(500,700,percent_done,0,0.6)],
         [hh, but_y - middle_z4 - mix(300,500,percent_done,0,0.6)],
         [hh, but_y - middle_z4 - mix(200,300,percent_done,0,0.6)],
@@ -517,7 +520,7 @@ var makeCurtain = (function () {
         [width - right_pad - middle_zx2 + x2, but_y + middle_z2],
         [width - right_pad + x4 - middle_zx3, but_y + middle_z3],
         [hh, but_y + middle_z4],
-        [hh, but_y + middle_z4 + mix(100,300,percent_done,0,0.6)],
+        [hh, but_y + middle_z4 + mix(200,300,percent_done,0,0.6)],
         [hh, but_y + middle_z4 + mix(300,500,percent_done,0,0.6)],
         [hh, but_y + middle_z4 + mix(500,700,percent_done,0,0.6)],
         [width - right_pad + x5, but_y + height + 100],
@@ -533,33 +536,35 @@ var makeCurtain = (function () {
       }
       
       if (true) {
-        var w = points[tt + 1][0];
-        if (points[tt][0] < w) points[tt][0] = w;
-        points[tt][0] = mix(points[tt][0], w - nudge, percent_done, pp, 1.0);
-        points[tt - 1][0] = mix(points[tt - 1][0], w - nudge , percent_done, pp, 1.0);
-        points[tt - 2][0] = mix(points[tt - 2][0], w - nudge, percent_done, pp, 1.0);
-        points[tt - 3][0] = mix(points[tt - 3][0], w - nudge, percent_done, pp, 1.0);
-        points[tt - 4][0] = mix(points[tt - 4][0], w - nudge, percent_done, pp, 1.0);
-        w = points[tt - 1][0]
+        if (points[tt][0] < points[tt + 1][0]) points[tt][0] = points[tt + 1][0];
+        points[tt][0] = mix(points[tt][0], points[tt + 1][0] - nudge, percent_done, pp, 1.0);
+        points[tt - 1][0] = mix(points[tt - 1][0], points[tt + 1][0] - nudge , percent_done, pp, 1.0);
+        points[tt - 2][0] = mix(points[tt - 2][0], points[tt + 1][0] - nudge, percent_done, pp, 1.0);
+        points[tt - 3][0] = mix(points[tt - 3][0], points[tt + 1][0] - nudge, percent_done, pp, 1.0);
+        points[tt - 4][0] = mix(points[tt - 4][0], points[tt + 1][0] - nudge, percent_done, pp, 1.0);
         tt = L - tt - 1;
-        if (points[tt][0] < w) points[tt][0] = w;
-        points[tt][0] = mix(points[tt][0], w - nudge, percent_done, pp, 1.0);
-        points[tt + 1][0] = mix(points[tt + 1][0], w - nudge, percent_done, pp, 1.0);
-        points[tt + 2][0] = mix(points[tt + 2][0], w - nudge , percent_done, pp, 1.0);
-        points[tt + 3][0] = mix(points[tt + 3][0], w - nudge , percent_done, pp, 1.0); 
-        points[tt + 4][0] = mix(points[tt + 4][0], w - nudge , percent_done, pp, 1.0);
+        if (points[tt][0] < points[tt - 1][0]) points[tt][0] = points[tt - 1][0];
+        points[tt][0] = mix(points[tt][0], points[tt - 1][0] - nudge, percent_done, pp, 1.0);
+        points[tt + 1][0] = mix(points[tt + 1][0], points[tt - 1][0] - nudge, percent_done, pp, 1.0);
+        points[tt + 2][0] = mix(points[tt + 2][0], points[tt - 1][0] - nudge , percent_done, pp, 1.0);
+        points[tt + 3][0] = mix(points[tt + 3][0], points[tt - 1][0] - nudge , percent_done, pp, 1.0); 
+        points[tt + 4][0] = mix(points[tt + 4][0], points[tt - 1][0] - nudge , percent_done, pp, 1.0);
       }
 
       tt = 8;
-      points[tt][0] = points[tt][0] + (closing ? 0 : mix(0, mix(4, 0, percent_done, 0, 1), percent_done, 0, 0.3));
+      points[tt][0] = points[tt][0] + (self.closing ? 0 : mix(0, mix(4, 0, percent_done, 0, 1), percent_done, 0, 0.3));
       tt = L-tt-1;
-      points[tt][0] = points[tt][0] + (closing ? 0 : mix(0, mix(4, 0, percent_done, 0, 1), percent_done, 0, 0.3));
+      points[tt][0] = points[tt][0] + (self.closing ? 0 : mix(0, mix(4, 0, percent_done, 0, 1), percent_done, 0, 0.3));
 
-      
       // points = points.map((e, i)=>[(i>0&&i<points.length-1&&e[0]>width)?width:e[0],height-e[1]])
+      /*
       points = points.map((e, i) => [
         max(-100,min(width+100,e[0])),
         max(-100,min(height+100,height - e[1]))
+      ])*/
+      points = points.map((e, i) => [
+        e[0],
+        height - e[1]
       ])
 
       const pointsPositions = pointsPositionsCalc(points, width, height, {
@@ -605,8 +610,9 @@ var makeCurtain = (function () {
         return;
       }
       var pos = pointerEventToXY(e);
-      self.endX = pos.x - offset.x;
-      self.endY = pos.y - offset.y;
+      self.endX = (pos.x - offset.x)/scale;
+      self.endY = (pos.y - offset.y)/scale;
+      
     }
     
 
@@ -615,8 +621,9 @@ var makeCurtain = (function () {
     }
 
     function closeNextCurtain(){
-      var nextCurtain = obj.querySelectorAll('.curtain-page');
-      nextCurtain.forEach(nextCurtain=>nextCurtain.curtain.hide());
+      var nextCurtain = obj.querySelector('.curtain-page');
+      if (nextCurtain)
+      nextCurtain.querySelectorAll('.curtain-page').forEach(e=>e.curtain.hide());
 
     }
 
@@ -637,10 +644,10 @@ var makeCurtain = (function () {
       
       if (self.closed || !self.start || (!self.obj.contains(path[0]) || (next_curtain && next_curtain.contains(path[0]))))
         return;
-        
+      offset = obj.getBoundingClientRect()
       var pos = pointerEventToXY(e);
-      _x = pos.x - offset.x;
-      _y = pos.y - offset.y;
+      _x = (pos.x - offset.x)/scale;
+      _y = (pos.y - offset.y)/scale;
       var opened = self.endX <= -width / 2;
       if (!opened) {
         if (!between(_y, but_y_pos_actual - but_size*2, but_y_pos_actual + but_size*2)) {
@@ -681,14 +688,26 @@ var makeCurtain = (function () {
     }
 
     function endCurtain(e) {
+      if (e === true){
+        self.startX = 0;
+        self.endX = -9999999;
+        if (self.next)
+          self.next(self)
+
+        if (!self.reversible)
+          self.closed = true;
+        return;
+      }
+
+
       e.preventDefault();
       e.stopPropagation();
       
       let _x, _y;
       var pos = pointerEventToXY(e);
       
-      _x = pos.x - offset.x;
-      _y = pos.y - offset.y;
+      _x = (pos.x - offset.x)/scale;
+      _y = (pos.y - offset.y)/scale;
       
       if (!self.mousedown)
         return;

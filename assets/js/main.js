@@ -5,9 +5,10 @@ import { makeCurtains }  from './curtain.js';
 
 */
 
-var DEBUG = false;
+var DEBUG = true;
 
 var CARDS_PER_PAGE = 6;
+var NUM_SCENES = 4;
 
 var MAX_AUDIO_VOL = 0.5;
 
@@ -24,12 +25,30 @@ var TRANSITION = {
 const urlParams = Object.fromEntries(new URLSearchParams(window.location.search));
 console.log(urlParams)
 
+
 /** 
 
   Utils
 
 **/
 
+function min(a, b) {
+  return a > b ? b : a;
+}
+
+function max(a, b) {
+  return a > b ? a : b;
+} 
+const mix = function(a, b, p, h, k) {
+  var d = k - h;
+  if (p - h > 0) {
+    p = (p - h) / d;
+    if (p > 1) p = 1;
+    if (p < 0) p = 0;
+    return a * (1 - p) + b * p
+  }
+  return a
+}
 /**
  * Shuffles array in place.
  * @param {Array} a items An array containing the items.
@@ -61,6 +80,17 @@ window.decode = decode;
 const hash = (str)=>btoa(unescape(encodeURIComponent(str))).replace(/^=+|=+$|[\+/]/g, '').substr(0,5);
 window.hash = hash
 
+
+const getBgImageDim = (elem) => {
+  var imageSrc = elem.style.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
+  var image = new Image();
+  image.src = imageSrc;
+  var width = image.width,
+      height = image.height;
+  return {width:width, height:height}
+}
+window.getBgImageDim = getBgImageDim;
+
 /*
 
   Debug
@@ -83,20 +113,69 @@ if (!DEBUG){
 }
 
 
+
+
+
+
+
+
+
+
+/*
+
+  Skip
+
+*/
+
+
+
+const skip = parseInt(urlParams.skip);
+if (skip){
+  LOGT('Skipping '+skip+' stages')
+  var stages_divs = Array.from(document.getElementById('stages').children);
+  stages_divs.splice(1,skip).forEach(e=>{LOG(e);e.remove()});
+  
+}
+
+
+
+
 /*
 
   Actual vh for css
 
 */
+
+const BODY_MIN_WIDTH = 480;
 const BODY_MAX_WIDTH = 480;
+const BODY_MAX_HEIGHT = 640;
+const scale_to_fit_parent = ()=>{
+  doc.querySelectorAll('[scale-to-fit-parent-width]').forEach(e=>{
+    var ratio = e.parentElement.clientWidth / e.clientWidth;
+    if (ratio <= 1)
+      ratio = 1
+    e.scale = ratio;
+    e.style.transform = "translateX("+(e.translateX || "0px")+")" + ' scale('+(e.scale || 1)+')';
+  })
+  doc.querySelectorAll('[scale-to-fit-parent-height]').forEach(e=>{
+    var ratio = e.parentElement.clientHeight / e.clientHeight;
+    if (ratio <= 1)
+      ratio = 1
+      e.scale = ratio;
+      e.style.transform = "translateX("+(e.translateX || "0px")+")" + ' scale('+(e.scale || 1)+')';
+  })
+}
 
 function update_vh() {
-  let height = window.innerHeight;
-  let width = window.innerWidth;
-  let vh = height * 0.01;
-  let vw = width * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-  document.documentElement.style.setProperty('--vw', `${vw}px`);
+  scale_to_fit_parent();
+
+  let _height = window.innerHeight;
+  let _width = window.innerWidth;
+  let height = _height;
+  let width = _width;
+
+
+  let scale = 1;
   if (width > BODY_MAX_WIDTH){
     document.body.style.width = BODY_MAX_WIDTH+"px"
     document.body.style.marginLeft = parseInt((width - BODY_MAX_WIDTH) /  2) + 'px';
@@ -106,9 +185,38 @@ function update_vh() {
     document.body.style.width = ""
     document.body.style.marginLeft =  '';
   }
+
+  if (height > BODY_MAX_HEIGHT){
+    document.body.style.height = BODY_MAX_HEIGHT+"px"
+    document.body.style.marginTop = parseInt((height - BODY_MAX_HEIGHT) /  2) + 'px';
+    scale = height/BODY_MAX_HEIGHT
+    height = BODY_MAX_HEIGHT;
+
+  }else{
+    document.body.style.height = ""
+    document.body.style.marginTop =  '';
+    document.body.style.transform = '';
+    scale = 1
+  }
+
+  let ideal_aspect_ratio = 480 / 640;
+  let aspect_ratio = _width / _height;
+  if (aspect_ratio < ideal_aspect_ratio){
+    console.log()
+    width = _width / scale;
+    document.body.style.width = width+"px"
+    document.body.style.marginLeft = parseInt((_width - width) /  2) + 'px';
+  }
+
+  document.body.style.transform = scale==1?"":'scale('+scale+')';
+  let vh = height * 0.01;
+  let vw = width * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+  document.documentElement.style.setProperty('--vw', `${vw}px`);
+  document.documentElement.style.setProperty('--scale', `${scale}`);
   
-  document.documentElement.style.setProperty('--window-height', `${height}`);
-  document.documentElement.style.setProperty('--window-width', `${width}`);
+  document.documentElement.style.setProperty('--window-height', `${height}px`);
+  document.documentElement.style.setProperty('--window-width', `${width}px`);
   document.querySelectorAll('[full-width-abs]').forEach(e=>{
     if (e.tagName == "svg")
       e.setAttribute("width", width);
@@ -144,10 +252,11 @@ if (window.attachEvent) {
 
 var userLang = navigator.language || navigator.userLanguage; 
 var isChinese = userLang.indexOf('zh') > -1;
-var lang = isChinese?'zh':'en';
+var current_lang = isChinese?'zh':'en';
 doc.getElementById('app').classList.remove('hidden');
 FastClick.attach(doc.body);
 var setLang = function(L){
+  doc.body.setAttribute('lang',L);
   document.querySelectorAll('[en],[zh]').forEach(e=>{
     var EN = e.attributes['en'];
     var ZH = e.attributes['zh'];
@@ -162,23 +271,26 @@ var setLang = function(L){
 }
 
 doc.addEventListener("DOMContentLoaded", function(){
-  setLang(lang);
+  setLang(current_lang);
   update_vh();
 });
 
 if (DEBUG){
   document.querySelectorAll('#lang-switcher > span').forEach(e=>{
     e.classList.remove('display-none');
-    e.addEventListener('click',function(e){
+    let g = function(e){
       document.querySelectorAll('#lang-switcher > span').forEach(e=>e.classList.remove('display-none'));
       this.classList.add('display-none');
       setLang(this.textContent);
+      current_lang = this.textContent;
   
-    })
+    }
+    e.addEventListener('click',g)
+    e.addEventListener('touchstart',g);
   });
   document.querySelector('#lang-switcher > span').classList.add('display-none');
   
-  if (lang == 'zh'){
+  if (current_lang == 'zh'){
     document.querySelector('#lang-switcher > span:not([class])').click();
   }
 }
@@ -207,32 +319,32 @@ window.mobilecheck = function () {
 */
 
 var CARDS_RAW = `!內在滿足;;Intrinsic satisfaction
-精神層面上的滿足;;Mentally Satisfied
+精神層面上的\u200b滿足;;Mentally Satisfied
 與神有親密連繫;;Closely connected with God
-持續的認識自我;;Continuous self-exploration
-擁有自我內心的空間;;Have an inner space 
+持續的認識自我;;Continuous \u200bself-exploration
+擁有自我內心的\u200b空間;;Have an inner space 
 安全感;;Sense of secure
 內心的平靜;;Have an inner peace 
 新鮮感;;Sense of freshness
 感到自在;;Feel comfortable 
 
 !人際關係;;Inter-personal relationship
-擁有自在舒適的人際關係;;Got a comfortable inter-personal relationship
+擁有自在舒適的\u200b人際關係;;Got a comfortable \u200binter-personal \u200brelationship
 美滿婚姻;;Happy marriage
 有交心知己;;Have Best Friend Forever
 有親近的好朋友;;Have good friends
 親密的家庭;;A close family 
 孝順父母;;Filial Piety
 和一群人一起打拼;;Work hard with others
-讚賞及鼓勵別人;;Appreciate and encourage others
-有意義的愛情;;A meaningful love-relationship  
+讚賞及鼓勵別人;;Appreciate and \u200bencourage others
+有意義的愛情;;A meaningful \u200blove-relationship  
 幫助別人;;Help others
 
 !物質享受;;Materialistic
 有車 / 有樓;;Own a Car/House
 賺大錢;;Be wealthy
 時尚的打扮;;Fashionable dress up
-錢夠用 (沒有經濟上的擔憂);;Sufficient amount of money (without financial burden)
+錢夠用 \u200b(沒有經濟上的\u200b擔憂);;Sufficient amount of money \u200b(without financial burden)
 追上科技潮流;;Catch up on technology   
 建立社會地位;;Have social status
 環遊世界;;Travel around the world
@@ -240,11 +352,11 @@ var CARDS_RAW = `!內在滿足;;Intrinsic satisfaction
 
 !生活模式;;Life style
 簡簡單單的生活;;Simple life
-參加藝文青活動;;Participate art and cultural activities 
+參加藝文青活動;;Participate art and \u200bcultural activities 
 親親大自然;;Enjoy nature
 人生充滿樂趣;;Interesting life
 多姿多彩的生活;;Fruitful life
-參與宗教、政治、社團活動;;Participate in religions, politics and/or different societies
+參與宗教、政治、\u200b社團活動;;Participate in religions, \u200bpolitics and/or \u200bdifferent societies
 什麼事都不做;;Do nothing
 規律的生活;;Regular daily life
 安穩的工作;;Stable job
@@ -268,12 +380,12 @@ var CARDS_RAW = `!內在滿足;;Intrinsic satisfaction
 誠實正直;;Integrity
 心地善良;;Kind-hearted 
 公平、公正;;Be fair and impartial 
-擁有純潔及真摯的心;;Be pure and true
+擁有純潔及\u200b真摯的心;;Be pure and true
 勇於改變;;Dare to Change 
 有自信;;Confident
 有正義感;;Have a sense of justice
 義氣仔女;;Be loyal to friends 
-腳踏實地;;Be practical and down-to-earth
+腳踏實地;;Be practical and \u200bdown-to-earth
 勇於接受挑戰;;Dare to accept challenge
 努力向上;;Hard-working
 用心/盡力做事;;Do your best on everything
@@ -358,7 +470,10 @@ window.CARDS_CHUNKS = CARDS_CHUNKS;
 
 
 var MUSIC_URL = 'https://www.bensound.com/bensound-music/bensound-beyondtheline.mp3';
-var files = [];
+var files = [
+  'assets/img/bg01.png',
+  'assets/img/cover.png',
+];
 
 var files_loaded = 0;
 var files_total = files.length;
@@ -371,6 +486,7 @@ var increment_files_loaded = function () {
     LOGT('All assets loaded.');
 
     start();
+    update_vh();
   }
 };
 files.forEach(fn => loadjs(fn, increment_files_loaded));
@@ -473,36 +589,22 @@ var listen_once = function(target, event, func){
 };
 
 
-var stage_divs = Array.from(document.getElementsByClassName('stage'));
-
-var _stages = stage_divs.map(e=>e.id);
-
-LOGT('_stages');
-LOG(_stages)
-
-var stages = {};
-
-for (var i=0;i<_stages.length;i++){
-  stages[_stages[i].replace(/\-/g,'_')] = document.getElementById(_stages[i]);
-}
-
-var setActive = function(a, b){
-  document.querySelectorAll('.active').forEach(e=>e.classList.remove('active'));
-  if (a) a.classList.add('active');
-  if (b) b.classList.add('active');
-}
 
 /*
     Start
 */
 
 var start = function () {
-  stages.intro.style.opacity = 1;
-  setActive(stages.intro);  
   goNextFade(0, load_wrapper, e => {
     LOGT('Load wrapper removed.');
-    curtains[0].show();
+    if (!skip)
+      curtains[0].show();
   });
+  if (skip){
+    curtains[0].show();
+    curtains[0].endCurtain(true);
+
+  }
 }
 
 
@@ -512,6 +614,8 @@ var start = function () {
     Stage Defaults
 */
 
+const FADE_DURATION = 500;
+
 const defaultNextCutain = (self) => {
   return [function () {
     var nextCurtain = self.obj.querySelector('.curtain-page');
@@ -519,6 +623,20 @@ const defaultNextCutain = (self) => {
   }, self.opened ? 0 : 500];
 }
 
+const sleep = (t)=> {
+  return new Promise(function(resolve, reject) {
+    setTimeout(resolve, t);
+  })
+  
+}
+
+
+
+/*
+
+  Auto-spawn Selection Stages
+
+*/
 
 
 /*
@@ -561,21 +679,35 @@ const timeline = function(frames){
   handler();
 }
 
-
+const fadeIn = (selector)=>{
+  LOG('fade',selector)
+  var animation = anime.timeline({
+    targets: selector,
+    delay: anime.stagger(FADE_DURATION),
+    easing: 'linear'
+  }).add({
+    opacity: 1,
+  });
+  return animation.finished;
+}
 
 window.intro_next = function (self){
   var obj = self.obj;
   timeline([
     [
-      function(){}, 1000
-    ],
-    defaultNextCutain(self),
-    [
       function(){
         document.getElementById('float-top-right').classList.remove('hidden');
+      }, 500
+    ],
+    [
+      function(){
         playMusic();
       }, 500
-    ]
+    ],
+    ()=> sleep(1000),
+    ()=> fadeIn('#intro-tran-text p'),
+
+    defaultNextCutain(self)
 
   ])
 }
@@ -584,12 +716,10 @@ window.coverUpdate = (p, p2)=>{
   intro_drags.forEach(e=>{
     var t = e[0];
     var drag = e[1];
-    t.style.transform = "translateX("+-drag*p2+"px)";
-
+    t.translateX = -drag*p2+"px";
+    t.style.transform = "translateX("+t.translateX+")" + ' scale('+(t.scale || 1)+')';
   })
 }
-
-
 
 
 
@@ -597,26 +727,190 @@ window.coverUpdate = (p, p2)=>{
     Stage Trigger
 */
 
+var current_cards_i = 0;
+
+doc.getElementById('app').addEventListener('click',function(e){
+  var u = e.target;
+  while (u && u.tagName != 'CARD')
+    u = u.parentElement;
+    
+  if (u){
+    u.classList.toggle('active');
+
+    console.log(u);
+
+  }
+
+});
+const stage_get_arrows = (obj)=>{
+  return Array.from(obj.children).filter(e=>e.tagName == 'ARROWS')[0]
+}
+const move_bg = (obj, level, total)=>{
+  return new Promise(function(resolve, reject) {
+    var img = Array.from(obj.children).filter(e=>e.tagName == 'BACKGROUND')[0].querySelector('bg img');
+    img.style.transform = "translateX(calc((-100% + var(--window-width, 100vw)) / "+total+" * "+level+"))";
+    resolve();
+  })
+}
+
+const arrange_cards = (card_divs)=>{
+  var alt = Math.random() > 0.5;
+  var card_count = 6;
+  var start = (alt?0:0.025) + Math.random()*0.025;
+  var end = (alt?0.85:0.8)+Math.random()*0.05;
+  var h = end-start;
+  var d = 0.06;
+  var seg = h / card_count - d * 2;
+
+  var last_left = 0;
+  var actual_width = parseInt(document.documentElement.style.getPropertyValue('--window-width'));
+  var horizon = mix(0.075, 0.1, actual_width, 340, 480);
+  var padding_right = mix(0.01, 0.15, actual_width, 340, 480);
+  var padding_left = mix(0.01, 0.15, actual_width, 340, 480);
+
+  var left = (e)=>{
+    var p=Math.random()*horizon; 
+    last_left = p;
+    p=p*(1-padding_left)+padding_left;
+    e.style.left=(p*100)+'%';
+    e.style.right="unset";
+    return p;
+  }
+  var right = (e)=>{
+    var max_right = min(horizon, (1-last_left-horizon));
+    var p=Math.random()*max_right; 
+    p=p*(1-padding_right)+padding_right;
+    
+    e.style.right=(p*100)+'%';
+    e.style.left="unset";
+  }
+
+  card_divs.forEach((e, i)=>{
+      var t = Math.random()*seg + d + i*(seg+2*d);
+      e.style.top=(t*100)+'%';
+      
+      (i%2 == (alt?1:0)?left:right)(e)
+      e.style.pointerEvents = "all";
+  });
+}
+
+const hide = (things) => {
+  var h = e=>{
+    e.style.opacity = "0";
+    e.style.pointerEvents = "none";
+  };
+  things.forEach?things.forEach(h):h(things);
+}
+
+const show = (things) => {
+  var h = e=>{
+    e.style.opacity = "1";
+    e.style.pointerEvents = "all";
+  };
+  things.forEach?things.forEach(h):h(things);
+}
+
+const set_card_divs = (card_divs, i) => {
+  var chunks = CARDS_CHUNKS[i];
+  for (var j = 0; j < card_divs.length; j ++){
+    var card = card_divs[[j]]
+    if (j >= chunks.length){
+      card.classList.remove('active');
+    }else{
+      var details = chunks[j];
+      card.classList.add('active');
+      card.setAttribute('id', details.id);
+      var p = card.querySelector('p');
+      Object.keys(details.name).forEach(
+        lang=> p.setAttribute(lang, details.name[lang].replace(/ *\u200b/g, '\n'))
+      )
+      setLang(current_lang);
+
+    }
+
+  }
+
+}
+
+const wait_for_arrows = (obj) =>{
+  var arrows = stage_get_arrows(obj);
+  arrows.style.opacity = 1;
+  arrows.style.transform = "translateX(0)";
+  
+  return new Promise(function(resolve, reject) {
+    var click = (e)=>{
+      arrows.removeEventListener('click', click);
+      arrows.removeEventListener('touchend', click);
+      arrows.style.opacity = 0;
+      resolve();
+    };
+
+    arrows.addEventListener('click', click);
+    arrows.addEventListener('touchend', click);
+  })
+}
 
 const stage_next = function(self){
   var obj = self.obj;
+  var card_divs = Array.from(obj.children).filter(e=>e.tagName == 'BACKGROUND')[0].querySelectorAll('card');
+  var intro_text_container = Array.from(obj.children).filter(e=>e.classList.contains('thin-body'))[0];
+  var intro_texts = intro_text_container.querySelectorAll('p');
   timeline([
-    ()=>{
-      return new Promise(function(resolve, reject) {
-        setTimeout(() => {
-          console.log('promise done');
-          resolve("done");
-        }, 1000);
-      })
-    },
-    (ret)=>{
-      return new Promise(function(resolve, reject) {
-        setTimeout(() => {
-          console.log(ret+' good');
-          resolve(ret+' good');
-        }, 1000);
-      })
-    },
+
+    // Intro text
+    ()=> sleep(1500),
+    ()=> fadeIn(intro_texts),
+    ()=> sleep(500),
+    ()=> wait_for_arrows(obj),
+
+    // 1st selection
+    ()=> hide(intro_text_container),
+    ()=> sleep(500),
+    ()=> move_bg(obj, 1, 4),
+    ()=> sleep(2000),
+    ()=> arrange_cards(card_divs),
+    ()=> set_card_divs(card_divs, current_cards_i++),
+    ()=> fadeIn(card_divs),
+    ()=> sleep(1500),
+    ()=> wait_for_arrows(obj),
+
+    // 2nd selection
+    ()=> hide(card_divs),
+    ()=> sleep(500),
+    ()=> move_bg(obj, 2, 4),
+    ()=> sleep(2000),
+    ()=> arrange_cards(card_divs),
+    ()=> set_card_divs(card_divs, current_cards_i++),
+    ()=> fadeIn(card_divs),
+    ()=> sleep(1500),
+    ()=> wait_for_arrows(obj),
+
+    // 3rd selection
+    ()=> hide(card_divs),
+    ()=> sleep(500),
+    ()=> move_bg(obj, 3, 4),
+    ()=> sleep(2000),
+    ()=> arrange_cards(card_divs),
+    ()=> set_card_divs(card_divs, current_cards_i++),
+    ()=> fadeIn(card_divs),
+    ()=> sleep(1500),
+    ()=> wait_for_arrows(obj),
+
+    // 4th selection
+    ()=> hide(card_divs),
+    ()=> sleep(500),
+    ()=> move_bg(obj, 4, 4),
+    ()=> sleep(2000),
+    ()=> arrange_cards(card_divs),
+    ()=> set_card_divs(card_divs, current_cards_i++),
+    ()=> fadeIn(card_divs),
+    ()=> sleep(1500),
+    ()=> wait_for_arrows(obj),
+
+
+
+
+
     defaultNextCutain(self),
 
   ])
