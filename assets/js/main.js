@@ -31,14 +31,53 @@ console.log(urlParams)
   Utils
 
 **/
+function requestFullScreen() {
+  if ((document.fullScreenElement && document.fullScreenElement !== null) ||    
+   (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+    if (document.documentElement.requestFullScreen) {  
+      document.documentElement.requestFullScreen();  
+    } else if (document.documentElement.mozRequestFullScreen) {  
+      document.documentElement.mozRequestFullScreen();  
+    } else if (document.documentElement.webkitRequestFullScreen) {  
+      document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
+    }  
+  } else {  
+    if (document.cancelFullScreen) {  
+      document.cancelFullScreen();  
+    } else if (document.mozCancelFullScreen) {  
+      document.mozCancelFullScreen();  
+    } else if (document.webkitCancelFullScreen) {  
+      document.webkitCancelFullScreen();  
+    }  
+  }  
+}
+
+document.querySelectorAll('.fullscreen').forEach(e=>{
+  e.addEventListener('click',requestFullScreen);
+  e.addEventListener('touchstart',requestFullScreen);
+})
 
 function min(a, b) {
+  if (b === undefined)
+    return 
   return a > b ? b : a;
 }
 
 function max(a, b) {
   return a > b ? a : b;
 } 
+Array.prototype.max = function() {
+  return Math.max.apply(null, this);
+};
+
+Array.prototype.min = function() {
+  return Math.min.apply(null, this);
+};
+Array.prototype.sum = function() {
+  return this.reduce((a, b)=>(a+b), 0);
+};
+
+
 const mix = function(a, b, p, h, k) {
   var d = k - h;
   if (p - h > 0) {
@@ -152,15 +191,17 @@ const BODY_MAX_HEIGHT = 640;
 const scale_to_fit_parent = ()=>{
   doc.querySelectorAll('[scale-to-fit-parent-width]').forEach(e=>{
     var ratio = e.parentElement.clientWidth / e.clientWidth;
-    if (ratio <= 1)
-      ratio = 1
+    var ratio2 = e.parentElement.clientHeight / e.clientHeight;
+    if (ratio <= ratio2)
+      ratio = ratio2
     e.scale = ratio;
     e.style.transform = "translateX("+(e.translateX || "0px")+")" + ' scale('+(e.scale || 1)+')';
   })
   doc.querySelectorAll('[scale-to-fit-parent-height]').forEach(e=>{
     var ratio = e.parentElement.clientHeight / e.clientHeight;
-    if (ratio <= 1)
-      ratio = 1
+    var ratio2 = e.parentElement.clientWidth / e.clientWidth;
+    if (ratio <= ratio2)
+      ratio = ratio2
       e.scale = ratio;
       e.style.transform = "translateX("+(e.translateX || "0px")+")" + ' scale('+(e.scale || 1)+')';
   })
@@ -177,25 +218,25 @@ function update_vh() {
 
   let scale = 1;
   if (width > BODY_MAX_WIDTH){
-    document.body.style.width = BODY_MAX_WIDTH+"px"
-    document.body.style.marginLeft = parseInt((width - BODY_MAX_WIDTH) /  2) + 'px';
+    document.getElementById('body').style.width = BODY_MAX_WIDTH+"px"
+    document.getElementById('body').style.marginLeft = parseInt((width - BODY_MAX_WIDTH) /  2) + 'px';
     width = BODY_MAX_WIDTH;
 
   }else{
-    document.body.style.width = ""
-    document.body.style.marginLeft =  '';
+    document.getElementById('body').style.width = ""
+    document.getElementById('body').style.marginLeft =  '';
   }
 
   if (height > BODY_MAX_HEIGHT){
-    document.body.style.height = BODY_MAX_HEIGHT+"px"
-    document.body.style.marginTop = parseInt((height - BODY_MAX_HEIGHT) /  2) + 'px';
+    document.getElementById('body').style.height = BODY_MAX_HEIGHT+"px"
+    document.getElementById('body').style.marginTop = parseInt((height - BODY_MAX_HEIGHT) /  2) + 'px';
     scale = height/BODY_MAX_HEIGHT
     height = BODY_MAX_HEIGHT;
 
   }else{
-    document.body.style.height = ""
-    document.body.style.marginTop =  '';
-    document.body.style.transform = '';
+    document.getElementById('body').style.height = ""
+    document.getElementById('body').style.marginTop =  '';
+    document.getElementById('body').style.transform = '';
     scale = 1
   }
 
@@ -204,11 +245,11 @@ function update_vh() {
   if (aspect_ratio < ideal_aspect_ratio){
     console.log()
     width = _width / scale;
-    document.body.style.width = width+"px"
-    document.body.style.marginLeft = parseInt((_width - width) /  2) + 'px';
+    document.getElementById('body').style.width = width+"px"
+    document.getElementById('body').style.marginLeft = parseInt((_width - width) /  2) + 'px';
   }
 
-  document.body.style.transform = scale==1?"":'scale('+scale+')';
+  document.getElementById('body').style.transform = scale==1?"":'scale('+scale+')';
   let vh = height * 0.01;
   let vw = width * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -217,6 +258,12 @@ function update_vh() {
   
   document.documentElement.style.setProperty('--window-height', `${height}px`);
   document.documentElement.style.setProperty('--window-width', `${width}px`);
+  document.documentElement.style.setProperty('--window-width-for-font', `${mix(400, 460, width, 330, 480)}px`);
+
+  document.getElementById('zh-title-fix').setAttribute('zh',width < 360?`探索
+你的旅程`:`探索你的旅程`)
+  setLang(current_lang);
+
   document.querySelectorAll('[full-width-abs]').forEach(e=>{
     if (e.tagName == "svg")
       e.setAttribute("width", width);
@@ -241,6 +288,7 @@ if (window.attachEvent) {
 } else if (window.addEventListener) {
   window.addEventListener('resize', onresize, true);
 }
+window.update_vh = update_vh
 
 
 
@@ -256,7 +304,7 @@ var current_lang = isChinese?'zh':'en';
 doc.getElementById('app').classList.remove('hidden');
 FastClick.attach(doc.body);
 var setLang = function(L){
-  doc.body.setAttribute('lang',L);
+  document.getElementById('body').setAttribute('lang',L);
   document.querySelectorAll('[en],[zh]').forEach(e=>{
     var EN = e.attributes['en'];
     var ZH = e.attributes['zh'];
@@ -343,7 +391,7 @@ var CARDS_RAW = `!內在滿足;;Intrinsic satisfaction
 !物質享受;;Materialistic
 有車 / 有樓;;Own a Car/House
 賺大錢;;Be wealthy
-時尚的打扮;;Fashionable dress up
+時尚的打扮;;Fashionable \u200bdress up
 錢夠用 \u200b(沒有經濟上的\u200b擔憂);;Sufficient amount of money \u200b(without financial burden)
 追上科技潮流;;Catch up on technology   
 建立社會地位;;Have social status
@@ -430,7 +478,7 @@ CARDS_RAW.split('\n').filter(e=>e.trim()).forEach(e=>{
           id: CARDS.length,
           name: {},
           type: _last_type,
-          picked: false,
+          chosen: false,
           droped: false,
         };
         LANGS.forEach((e, i)=>{dat.name[e] = line[i];} );
@@ -470,10 +518,21 @@ window.CARDS_CHUNKS = CARDS_CHUNKS;
 
 
 var MUSIC_URL = 'https://www.bensound.com/bensound-music/bensound-beyondtheline.mp3';
-var files = [
-  'assets/img/bg01.png',
-  'assets/img/cover.png',
-];
+var files = `
+cover-bg.jpg
+cover.png
+cover-leaf-01.png
+cover-leaf-02.png
+cover-leaf-03.png
+cover-leaf-04.png
+cloud01.png
+cloud02.png
+cloud03.png
+cloud04.png
+bg01-bg.jpg
+bg01-branch01.png
+bg01-branch02.png
+`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var files_loaded = 0;
 var files_total = files.length;
@@ -501,7 +560,30 @@ document.addEventListener("DOMContentLoaded", increment_files_loaded);
 
 */
 
+const activate_bg_animation = (background) =>{
+  var animes = background.querySelectorAll('[anime]');
+  animes.forEach(e=>{
+      var args = eval('('+e.getAttribute('anime')+')');
+      args.targets = e;
+      args.autoplay = false;
+      var animation = anime(args);
+      e.anime = animation;
+      if (args.seek)
+        animation.seek(args.seek)
+      animation.play();
+  })
+}
 
+const deactivate_bg_animation = (background) =>{
+  var animes = background.querySelectorAll('[anime]');
+  animes.forEach(e=>{
+    if (e.anime){
+      anime.remove(e)
+
+    }
+  })
+}
+window.deactivate_bg_animation = deactivate_bg_animation;
 
 var goNextFade = function(delay, targets, callback){
   anime({
@@ -573,21 +655,6 @@ var toggleMusic = ()=>{
 volumeButton.onclick = toggleMusic;
 volumeButton.ontouchstart = toggleMusic;
 
-var listen_once = function(target, event, func){
-  var triggered = false;
-  var temp_func = function(e){
-    if (triggered) return;
-    try{
-      target.removeEventListener(event);
-    }catch(err){
-      triggered=true;
-    }
-    func(e);
-  }
-  target.addEventListener(event, temp_func)
-
-};
-
 
 
 /*
@@ -597,12 +664,17 @@ var listen_once = function(target, event, func){
 var start = function () {
   goNextFade(0, load_wrapper, e => {
     LOGT('Load wrapper removed.');
-    if (!skip)
+    if (!skip){
       curtains[0].show();
+    }
   });
   if (skip){
     curtains[0].show();
     curtains[0].endCurtain(true);
+    deactivate_bg_animation(doc.getElementById('intro').querySelector('background'));
+    console.log(doc.getElementById('intro').querySelectorAll('background')[1]);
+    activate_bg_animation(doc.getElementById('intro').querySelectorAll('background')[1]);
+    setTimeout(update_vh,100)
 
   }
 }
@@ -619,7 +691,13 @@ const FADE_DURATION = 500;
 const defaultNextCutain = (self) => {
   return [function () {
     var nextCurtain = self.obj.querySelector('.curtain-page');
-    if (nextCurtain) nextCurtain.curtain.show();
+    console.log(nextCurtain.querySelector('background'))
+    deactivate_bg_animation(self.obj.querySelector('background'));
+    activate_bg_animation(nextCurtain.querySelector('background'));
+    if (nextCurtain) {
+      nextCurtain.curtain.show();
+      nextCurtain.curtain.nextFrame.push(update_vh);
+    }
   }, self.opened ? 0 : 500];
 }
 
@@ -637,6 +715,17 @@ const sleep = (t)=> {
   Auto-spawn Selection Stages
 
 */
+
+var cardSelectionTemplate = doc.getElementById('selection-1');
+
+var divClone;
+var i = 1;
+for (var i = 2; i <= 4; i++){
+  divClone = cardSelectionTemplate.cloneNode(true);
+  divClone.id = 'selection-'+i;
+  cardSelectionTemplate.parentNode.insertBefore(divClone, cardSelectionTemplate.nextSibling);
+
+}
 
 
 /*
@@ -705,14 +794,14 @@ window.intro_next = function (self){
       }, 500
     ],
     ()=> sleep(1000),
+    ()=> deactivate_bg_animation(doc.getElementById('intro').querySelector('background')),
     ()=> fadeIn('#intro-tran-text p'),
-
     defaultNextCutain(self)
 
   ])
 }
 const intro_drags = Array.from(document.querySelectorAll('#intro [drag]')).map(e=>[e, parseInt(e.getAttribute('drag'))]);
-window.coverUpdate = (p, p2)=>{
+window.coverUpdate = (self, p, p2)=>{
   intro_drags.forEach(e=>{
     var t = e[0];
     var drag = e[1];
@@ -728,36 +817,41 @@ window.coverUpdate = (p, p2)=>{
 */
 
 var current_cards_i = 0;
-
-doc.getElementById('app').addEventListener('click',function(e){
+const card_click_listener = function(e){
   var u = e.target;
   while (u && u.tagName != 'CARD')
     u = u.parentElement;
     
   if (u){
-    u.classList.toggle('active');
-
-    console.log(u);
+    u.classList.toggle('chosen');
+    var card_id = parseInt(u.id);
+    var card = CARDS[card_id];
+    card.chosen = !card.chosen;
 
   }
 
-});
+}
+doc.getElementById('app').addEventListener('click',card_click_listener);
+doc.getElementById('app').addEventListener('touchstart',card_click_listener);
 const stage_get_arrows = (obj)=>{
   return Array.from(obj.children).filter(e=>e.tagName == 'ARROWS')[0]
 }
 const move_bg = (obj, level, total)=>{
   return new Promise(function(resolve, reject) {
-    var img = Array.from(obj.children).filter(e=>e.tagName == 'BACKGROUND')[0].querySelector('bg img');
-    img.style.transform = "translateX(calc((-100% + var(--window-width, 100vw)) / "+total+" * "+level+"))";
+    var img = Array.from(obj.children).filter(e=>e.tagName == 'BACKGROUND')[0].querySelector('bg g');
+    img.translateX = "calc((-100% + var(--window-width, 100vw)) / "+total+" * "+level+")";
+    img.style.transform = "translateX("+img.translateX+")" + ' scale('+(img.scale || 1)+')';
     resolve();
   })
 }
 
-const arrange_cards = (card_divs)=>{
-  var alt = Math.random() > 0.5;
-  var card_count = 6;
-  var start = (alt?0:0.025) + Math.random()*0.025;
-  var end = (alt?0.85:0.8)+Math.random()*0.05;
+const arrange_cards = (card_divs, right)=>{
+  card_divs = Array.from(card_divs).filter(e=>e.classList.contains('active'));
+  console.log(card_divs);
+  var alt = right===undefined? Math.random() > 0.5: right;
+  var card_count = card_divs.length;
+  var start = (alt?0:-0) - 0.125;
+  var end = (alt?0.85:0.75)+Math.random()*0.01 - 0.06;
   var h = end-start;
   var d = 0.06;
   var seg = h / card_count - d * 2;
@@ -765,9 +859,10 @@ const arrange_cards = (card_divs)=>{
   var last_left = 0;
   var actual_width = parseInt(document.documentElement.style.getPropertyValue('--window-width'));
   var horizon = mix(0.075, 0.1, actual_width, 340, 480);
-  var padding_right = mix(0.01, 0.15, actual_width, 340, 480);
-  var padding_left = mix(0.01, 0.15, actual_width, 340, 480);
-
+  var padding_right = mix(0.01, 0.075, actual_width, 340, 480);
+  var padding_left = mix(0.01, 0.075, actual_width, 340, 480) * 0.5;
+  var height_adjust = 0;
+  var last_div;
   var left = (e)=>{
     var p=Math.random()*horizon; 
     last_left = p;
@@ -785,12 +880,29 @@ const arrange_cards = (card_divs)=>{
     e.style.left="unset";
   }
 
+  var height_proportions = card_divs.map(e=>e.querySelector('card-text').clientHeight);
+  var min_proportion = height_proportions.min();
+  var max_proportion = height_proportions.max();
+  LOG(height_proportions)
+  LOG(max_proportion)
+  LOG(min_proportion)
+
+  height_proportions = height_proportions.map(e=>(((e-min_proportion) / max_proportion)**2 + 1)**1.3);
+  var total_proportions = height_proportions.sum();
+  
+  LOG(height_proportions)
+  LOG(total_proportions)
+  LOG(card_divs.length)
+
   card_divs.forEach((e, i)=>{
-      var t = Math.random()*seg + d + i*(seg+2*d);
+      var p = (height_proportions.slice(0,i).sum() + height_proportions[i]/2) / total_proportions * (card_divs.length  );
+      LOG(p)
+      var t = start+Math.random()*seg + d + p*(seg+2*d);
       e.style.top=(t*100)+'%';
       
       (i%2 == (alt?1:0)?left:right)(e)
       e.style.pointerEvents = "all";
+      last_div = e;
   });
 }
 
@@ -813,16 +925,21 @@ const show = (things) => {
 const set_card_divs = (card_divs, i) => {
   var chunks = CARDS_CHUNKS[i];
   for (var j = 0; j < card_divs.length; j ++){
-    var card = card_divs[[j]]
+    var card_div = card_divs[[j]]
     if (j >= chunks.length){
-      card.classList.remove('active');
+      card_div.classList.remove('active');
     }else{
-      var details = chunks[j];
-      card.classList.add('active');
-      card.setAttribute('id', details.id);
-      var p = card.querySelector('p');
-      Object.keys(details.name).forEach(
-        lang=> p.setAttribute(lang, details.name[lang].replace(/ *\u200b/g, '\n'))
+      var card = chunks[j];
+      card_div.classList.add('active');
+      if (card.chosen)
+        card_div.classList.add('chosen');
+      else
+        card_div.classList.remove('chosen');
+      card_div.setAttribute('id', card.id);
+      var p = card_div.querySelector('p');
+      
+      Object.keys(card.name).forEach(
+        lang=> p.setAttribute(lang, card.name[lang].replace(/ *\u200b/g, '\n'))
       )
       setLang(current_lang);
 
@@ -868,8 +985,8 @@ const stage_next = function(self){
     ()=> sleep(500),
     ()=> move_bg(obj, 1, 4),
     ()=> sleep(2000),
-    ()=> arrange_cards(card_divs),
     ()=> set_card_divs(card_divs, current_cards_i++),
+    ()=> arrange_cards(card_divs),
     ()=> fadeIn(card_divs),
     ()=> sleep(1500),
     ()=> wait_for_arrows(obj),
@@ -879,8 +996,8 @@ const stage_next = function(self){
     ()=> sleep(500),
     ()=> move_bg(obj, 2, 4),
     ()=> sleep(2000),
-    ()=> arrange_cards(card_divs),
     ()=> set_card_divs(card_divs, current_cards_i++),
+    ()=> arrange_cards(card_divs),
     ()=> fadeIn(card_divs),
     ()=> sleep(1500),
     ()=> wait_for_arrows(obj),
@@ -890,8 +1007,8 @@ const stage_next = function(self){
     ()=> sleep(500),
     ()=> move_bg(obj, 3, 4),
     ()=> sleep(2000),
-    ()=> arrange_cards(card_divs),
     ()=> set_card_divs(card_divs, current_cards_i++),
+    ()=> arrange_cards(card_divs),
     ()=> fadeIn(card_divs),
     ()=> sleep(1500),
     ()=> wait_for_arrows(obj),
@@ -901,14 +1018,10 @@ const stage_next = function(self){
     ()=> sleep(500),
     ()=> move_bg(obj, 4, 4),
     ()=> sleep(2000),
-    ()=> arrange_cards(card_divs),
     ()=> set_card_divs(card_divs, current_cards_i++),
+    ()=> arrange_cards(card_divs, false),
     ()=> fadeIn(card_divs),
     ()=> sleep(1500),
-    ()=> wait_for_arrows(obj),
-
-
-
 
 
     defaultNextCutain(self),
@@ -931,3 +1044,5 @@ window.stage_next = stage_next
 */
 
 var curtains = makeCurtains(doc.getElementById('stages') );
+
+activate_bg_animation(doc.getElementById('intro').querySelector('background'));

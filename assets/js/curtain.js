@@ -200,6 +200,7 @@ var makeCurtain = (function () {
     closing: true,
     reversible: true,
     but_y_pos: 0.25,
+    nextFrame: [],
     startX: right_pad + but_size * but_horiz_offset * 3,
     startY: right_pad + but_size * but_horiz_offset,
 
@@ -231,6 +232,7 @@ var makeCurtain = (function () {
 
   update();
 
+
   function makeCurtain(obj, config) {
     config = config || {}
     var ns = 'http://www.w3.org/2000/svg';
@@ -255,6 +257,9 @@ var makeCurtain = (function () {
 
     // TODO: update when curtain moves;
     var offset = obj.getBoundingClientRect();
+    setInterval(function(){
+      offset = obj.getBoundingClientRect();
+    },1000)
 
     obj.insertBefore(arrow, obj.firstChild);
     var self = Object.assign({}, defaults, config);
@@ -284,7 +289,7 @@ var makeCurtain = (function () {
       clipPathEnabled = false;
     }
     enableClipPath();
-    
+
     if (self.closed) {
       self.startX = 0;
       self.startY = 0;
@@ -385,6 +390,7 @@ var makeCurtain = (function () {
 
       }else{
         last_width = width;
+        last_height = height;
         force_update = true;
       }
 
@@ -581,7 +587,7 @@ var makeCurtain = (function () {
         last_path = path
 
         if (self.update){
-          self.update(percent_done, (percent_done/0.6)**3)
+          self.update(self, percent_done, (percent_done/0.6)**3)
         }
   
         if (true){
@@ -592,6 +598,12 @@ var makeCurtain = (function () {
         }
         
       }
+      if (self.nextFrame.length>0){
+        self.nextFrame.shift()();
+      }
+
+      console.log('@',current_index);
+      
       
       if (debug)
         curtain.querySelector('g').innerHTML = svgCircles(pointsPositions);
@@ -723,9 +735,17 @@ var makeCurtain = (function () {
       if (clicked || (self.endX - self.startX < (!opened ? -width / 3 : -width * 2 / 3))) {
         self.startX = 0;
         self.endX = -9999999;
-        if (self.next)
-          self.next(self)
+        if (self.next){
+          self.next(self);
+          Array.from(self.obj.parentElement.children).filter(e=>e!=self.obj).forEach(e=>{
+            e.style.pointerEvents="none";
+            setTimeout(function(){
+              e.style.display="none";
+            },1000)
 
+          })
+
+        }
         if (!self.reversible)
           self.closed = true;
       } else {

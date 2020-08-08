@@ -186,14 +186,22 @@ body, html {
   overscroll-behavior-y: contain;
   overscroll-behavior-x: none;
   touch-action: none;
-  overflow: hidden;
+  height:100vh!important;
+  width:100vw!important;
+  margin:0 !important;
+}
+
+#body {
   font-family: 'CrimsonText', 'Noto Sans TC', sans-serif;
   margin: 0;
   padding: 0;
   height:100vh;
   width:100vw;
+  width: calc(var(--vw, 1vw) * 100);
   height: calc(var(--vh, 1vh) * 100);
   box-shadow: 0 0 35px #0009;
+  font-size: calc(5 * var(--window-width-for-font, 100vw) / 100);
+
 }
 
 p {
@@ -234,30 +242,31 @@ block {
 [left-align]{text-align:left;margin-right: auto;}
 [right-align]{text-align:right;}
 [middle-align]{text-align:center;}
-[left-margin-small]{margin-left:1.5em;}
+[left-margin-small]{margin-left:calc(var(--window-width, 100vh) * 5 / 100);}
 [margin-auto]{margin:auto;}
 [bold]{font-weight: bold;}
 [italic]{font-style: italic;}
 
+[slow-transition] {
+  transition: transform 2.5s cubic-bezier(0.5, 0, 0.5, 1);
+  transform: translateX(0);
+
+}
+
+[soft-shadow]{
+  filter: drop-shadow( 3px 3px 20px rgba(0, 0, 0, .7));
+}
 
 
 [font-large] {
-  font-size: 3em;
+  font-size: 2em;
 }
 
 [lang="zh"] [font-large] {
-  font-size: 2.5em;
-}
-
-@media screen and (max-width: 360px) {
-  [font-large] {
-     font-size: 11vw;
-  }
-  [lang="zh"] [font-large] {
-    font-size: 11vw;
-    font-weight: bold;
-  }
-  
+  font-size: 2em;
+  font-weight: bold;
+  line-height: 1;
+  margin-top: 0.4em;
 }
 
 #desktop{
@@ -297,7 +306,7 @@ block {
   width: 100%;
   vertical-align: middle;
   align-items: center;
-  z-index: 1;
+  z-index: 10;
   > * {
     /*
     flex: 1;
@@ -324,7 +333,7 @@ block {
   text-align: center;
   transition: all 0.4s ease;
   p{
-    font-size: 1.5em;
+    font-size: 1.2em;
     opacity:0;
     white-space: pre-wrap;
     transition: all 0.4s ease;
@@ -411,7 +420,6 @@ background {
   height: 100%;
   position: absolute;
   // pointer-events: none;
-  z-index: 0;
 }
 bg {
   background-position-x: center;
@@ -423,14 +431,8 @@ bg {
   left:0;
   top:0;
 
-  img {
-    transition: transform 2.5s cubic-bezier(0.5, 0, 0.5, 1);
-    transform: translateX(0);
-
-  }
 
 }
-
 #intro {
 
   #intro-start{
@@ -514,20 +516,25 @@ card {
   width: 100px;
   min-width: fit-content;
   align-items: center;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.8s ease, filter 0.3s ease-out;
   z-index:3
 }
 card-text {
     position: relative;
-    font-size: 1.2em;
+    font-size: 1em;
     display: flex;
     z-index: 2;
     min-width: 100%;
     width: fit-content;
     align-items: center;
     color:white;
-    
+    filter: drop-shadow(0px 0px 6px #333) ;
 }
+.chosen {
+  
+  filter: drop-shadow(0px 0px 15px rgb(255, 190, 51)) drop-shadow(0px 0px 30px rgb(255, 190, 51));
+}
+
 card p {
     text-align: center;
     width: 100%;

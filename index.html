@@ -21,207 +21,285 @@
   <link type="text/css" rel="stylesheet" href="assets/css/style.css?v=1" />
 
 </head> 
-<body>
+<body style="overflow: hidden;">
+  <div id="body">
 
-  <div id="debug" style="display:none;">
-    <div id="lang-switcher"><span>en</span><span>zh</span></div>
-    <div id="debug-message"></div>
-    <div id="curtain-active"></div>
-    <script>
-      if (false)
-      setInterval(function(e){
-        var repl = Array.from(document.querySelectorAll('[id^="curtainClip"]')).filter(e=>e.curtain.active).map(e=>e.id.split('-')[1]).join(',');
-        document.getElementById('curtain-active').textContent = repl;
-      }, 400)
-    </script>
-
-  </div>
-
-
-  <div id="assets">
-    <svg id="arrow-svg" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
-      <g><path d="M761.5,180.8L447,499.5l314.5,318.6c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5c-4.9,12.2-12.2,23.1-21.9,32.8C742,979.9,718.8,990,691.7,990c-27.1,0-50.3-10.1-69.8-30.2L241.9,576.5c-9.7-9.7-17.3-21.4-22.9-34.9c-5.6-13.6-8.7-27.3-9.4-41.2c-0.7-13.9,1-27.2,5.3-40.1c4.2-12.8,11.1-23.5,20.8-31.8L622,39.1C641.4,19.7,664.7,10,691.7,10c27.1,0,50.3,9.7,69.7,29.1c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5C778.5,160.1,771.2,171.1,761.5,180.8L761.5,180.8z"/></g>
-      </svg>
-  </div>
-
-
-  <div id="app" class="hidden">
-    <div id="loading-wrapper" class="wrapper">
-      <div>
-        <div margin-auto>
-          <span en="Loading" zh="載入中"></span>: <span id="load-percent">0</span>%
-        </div>
-      </div>
-
+    <div id="debug" style="display:none;">
+      <div id="lang-switcher"><span>en</span><span>zh</span></div>
+      <div id="debug-message"></div>
+      <div id="curtain-active"></div>
+      <script>
+        if (false)
+        setInterval(function(e){
+          var repl = Array.from(document.querySelectorAll('[id^="curtainClip"]')).filter(e=>e.curtain.active).map(e=>e.id.split('-')[1]).join(',');
+          document.getElementById('curtain-active').textContent = repl;
+        }, 400)
+      </script>
 
     </div>
 
 
-    <div id="desktop"><span>Use Desktop</span></div>
-
-    <div id="float-top-right" class="hidden">
-      <div id="volume" class="togglerContainer">
-        <div class="toggler">
-          <div class="switchContainer switchOn" id="switchContainer">
-            <div class="switchBtn"></div>
-          </div>
-          <div class="music-score">
-            <svg viewBox="0 0 640 640" width="43" height="43" version="1.0" xmlns="http://www.w3.org/2000/svg">
-              <g fill="currentColor" stroke="none">
-              <path d="M285.74 412.18C250.65 398 236.37 400.96 209.88 406.7C184.57 411.93 159.27 430.32 148.13 451.07C127.88 489.03 138.01 537.79 170.57 558.71C216.29 587.9 284.61 582.52 322.06 549.96C336.5 536.49 347.82 507.92 349.44 501.18C351.18 490.7 352.02 481.65 351.93 474.04L351.93 317.66L351.93 154.68C353.81 154.55 357.02 154.55 361.56 154.68C368.37 154.89 371.98 155.44 374.71 155.99C421.78 165.78 433.62 186.55 440.62 227.92C441.1 231.46 441.66 237.91 442.3 247.27L461.09 247.27L502.31 247.27C501.98 230.55 501.31 217.42 500.29 207.88C498.44 181.91 497.86 159.25 469.47 122.81C460.19 111 441.04 96.21 427.2 89.46C407.97 80.18 386.19 72.83 351.93 68.48C317.68 64.14 314.33 63.47 308.09 63.13C307.32 63.1 299.87 62.79 285.74 62.21L285.74 245.07C287.54 357.26 287.54 412.96 285.74 412.18Z"></path>
-              </g>
-            </svg>
-          </div>
-          <div class="music-score-slash"></div>
-      
-      
-        </div>
-      </div>
+    <div id="assets">
+      <svg id="arrow-svg" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+        <g><path d="M761.5,180.8L447,499.5l314.5,318.6c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5c-4.9,12.2-12.2,23.1-21.9,32.8C742,979.9,718.8,990,691.7,990c-27.1,0-50.3-10.1-69.8-30.2L241.9,576.5c-9.7-9.7-17.3-21.4-22.9-34.9c-5.6-13.6-8.7-27.3-9.4-41.2c-0.7-13.9,1-27.2,5.3-40.1c4.2-12.8,11.1-23.5,20.8-31.8L622,39.1C641.4,19.7,664.7,10,691.7,10c27.1,0,50.3,9.7,69.7,29.1c9.7,9.7,17,20.8,21.9,33.3c4.9,12.5,7.3,25.2,7.3,38c0,12.8-2.4,25.3-7.3,37.5C778.5,160.1,771.2,171.1,761.5,180.8L761.5,180.8z"/></g>
+        </svg>
     </div>
 
-    <div id="mobile" class="wrapper">
 
-
-      <div id="stages">
-
-        <!--
-
-          Stage 1 - Start Screen
-
-        -->
-
-        <div id="intro" class="stage wrapper">
-          <background>
-            <bg style="display: flex; justify-content: center;">
-              <img drag="20" scale-to-fit-parent-width style="height:65%;transition:none;" src="assets/img/cover.png"/>
-            </bg>
-          </background>
-          <div flex-1 id="intro-text">
-            <div>
-              
-            </div>
+    <div id="app" class="hidden">
+      <div id="loading-wrapper" class="wrapper">
+        <div>
+          <div margin-auto>
+            <span en="Loading" zh="載入中"></span>: <span id="load-percent">0</span>%
           </div>
-          <block drag="40" flex-1 style="clip-path: url(#cover-wave);-webkit-clip-path: url(#cover-wave);background-color: #FAC668;">
-            <div flex-4>
+        </div>
+
+
+      </div>
+
+
+      <div id="desktop"><span>Use Desktop</span></div>
+
+      <div id="float-top-right" class="hidden">
+        <div id="volume" class="togglerContainer">
+          <div class="toggler">
+            <div class="switchContainer switchOn" id="switchContainer">
+              <div class="switchBtn"></div>
             </div>
-            <div flex-column drag="40" flex-5 width-100p left-align left-margin-small>
-              <p font-large bold en="EXPLORE
+            <div class="music-score">
+              <svg viewBox="0 0 640 640" width="43" height="43" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                <g fill="currentColor" stroke="none">
+                <path d="M285.74 412.18C250.65 398 236.37 400.96 209.88 406.7C184.57 411.93 159.27 430.32 148.13 451.07C127.88 489.03 138.01 537.79 170.57 558.71C216.29 587.9 284.61 582.52 322.06 549.96C336.5 536.49 347.82 507.92 349.44 501.18C351.18 490.7 352.02 481.65 351.93 474.04L351.93 317.66L351.93 154.68C353.81 154.55 357.02 154.55 361.56 154.68C368.37 154.89 371.98 155.44 374.71 155.99C421.78 165.78 433.62 186.55 440.62 227.92C441.1 231.46 441.66 237.91 442.3 247.27L461.09 247.27L502.31 247.27C501.98 230.55 501.31 217.42 500.29 207.88C498.44 181.91 497.86 159.25 469.47 122.81C460.19 111 441.04 96.21 427.2 89.46C407.97 80.18 386.19 72.83 351.93 68.48C317.68 64.14 314.33 63.47 308.09 63.13C307.32 63.1 299.87 62.79 285.74 62.21L285.74 245.07C287.54 357.26 287.54 412.96 285.74 412.18Z"></path>
+                </g>
+              </svg>
+            </div>
+            <div class="music-score-slash"></div>
+        
+        
+          </div>
+        </div>
+      </div>
+
+      <div id="mobile" class="wrapper">
+
+
+        <div id="stages">
+
+          <!--
+
+            Stage 1 - Start Screen
+
+          -->
+
+          <div id="intro" class="stage wrapper">
+            <background>
+              <bg style="display: flex; justify-content: center;">
+                <img-container style="height:65%;width:100%;transition:none;background-color:#f7d8d1;">
+                  <!-- Specify height & width because svg cannot infer the width from height-->
+                  <svg scale-to-fit-parent-width style="height:480px;width:360px;    transform-origin: top left;">
+                    <image xlink:href="assets/img/cover-bg.jpg" x="0" y="0" width="100%" height="100%"/>
+                    <image xlink:href="assets/img/cover.png" x="0" y="0" width="100%" height="100%"/>
+
+
+                    <g anime="{translateX: [400,-100], translateY: [-100,30], seek:12000, duration:40000,loop: true,easing: 'linear'}">
+                      <image xlink:href="assets/img/cloud01.png" x="0" y="0" height="50px"/>
+                    </g>
+                    <g anime="{translateX: [500,-100], translateY: [-100,80], seek:20000, duration:29500,loop: true,easing: 'linear'}">
+                      <image xlink:href="assets/img/cloud02.png" x="0" y="0" height="50px"/>
+                    </g>
+                    <g anime="{translateX: [400,-100], translateY: [0,150], seek:7000, duration:33500,loop: true,easing: 'linear'}" >
+                      <svg soft-shadow >
+                        <image xlink:href="assets/img/cloud03.png" x="0" y="0" height="50px"/>
+                      </svg>
+                    </g>
+                    <g anime="{translateX: [450,-100], translateY: [0,180], seek:2000, duration:47500,loop: true,easing: 'linear'}" >
+                      <svg soft-shadow >
+                        <image xlink:href="assets/img/cloud04.png" x="0" y="0" height="50px"/>
+                      </svg>
+                    </g>
+
+                    <image xlink:href="assets/img/cover-wave.png" x="0" y="60px" width="100%" height="100%"/>
+                    <image xlink:href="assets/img/cover-greens.png" x="0" y="0" width="100%" height="100%"/>
+                    <svg>
+                      <image class="fullscreen" xlink:href="assets/img/cover-buddy.png" x="40px" y="70px" width="150px"/>
+                    </svg>
+                    <g style="transform-origin:72px 360px"anime="{ direction: 'alternate',rotate: [-7,7], seek:0, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                      <image xlink:href="assets/img/cover-leaf-01.png" x="72px" y="330px" width="24px"/>
+                    </g>
+                    <g style="transform-origin:72px 360px"anime="{ direction: 'alternate',rotate: [-5,5], seek:600, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                      <image xlink:href="assets/img/cover-leaf-02.png" x="42px" y="330px" width="55px"/>
+                    </g>
+                    <g style="transform-origin:72px 360px"anime="{ direction: 'alternate',rotate: [-5,5], seek:1200, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                      <image xlink:href="assets/img/cover-stamen-01.png" x="58px" y="345px" width="24px"/>
+                    </g>
+
+
+                  </svg>
+                </img-container>
+              </bg>
+            </background>
+            <div flex-1 id="intro-text">
+              <div>
+                
+              </div>
+            </div>
+            <block drag="40" flex-1 style="clip-path: url(#cover-wave);-webkit-clip-path: url(#cover-wave);background-color: #FAC668;">
+              <div flex-4>
+              </div>
+              <div flex-column drag="40" flex-5 width-100p left-align left-margin-small>
+                <p font-large bold en="EXPLORE
 YOUR
-JOURNEY" zh="探索你的旅程"></p>
-              <p drag="-10" en="Test your inner values" zh="透視你的內心世界"></p>
+JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
+                <p drag="-10" en="Test your inner values" zh="透視你的內心世界"></p>
+              </div>
+              <div flex-1>
+                <span></span> 
+              </div>
+            </block>
+
+          </div>
+
+          <!--
+
+            Stage 2 - Start Screen
+
+          -->
+
+
+          <div id="intro-tran" class="wrapper stage" curtain-config="{update:coverUpdate, reversible:false,next:intro_next}"  style="background: #547A41;">
+            <div flex-1 >
+            </div>
+            <div flex-4 middle-align id="intro-tran-text" class="thin-body">
+              <div width-100p flex-column>
+                <p en="One day afternoon" zh="有一天下午，"></p>
+                <p en="you received a letter, it wrote," zh="你收到一封信，信上寫著："></p>
+                <p en="“You are invited to join a long journey, " zh="「您受邀參加一趟悠長旅程，"></p>
+                <p en="which has no limit, and you can explore yourself as you want.”" zh="這趟旅程沒有任何限制，"></p>
+                <p en="and you can explore yourself as you want.”" zh="你可以隨心所欲地發掘自我。」"></p>
+                <p en="Why not give it a try? " zh="去嗎？"></p>
+              </div>
             </div>
             <div flex-1>
-              <span></span> 
             </div>
-          </block>
+          </div>
+
+          <!--
+
+            Stage 3 - Selection Screen
+
+          -->
+
+          
+          <div id="selection-1" class="wrapper stage selection" curtain-config="{reversible:false,next:stage_next}">
+            <background>
+              <cards>
+                <card drag="20">
+                  <card-text>
+                    <p>Mentally<br/>Satisfied</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Closely<br/>connected<br/>with God</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Catch up on<br/>technology</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+              </cards>
+              <bg style="display: flex;">
+                <img-container style="height:100%;transition:none;">
+                  <!-- Specify height & width because svg cannot infer the width from height-->
+                  <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
+                    <g slow-transition>
+                      <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="100%"/>
+                      <g style="transform-origin:180px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1200, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch01.png" x="188px" y="-10px" width="11%"/>
+                      </g>
+                      <g style="transform-origin:85px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:0, duration:5000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch02.png" x="80px" y="0px" width="29px"/>
+                      </g>
+                      <g style="transform-origin:0px 196px" anime="{ direction: 'alternate',rotate: [-9,9], seek:2000, duration:6000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch03.png" x="-3px" y="176px" width="38px"/>
+                      </g>
+                      <g style="transform-origin:0px 196px" anime="{ direction: 'alternate',rotate: [0,5], seek:5000, duration:7000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch04.png" x="-3px" y="70px" width="64px"/>
+                      </g>
+                      <g style="transform-origin:0px 0px" anime="{ direction: 'alternate',rotate: [-3,3], seek:5000, duration:7000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch05.png" x="300px" y="-0px" width="80px"/>
+                      </g>
+                      <g  >
+                        <image xlink:href="assets/img/bg01-branch06.png" x="20px" y="0px" width="150px"/>
+                      </g>
+                    </g>
+
+
+                  </svg>
+                </img-container>
+
+
+
+
+              </bg>
+            </background>
+            <div class="thin-body">
+              <div flex-1 flex-column>
+                <p en="Choose what you want," zh="按照你真實的想法，"></p>
+                <p en="according to your true thought …" zh="選出你想要的 …"></p>
+              </div>
+            </div>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+          </div>
+
+
+
+          <!--
+
+            Stage 4 - Selection Screen
+
+          -->
+
+          
+
+
 
         </div>
 
-        <!--
-
-          Stage 2 - Start Screen
-
-        -->
 
 
-        <div id="intro-tran" class="wrapper stage" curtain-config="{update:coverUpdate, reversible:false,next:intro_next}"  style="background: #547A41;">
-          <div flex-1 >
-          </div>
-          <div flex-4 middle-align id="intro-tran-text" class="thin-body">
-            <div width-100p flex-column>
-              <p en="One day afternoon" zh="有一天下午，"></p>
-              <p en="you received a letter, it wrote," zh="你收到一封信，信上寫著："></p>
-              <p en="“You are invited to join a long journey, " zh="「您受邀參加一趟悠長旅程，"></p>
-              <p en="which has no limit, and you can explore yourself as you want.”" zh="這趟旅程沒有任何限制，"></p>
-              <p en="and you can explore yourself as you want.”" zh="你可以隨心所欲地發掘自我。」"></p>
-              <p en="Why not give it a try? " zh="去嗎？"></p>
-            </div>
-          </div>
-          <div flex-1>
-          </div>
-        </div>
-
-        <!--
-
-          Stage 3 - Selection Screen
-
-        -->
-
-        
-        <div id="selection-1" class="wrapper stage selection" curtain-config="{reversible:false,next:stage_next}">
-          <background>
-            <cards>
-              <card>
-                <card-text>
-                  <p>Mentally<br/>Satisfied</p>
-                </card-text>
-              </card>
-              <card>
-                <card-text>
-                  <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
-                </card-text>
-              </card>
-              <card>
-                <card-text>
-                  <p>Closely<br/>connected<br/>with God</p>
-                </card-text>
-              </card>
-              <card>
-                <card-text>
-                  <p>Catch up on<br/>technology</p>
-                </card-text>
-              </card>
-              <card>
-                <card-text>
-                  <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
-                </card-text>
-              </card>
-              <card>
-                <card-text>
-                  <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
-                </card-text>
-              </card>
-            </cards>
-            <bg style="display: flex;">
-              <img style="height:100%;" src="assets/img/bg01.png"/>
-            </bg>
-          </background>
-          <div class="thin-body">
-            <div flex-1 flex-column>
-              <p en="Choose what you want," zh="按照你真實的想法，"></p>
-              <p en="according to your true thought …" zh="選出你想要的 …"></p>
-            </div>
-          </div>
-          <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
-        </div>
-        
-
-
-        <!--
-
-          Stage 4 - Selection Screen
-
-        -->
-
-        
 
 
 
       </div>
 
+      <svg class="clippath" full-width-abs full-height-abs viewbox="0 0 100 100">
+        <clipPath id="cover-wave" clipPathUnits="objectBoundingBox">
+          <!--
+            
+          <path fill="#000" viewbox="0 0 100 100" width='100%' height='100%'  d="M 0 0.175 C 0.150 0.250 0.300 0.250 0.300 0.250 C 0.550 0.250 0.630 0.01 1 0 L 1 1 L 0 1 z "></path>
+          -->
+          <path fill="#000" viewbox="0 0 100 100" width='100%' height='100%'  d="M 0 0.205 C 0.100 0.275 0.250 0.280 0.300 0.275 C 0.550 0.250 0.630 0.01 1 0 L 1 1 L 0 1 z "></path>
+        </clipPath>
+      </svg>
 
-
-
-
-
-    </div>
-
-    <svg class="clippath" full-width-abs full-height-abs viewbox="0 0 100 100">
-      <clipPath id="cover-wave" clipPathUnits="objectBoundingBox">
-        <path fill="#000" viewbox="0 0 100 100" width='100%' height='100%'  d="M 0 0.175 C 0.150 0.250 0.300 0.250 0.300 0.250 C 0.550 0.250 0.630 0.01 1 0 L 1 1 L 0 1 z "></path>
-      </clipPath>
-    </svg>
-
-  </div>  
-  <script type="module" src="assets/js/main.min.js?v=1"></script>
+    </div>  
+    <script type="module" src="assets/js/main.min.js?v=1"></script>
+  </div>
 </body>
