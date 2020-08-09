@@ -269,7 +269,7 @@ var makeCurtain = (function () {
     self.endY = self.startY;
     self.mousedown = false;
 
-    var displayNone = false;
+    var displayNone = false; 
 
 
     var clipPathEnabled = false;
@@ -602,7 +602,6 @@ var makeCurtain = (function () {
         self.nextFrame.shift()();
       }
 
-      console.log('@',current_index);
       
       
       if (debug)
@@ -741,7 +740,7 @@ var makeCurtain = (function () {
             e.style.pointerEvents="none";
             setTimeout(function(){
               e.style.display="none";
-            },1000)
+            },3000)
 
           })
 

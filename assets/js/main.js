@@ -1,11 +1,12 @@
 import { makeCurtains }  from './curtain.js';
+import {styler} from "./styler.min.js"
 /*
 
   Configurations
 
 */
 
-var DEBUG = true;
+var DEBUG = false;
 
 var CARDS_PER_PAGE = 6;
 var NUM_SCENES = 4;
@@ -24,6 +25,7 @@ var TRANSITION = {
 
 const urlParams = Object.fromEntries(new URLSearchParams(window.location.search));
 console.log(urlParams)
+DEBUG = urlParams.debug
 
 
 /** 
@@ -243,7 +245,6 @@ function update_vh() {
   let ideal_aspect_ratio = 480 / 640;
   let aspect_ratio = _width / _height;
   if (aspect_ratio < ideal_aspect_ratio){
-    console.log()
     width = _width / scale;
     document.getElementById('body').style.width = width+"px"
     document.getElementById('body').style.marginLeft = parseInt((_width - width) /  2) + 'px';
@@ -560,10 +561,74 @@ document.addEventListener("DOMContentLoaded", increment_files_loaded);
 
 */
 
+const id_seen = new Set();
+const makeid = ()=>{
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 6; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  if (id_seen.has(text))
+    return makeid()
+  id_seen.add(text);
+  return text;
+}
+
+const prefixes = ['-webkit-','-moz-','-o-','-webkit-',''];
+const generate_css = (config)=>{
+  var name = 'animation_'+ makeid();
+  var rotate = config.rotate;
+  var opacity = config.opacity;
+  var scale = config.scale;
+  var translateX = config.translateX;
+  var translateY = config.translateY;
+  var attr;
+  var frames = [];
+  var content = [[0,0],[1,50],[0,100]].map(e=>{
+      var i=e[0];
+      var percent=e[1];
+      var attrs = [];
+      if (rotate)attrs.push(`rotate(${rotate[i]}deg)`);
+      if (scale)attrs.push(`scale(${scale[i]})`);
+      if (translateX)attrs.push(`translateX(${translateX[i]}px)`);
+      if (translateY)attrs.push(`translateY(${translateY[i]}px)`);
+      var attr = attrs.join(' ')
+      return (
+        percent+
+        '%{'+
+        (attr?(prefixes.map(p=>`${p}transform:${attr}`).join(';')):"")+
+          (opacity?`opacity:${opacity[i]}`:"") + '}')
+  }).join('');
+  return [name, prefixes.map(p=>`@${p}keyframes ${name}{${content}}`).join('\n')];
+}
+
+const apply_css_from_animejs_config = (elem, config)=>{
+  var name_class = 'animation_'+ makeid();
+  var css = generate_css(config);
+  var css_name = css[0];
+  var css_keyframes = css[1];
+  config.duration *= 1.5;
+  var css_elem = prefixes.map(p=>`${p}animation: ${config.duration||0}ms cubic-bezier(0.5, 0, 0.5, 1) -${config.seek||0}ms infinite running ${css_name};`).join('');
+  var transformOrigin = elem.style.transformOrigin;
+  if (transformOrigin){
+    elem.style.webkitTransformOrigin = transformOrigin;
+    elem.style.mozTransformOrigin = transformOrigin;
+    elem.style.msTransformOrigin = transformOrigin;
+    elem.style.oTransformOrigin = transformOrigin;
+  }
+  styler(name_class,css_keyframes+`.${name_class}{${css_elem}}`)
+  elem.classList.add(name_class);
+
+}
 const activate_bg_animation = (background) =>{
+  if (!background)
+    return;
   var animes = background.querySelectorAll('[anime]');
   animes.forEach(e=>{
       var args = eval('('+e.getAttribute('anime')+')');
+      apply_css_from_animejs_config(e,args);
+
+      return;
       args.targets = e;
       args.autoplay = false;
       var animation = anime(args);
@@ -573,6 +638,7 @@ const activate_bg_animation = (background) =>{
       animation.play();
   })
 }
+
 
 const deactivate_bg_animation = (background) =>{
   var animes = background.querySelectorAll('[anime]');
@@ -672,7 +738,6 @@ var start = function () {
     curtains[0].show();
     curtains[0].endCurtain(true);
     deactivate_bg_animation(doc.getElementById('intro').querySelector('background'));
-    console.log(doc.getElementById('intro').querySelectorAll('background')[1]);
     activate_bg_animation(doc.getElementById('intro').querySelectorAll('background')[1]);
     setTimeout(update_vh,100)
 
@@ -686,12 +751,11 @@ var start = function () {
     Stage Defaults
 */
 
-const FADE_DURATION = 500;
+const FADE_DURATION = DEBUG?0:800;
 
 const defaultNextCutain = (self) => {
   return [function () {
     var nextCurtain = self.obj.querySelector('.curtain-page');
-    console.log(nextCurtain.querySelector('background'))
     deactivate_bg_animation(self.obj.querySelector('background'));
     activate_bg_animation(nextCurtain.querySelector('background'));
     if (nextCurtain) {
@@ -703,7 +767,7 @@ const defaultNextCutain = (self) => {
 
 const sleep = (t)=> {
   return new Promise(function(resolve, reject) {
-    setTimeout(resolve, t);
+    setTimeout(resolve, DEBUG?0:t);
   })
   
 }
@@ -717,7 +781,7 @@ const sleep = (t)=> {
 */
 
 var cardSelectionTemplate = doc.getElementById('selection-1');
-
+/*
 var divClone;
 var i = 1;
 for (var i = 2; i <= 4; i++){
@@ -726,6 +790,7 @@ for (var i = 2; i <= 4; i++){
   cardSelectionTemplate.parentNode.insertBefore(divClone, cardSelectionTemplate.nextSibling);
 
 }
+*/
 
 
 /*
@@ -777,22 +842,17 @@ const fadeIn = (selector)=>{
   }).add({
     opacity: 1,
   });
+  if (DEBUG)
+    return;
   return animation.finished;
 }
 
 window.intro_next = function (self){
   var obj = self.obj;
   timeline([
-    [
-      function(){
-        document.getElementById('float-top-right').classList.remove('hidden');
-      }, 500
-    ],
-    [
-      function(){
-        playMusic();
-      }, 500
-    ],
+    ()=> document.getElementById('float-top-right').classList.remove('hidden'),
+    ()=> sleep(500),
+    ()=> playMusic(),
     ()=> sleep(1000),
     ()=> deactivate_bg_animation(doc.getElementById('intro').querySelector('background')),
     ()=> fadeIn('#intro-tran-text p'),
@@ -800,6 +860,7 @@ window.intro_next = function (self){
 
   ])
 }
+
 const intro_drags = Array.from(document.querySelectorAll('#intro [drag]')).map(e=>[e, parseInt(e.getAttribute('drag'))]);
 window.coverUpdate = (self, p, p2)=>{
   intro_drags.forEach(e=>{
@@ -837,6 +898,7 @@ const stage_get_arrows = (obj)=>{
   return Array.from(obj.children).filter(e=>e.tagName == 'ARROWS')[0]
 }
 const move_bg = (obj, level, total)=>{
+  console.log('level:',level,'/',total);
   return new Promise(function(resolve, reject) {
     var img = Array.from(obj.children).filter(e=>e.tagName == 'BACKGROUND')[0].querySelector('bg g');
     img.translateX = "calc((-100% + var(--window-width, 100vw)) / "+total+" * "+level+")";
@@ -845,13 +907,12 @@ const move_bg = (obj, level, total)=>{
   })
 }
 
-const arrange_cards = (card_divs, right)=>{
+const arrange_cards = (card_divs, right, full_height)=>{
   card_divs = Array.from(card_divs).filter(e=>e.classList.contains('active'));
-  console.log(card_divs);
   var alt = right===undefined? Math.random() > 0.5: right;
   var card_count = card_divs.length;
   var start = (alt?0:-0) - 0.125;
-  var end = (alt?0.85:0.75)+Math.random()*0.01 - 0.06;
+  var end = (alt?0.85:(full_height?0.85:0.75))+Math.random()*0.01 - 0.06;
   var h = end-start;
   var d = 0.06;
   var seg = h / card_count - d * 2;
@@ -883,20 +944,12 @@ const arrange_cards = (card_divs, right)=>{
   var height_proportions = card_divs.map(e=>e.querySelector('card-text').clientHeight);
   var min_proportion = height_proportions.min();
   var max_proportion = height_proportions.max();
-  LOG(height_proportions)
-  LOG(max_proportion)
-  LOG(min_proportion)
 
   height_proportions = height_proportions.map(e=>(((e-min_proportion) / max_proportion)**2 + 1)**1.3);
   var total_proportions = height_proportions.sum();
   
-  LOG(height_proportions)
-  LOG(total_proportions)
-  LOG(card_divs.length)
-
   card_divs.forEach((e, i)=>{
       var p = (height_proportions.slice(0,i).sum() + height_proportions[i]/2) / total_proportions * (card_divs.length  );
-      LOG(p)
       var t = start+Math.random()*seg + d + p*(seg+2*d);
       e.style.top=(t*100)+'%';
       
@@ -967,75 +1020,64 @@ const wait_for_arrows = (obj) =>{
   })
 }
 
-const stage_next = function(self){
+window.stage_next = function(self){
   var obj = self.obj;
+  var max_i = self.max_i;
   var card_divs = Array.from(obj.children).filter(e=>e.tagName == 'BACKGROUND')[0].querySelectorAll('card');
   var intro_text_container = Array.from(obj.children).filter(e=>e.classList.contains('thin-body'))[0];
   var intro_texts = intro_text_container.querySelectorAll('p');
-  timeline([
 
+  var last_page_is_left = ()=>Array.from(card_divs).filter(e=>e.classList.contains('active')).length % 2 == 0;
+
+
+  var tl = [];
+
+  tl.push.apply(tl,[
     // Intro text
     ()=> sleep(1500),
     ()=> fadeIn(intro_texts),
     ()=> sleep(500),
     ()=> wait_for_arrows(obj),
-
-    // 1st selection
     ()=> hide(intro_text_container),
-    ()=> sleep(500),
-    ()=> move_bg(obj, 1, 4),
-    ()=> sleep(2000),
-    ()=> set_card_divs(card_divs, current_cards_i++),
-    ()=> arrange_cards(card_divs),
-    ()=> fadeIn(card_divs),
-    ()=> sleep(1500),
-    ()=> wait_for_arrows(obj),
+  ])
+  for (let i = 0; i < max_i; i++){
+    tl.push.apply(tl,[
+      // i th selection
+      ()=> hide(card_divs),
+      ()=> sleep(500),
+      ()=> move_bg(obj, i+1, max_i),
+      ()=> sleep(2000),
+      ()=> set_card_divs(card_divs, current_cards_i++),
+      ()=> arrange_cards(card_divs, (i==max_i-1)?!last_page_is_left():undefined, (i==max_i-1)?true:undefined),
+      ()=> fadeIn(card_divs),
+      ()=> sleep(1500),
+      ()=> (i==max_i-1)?1:wait_for_arrows(obj),
+    ])
+  }
 
-    // 2nd selection
-    ()=> hide(card_divs),
-    ()=> sleep(500),
-    ()=> move_bg(obj, 2, 4),
-    ()=> sleep(2000),
-    ()=> set_card_divs(card_divs, current_cards_i++),
-    ()=> arrange_cards(card_divs),
-    ()=> fadeIn(card_divs),
-    ()=> sleep(1500),
-    ()=> wait_for_arrows(obj),
-
-    // 3rd selection
-    ()=> hide(card_divs),
-    ()=> sleep(500),
-    ()=> move_bg(obj, 3, 4),
-    ()=> sleep(2000),
-    ()=> set_card_divs(card_divs, current_cards_i++),
-    ()=> arrange_cards(card_divs),
-    ()=> fadeIn(card_divs),
-    ()=> sleep(1500),
-    ()=> wait_for_arrows(obj),
-
-    // 4th selection
-    ()=> hide(card_divs),
-    ()=> sleep(500),
-    ()=> move_bg(obj, 4, 4),
-    ()=> sleep(2000),
-    ()=> set_card_divs(card_divs, current_cards_i++),
-    ()=> arrange_cards(card_divs, false),
-    ()=> fadeIn(card_divs),
-    ()=> sleep(1500),
-
+  tl.push.apply(tl,[
 
     defaultNextCutain(self),
 
+  ]);
+  timeline(tl)
+}
+
+
+
+
+
+
+
+window.sort_start = function (self){
+  var obj = self.obj;
+  
+  timeline([
+    ()=> fadeIn('#intro-tran-text p'),
+    defaultNextCutain(self)
+
   ])
 }
-window.stage_next = stage_next
-
-
-
-
-
-
-
 
 
 
@@ -1046,3 +1088,14 @@ window.stage_next = stage_next
 var curtains = makeCurtains(doc.getElementById('stages') );
 
 activate_bg_animation(doc.getElementById('intro').querySelector('background'));
+
+
+
+
+/*
+    Skip
+*/
+if (skip){
+  current_cards_i = [0,0,3,6,8,10,12][skip];
+  LOG('current_cards_i', current_cards_i);
+}

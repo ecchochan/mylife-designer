@@ -254,7 +254,7 @@ block {
 }
 
 [soft-shadow]{
-  filter: drop-shadow( 3px 3px 20px rgba(0, 0, 0, .7));
+  // filter: drop-shadow( 3px 3px 20px rgba(0, 0, 0, .7));
 }
 
 
@@ -479,7 +479,7 @@ bg {
 }
 
 .selection{
-  background:rgb(0, 129, 11);
+  background:#80b182;
 }
 
 arrows {
@@ -517,7 +517,10 @@ card {
   min-width: fit-content;
   align-items: center;
   transition: opacity 0.8s ease, filter 0.3s ease-out;
-  z-index:3
+  z-index:3;
+  &:not(.active){
+    display:none;
+  }
 }
 card-text {
     position: relative;
@@ -532,7 +535,7 @@ card-text {
 }
 .chosen {
   
-  filter: drop-shadow(0px 0px 15px rgb(255, 190, 51)) drop-shadow(0px 0px 30px rgb(255, 190, 51));
+  
 }
 
 card p {
@@ -542,4 +545,16 @@ card p {
     min-width: 8em;
     margin-left: 50%;
     transform: translateX(-50%);
+}
+
+@keyframes spin { 
+  0%   {transform: rotate(0deg); }
+  50%  {transform: rotate(30deg); }
+  100%  {transform: rotate(0deg); }
+}
+
+
+ss {
+  animation: 4000ms cubic-bezier(0.5, 0, 0.5, 1) 2000ms infinite running spin;
+  transform-origin:656px 280px;
 }

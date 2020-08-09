@@ -18,7 +18,7 @@
   <script type="module" src="assets/js/curtain.js?v=1"></script>
   <!--
   <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.1/dist/alpine.min.js" defer></script>-->
-  <link type="text/css" rel="stylesheet" href="assets/css/style.css?v=1" />
+  <link type="text/css" rel="stylesheet" href="assets/css/style.css?v=2" />
 
 </head> 
 <body style="overflow: hidden;">
@@ -108,28 +108,28 @@
                       <image xlink:href="assets/img/cloud02.png" x="0" y="0" height="50px"/>
                     </g>
                     <g anime="{translateX: [400,-100], translateY: [0,150], seek:7000, duration:33500,loop: true,easing: 'linear'}" >
-                      <svg soft-shadow >
+                      <svg >
                         <image xlink:href="assets/img/cloud03.png" x="0" y="0" height="50px"/>
                       </svg>
                     </g>
                     <g anime="{translateX: [450,-100], translateY: [0,180], seek:2000, duration:47500,loop: true,easing: 'linear'}" >
-                      <svg soft-shadow >
+                      <svg >
                         <image xlink:href="assets/img/cloud04.png" x="0" y="0" height="50px"/>
                       </svg>
                     </g>
 
                     <image xlink:href="assets/img/cover-wave.png" x="0" y="60px" width="100%" height="100%"/>
                     <image xlink:href="assets/img/cover-greens.png" x="0" y="0" width="100%" height="100%"/>
-                    <svg>
+                    <g anime="{translateX: [0,0], translateY: [-5,5], direction: 'alternate',seek:2000, duration:3000,loop: true,easing: 'easeInOutSine'}">
                       <image class="fullscreen" xlink:href="assets/img/cover-buddy.png" x="40px" y="70px" width="150px"/>
-                    </svg>
-                    <g style="transform-origin:72px 360px"anime="{ direction: 'alternate',rotate: [-7,7], seek:0, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                    </g>
+                    <g style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-15,15], seek:0, duration:3000,loop: true,easing: 'easeInOutSine'}" >
                       <image xlink:href="assets/img/cover-leaf-01.png" x="72px" y="330px" width="24px"/>
                     </g>
-                    <g style="transform-origin:72px 360px"anime="{ direction: 'alternate',rotate: [-5,5], seek:600, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                    <g style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-10,10], seek:600, duration:3000,loop: true,easing: 'easeInOutSine'}" >
                       <image xlink:href="assets/img/cover-leaf-02.png" x="42px" y="330px" width="55px"/>
                     </g>
-                    <g style="transform-origin:72px 360px"anime="{ direction: 'alternate',rotate: [-5,5], seek:1200, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                    <g style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-10,10], seek:1200, duration:3000,loop: true,easing: 'easeInOutSine'}" >
                       <image xlink:href="assets/img/cover-stamen-01.png" x="58px" y="345px" width="24px"/>
                     </g>
 
@@ -190,7 +190,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
           -->
 
           
-          <div id="selection-1" class="wrapper stage selection" curtain-config="{reversible:false,next:stage_next}">
+          <div id="selection-1" class="wrapper stage selection" curtain-config="{max_i:3,reversible:false,next:stage_next}">
             <background>
               <cards>
                 <card drag="20">
@@ -230,24 +230,70 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
                       <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="100%"/>
-                      <g style="transform-origin:180px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1200, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="100%"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="100%"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'easeInOutSine'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="100%"/>
+                      <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="100%"/>
+          
+          
+          
+                      <g style="transform-origin:180px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1200, duration:2600,loop: true,easing: 'easeInOutSine'}" >
                         <image xlink:href="assets/img/bg01-branch01.png" x="188px" y="-10px" width="11%"/>
                       </g>
-                      <g style="transform-origin:85px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:0, duration:5000,loop: true,easing: 'easeInOutSine'}" >
+                      <g style="transform-origin:85px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:0, duration:3500,loop: true,easing: 'easeInOutSine'}" >
                         <image xlink:href="assets/img/bg01-branch02.png" x="80px" y="0px" width="29px"/>
                       </g>
-                      <g style="transform-origin:0px 196px" anime="{ direction: 'alternate',rotate: [-9,9], seek:2000, duration:6000,loop: true,easing: 'easeInOutSine'}" >
+                      <g style="transform-origin:0px 196px" anime="{ direction: 'alternate',rotate: [-9,9], seek:1400, duration:4500,loop: true,easing: 'easeInOutSine'}" >
                         <image xlink:href="assets/img/bg01-branch03.png" x="-3px" y="176px" width="38px"/>
                       </g>
-                      <g style="transform-origin:0px 196px" anime="{ direction: 'alternate',rotate: [0,5], seek:5000, duration:7000,loop: true,easing: 'easeInOutSine'}" >
-                        <image xlink:href="assets/img/bg01-branch04.png" x="-3px" y="70px" width="64px"/>
+                      <g style="transform-origin:0px 136px" anime="{ direction: 'alternate',rotate: [0,9], seek:3300, duration:3200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch04.png" x="0px" y="70px" width="64px"/>
                       </g>
-                      <g style="transform-origin:0px 0px" anime="{ direction: 'alternate',rotate: [-3,3], seek:5000, duration:7000,loop: true,easing: 'easeInOutSine'}" >
-                        <image xlink:href="assets/img/bg01-branch05.png" x="300px" y="-0px" width="80px"/>
+                      <g style="transform-origin:400px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1500, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch05.png" x="340px" y="-10px" width="140px"/>
+                      </g>
+                      <g style="transform-origin:110px 380px" anime="{ direction: 'alternate',rotate: [-0,9], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch07.png" x="106px" y="302px" width="26px"/>
+                      </g>
+                      <g style="transform-origin:150px 400px" anime="{ direction: 'alternate',rotate: [-0,5], seek:2200, duration:2200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch09.png" x="46px" y="268px" width="76px"/>
+                      </g>
+                      <g style="transform-origin:310px 480px" anime="{ direction: 'alternate',rotate: [-3,3], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch10.png" x="292px" y="360px" width="113px"/>
+                      </g>
+                      <g style="transform-origin:70px 420px" anime="{ direction: 'alternate',rotate: [-3,0], seek:500, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch11.png" x="0px" y="328px" width="70px"/>
+                      </g>
+                      <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:0, duration:2000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch12.png" x="646px" y="329px" width="46px"/>
+                      </g>
+                      <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch13.png" x="550px" y="375px" width="100px"/>
+                      </g>
+                      <g style="transform-origin:776px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch14.png" x="750px" y="375px" width="50px"/>
+                      </g>  
+                      <g style="transform-origin:896px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1800, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch15.png" x="870px" y="367px" width="36px"/>
+                      </g>
+                      <g style="transform-origin:916px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch16.png" x="890px" y="357px" width="50px"/>
+                      </g>
+                      <g style="transform-origin:656px 280px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2400,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch17.png" x="630px" y="197px" width="46px"/>
+                      </g>
+                      <g style="transform-origin:1120px 350px" anime="{ direction: 'alternate',rotate: [-0,2], seek:2600, duration:3200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch18.png" x="1000px" y="150px" width="80px"/>
                       </g>
                       <g  >
-                        <image xlink:href="assets/img/bg01-branch06.png" x="20px" y="0px" width="150px"/>
+                        <image xlink:href="assets/img/bg01-branch06.png" x="0px" y="343px" width="165px"/>
                       </g>
+                      <g  >
+                        <image xlink:href="assets/img/bg01-branch08.png" x="183px" y="388px" width="138px"/>
+                      </g>
+          
+          
+          
                     </g>
 
 
@@ -263,20 +309,539 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               <div flex-1 flex-column>
                 <p en="Choose what you want," zh="按照你真實的想法，"></p>
                 <p en="according to your true thought …" zh="選出你想要的 …"></p>
+                <p style="font-size: 0.8em;color: rgb(62 95 0);" zh="（你可以無上限地選擇）" en="(You can choose without limit)"></p>
               </div>
             </div>
             <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
           </div>
 
 
+          
+          <div id="selection-2" class="wrapper stage selection" curtain-config="{max_i:3,reversible:false,next:stage_next}">
+            <background>
+              <cards>
+                <card drag="20">
+                  <card-text>
+                    <p>Mentally<br/>Satisfied</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Closely<br/>connected<br/>with God</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Catch up on<br/>technology</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+              </cards>
+              <bg style="display: flex;">
+                <img-container style="height:100%;transition:none;">
+                  <!-- Specify height & width because svg cannot infer the width from height-->
+                  <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
+                    <g slow-transition>
+                      <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="100%"/>
+                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="100%"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="100%"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'easeInOutSine'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="100%"/>
+                      <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="100%"/>
+          
+          
+          
+                      <g style="transform-origin:180px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1200, duration:2600,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch01.png" x="188px" y="-10px" width="11%"/>
+                      </g>
+                      <g style="transform-origin:85px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:0, duration:3500,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch02.png" x="80px" y="0px" width="29px"/>
+                      </g>
+                      <g style="transform-origin:0px 196px" anime="{ direction: 'alternate',rotate: [-9,9], seek:1400, duration:4500,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch03.png" x="-3px" y="176px" width="38px"/>
+                      </g>
+                      <g style="transform-origin:0px 136px" anime="{ direction: 'alternate',rotate: [0,9], seek:3300, duration:3200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch04.png" x="0px" y="70px" width="64px"/>
+                      </g>
+                      <g style="transform-origin:400px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1500, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch05.png" x="340px" y="-10px" width="140px"/>
+                      </g>
+                      <g style="transform-origin:110px 380px" anime="{ direction: 'alternate',rotate: [-0,9], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch07.png" x="106px" y="302px" width="26px"/>
+                      </g>
+                      <g style="transform-origin:150px 400px" anime="{ direction: 'alternate',rotate: [-0,5], seek:2200, duration:2200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch09.png" x="46px" y="268px" width="76px"/>
+                      </g>
+                      <g style="transform-origin:310px 480px" anime="{ direction: 'alternate',rotate: [-3,3], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch10.png" x="292px" y="360px" width="113px"/>
+                      </g>
+                      <g style="transform-origin:70px 420px" anime="{ direction: 'alternate',rotate: [-3,0], seek:500, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch11.png" x="0px" y="328px" width="70px"/>
+                      </g>
+                      <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:0, duration:2000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch12.png" x="646px" y="329px" width="46px"/>
+                      </g>
+                      <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch13.png" x="550px" y="375px" width="100px"/>
+                      </g>
+                      <g style="transform-origin:776px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch14.png" x="750px" y="375px" width="50px"/>
+                      </g>  
+                      <g style="transform-origin:896px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1800, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch15.png" x="870px" y="367px" width="36px"/>
+                      </g>
+                      <g style="transform-origin:916px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch16.png" x="890px" y="357px" width="50px"/>
+                      </g>
+                      <g style="transform-origin:656px 280px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2400,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch17.png" x="630px" y="197px" width="46px"/>
+                      </g>
+                      <g style="transform-origin:1120px 350px" anime="{ direction: 'alternate',rotate: [-0,2], seek:2600, duration:3200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch18.png" x="1000px" y="150px" width="80px"/>
+                      </g>
+                      <g  >
+                        <image xlink:href="assets/img/bg01-branch06.png" x="0px" y="343px" width="165px"/>
+                      </g>
+                      <g  >
+                        <image xlink:href="assets/img/bg01-branch08.png" x="183px" y="388px" width="138px"/>
+                      </g>
+          
+          
+          
+                    </g>
+
+
+                  </svg>
+                </img-container>
+
+
+
+
+              </bg>
+            </background>
+            <div class="thin-body">
+              <div flex-1 flex-column>
+                <p en="It there anything else you want," zh="還有什麼你想要的，"></p>
+                <p en="even you never think of …" zh="即使你未曾想像過 …"></p>
+              </div>
+            </div>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+          </div>
+
+
+          
+          <div id="selection-3" class="wrapper stage selection" curtain-config="{max_i:2,reversible:false,next:stage_next}">
+            <background>
+              <cards>
+                <card drag="20">
+                  <card-text>
+                    <p>Mentally<br/>Satisfied</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Closely<br/>connected<br/>with God</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Catch up on<br/>technology</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+              </cards>
+              <bg style="display: flex;">
+                <img-container style="height:100%;transition:none;">
+                  <!-- Specify height & width because svg cannot infer the width from height-->
+                  <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
+                    <g slow-transition>
+                      <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="100%"/>
+                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="100%"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="100%"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'easeInOutSine'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="100%"/>
+                      <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="100%"/>
+          
+          
+          
+                      <g style="transform-origin:180px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1200, duration:2600,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch01.png" x="188px" y="-10px" width="11%"/>
+                      </g>
+                      <g style="transform-origin:85px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:0, duration:3500,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch02.png" x="80px" y="0px" width="29px"/>
+                      </g>
+                      <g style="transform-origin:0px 196px" anime="{ direction: 'alternate',rotate: [-9,9], seek:1400, duration:4500,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch03.png" x="-3px" y="176px" width="38px"/>
+                      </g>
+                      <g style="transform-origin:0px 136px" anime="{ direction: 'alternate',rotate: [0,9], seek:3300, duration:3200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch04.png" x="0px" y="70px" width="64px"/>
+                      </g>
+                      <g style="transform-origin:400px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1500, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch05.png" x="340px" y="-10px" width="140px"/>
+                      </g>
+                      <g style="transform-origin:110px 380px" anime="{ direction: 'alternate',rotate: [-0,9], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch07.png" x="106px" y="302px" width="26px"/>
+                      </g>
+                      <g style="transform-origin:150px 400px" anime="{ direction: 'alternate',rotate: [-0,5], seek:2200, duration:2200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch09.png" x="46px" y="268px" width="76px"/>
+                      </g>
+                      <g style="transform-origin:310px 480px" anime="{ direction: 'alternate',rotate: [-3,3], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch10.png" x="292px" y="360px" width="113px"/>
+                      </g>
+                      <g style="transform-origin:70px 420px" anime="{ direction: 'alternate',rotate: [-3,0], seek:500, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch11.png" x="0px" y="328px" width="70px"/>
+                      </g>
+                      <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:0, duration:2000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch12.png" x="646px" y="329px" width="46px"/>
+                      </g>
+                      <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch13.png" x="550px" y="375px" width="100px"/>
+                      </g>
+                      <g style="transform-origin:776px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch14.png" x="750px" y="375px" width="50px"/>
+                      </g>  
+                      <g style="transform-origin:896px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1800, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch15.png" x="870px" y="367px" width="36px"/>
+                      </g>
+                      <g style="transform-origin:916px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch16.png" x="890px" y="357px" width="50px"/>
+                      </g>
+                      <g style="transform-origin:656px 280px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2400,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch17.png" x="630px" y="197px" width="46px"/>
+                      </g>
+                      <g style="transform-origin:1120px 350px" anime="{ direction: 'alternate',rotate: [-0,2], seek:2600, duration:3200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch18.png" x="1000px" y="150px" width="80px"/>
+                      </g>
+                      <g  >
+                        <image xlink:href="assets/img/bg01-branch06.png" x="0px" y="343px" width="165px"/>
+                      </g>
+                      <g  >
+                        <image xlink:href="assets/img/bg01-branch08.png" x="183px" y="388px" width="138px"/>
+                      </g>
+          
+          
+          
+                    </g>
+
+
+                  </svg>
+                </img-container>
+
+
+
+
+              </bg>
+            </background>
+            <div class="thin-body">
+              <div flex-1 flex-column>
+                <p en="Follow your instinct," zh="忠於你的直覺，"></p>
+                <p en="get what you want …" zh="想要便要 …"></p>
+              </div>
+            </div>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+          </div>
+
+
+          
+          <div id="selection-4" class="wrapper stage selection" curtain-config="{max_i:2,reversible:false,next:stage_next}">
+            <background>
+              <cards>
+                <card drag="20">
+                  <card-text>
+                    <p>Mentally<br/>Satisfied</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Closely<br/>connected<br/>with God</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Catch up on<br/>technology</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+              </cards>
+              <bg style="display: flex;">
+                <img-container style="height:100%;transition:none;">
+                  <!-- Specify height & width because svg cannot infer the width from height-->
+                  <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
+                    <g slow-transition>
+                      <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="100%"/>
+                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="100%"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="100%"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'easeInOutSine'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="100%"/>
+                      <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="100%"/>
+          
+          
+          
+                      <g style="transform-origin:180px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1200, duration:2600,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch01.png" x="188px" y="-10px" width="11%"/>
+                      </g>
+                      <g style="transform-origin:85px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:0, duration:3500,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch02.png" x="80px" y="0px" width="29px"/>
+                      </g>
+                      <g style="transform-origin:0px 196px" anime="{ direction: 'alternate',rotate: [-9,9], seek:1400, duration:4500,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch03.png" x="-3px" y="176px" width="38px"/>
+                      </g>
+                      <g style="transform-origin:0px 136px" anime="{ direction: 'alternate',rotate: [0,9], seek:3300, duration:3200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch04.png" x="0px" y="70px" width="64px"/>
+                      </g>
+                      <g style="transform-origin:400px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1500, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch05.png" x="340px" y="-10px" width="140px"/>
+                      </g>
+                      <g style="transform-origin:110px 380px" anime="{ direction: 'alternate',rotate: [-0,9], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch07.png" x="106px" y="302px" width="26px"/>
+                      </g>
+                      <g style="transform-origin:150px 400px" anime="{ direction: 'alternate',rotate: [-0,5], seek:2200, duration:2200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch09.png" x="46px" y="268px" width="76px"/>
+                      </g>
+                      <g style="transform-origin:310px 480px" anime="{ direction: 'alternate',rotate: [-3,3], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch10.png" x="292px" y="360px" width="113px"/>
+                      </g>
+                      <g style="transform-origin:70px 420px" anime="{ direction: 'alternate',rotate: [-3,0], seek:500, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch11.png" x="0px" y="328px" width="70px"/>
+                      </g>
+                      <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:0, duration:2000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch12.png" x="646px" y="329px" width="46px"/>
+                      </g>
+                      <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch13.png" x="550px" y="375px" width="100px"/>
+                      </g>
+                      <g style="transform-origin:776px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch14.png" x="750px" y="375px" width="50px"/>
+                      </g>  
+                      <g style="transform-origin:896px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1800, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch15.png" x="870px" y="367px" width="36px"/>
+                      </g>
+                      <g style="transform-origin:916px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch16.png" x="890px" y="357px" width="50px"/>
+                      </g>
+                      <g style="transform-origin:656px 280px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2400,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch17.png" x="630px" y="197px" width="46px"/>
+                      </g>
+                      <g style="transform-origin:1120px 350px" anime="{ direction: 'alternate',rotate: [-0,2], seek:2600, duration:3200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch18.png" x="1000px" y="150px" width="80px"/>
+                      </g>
+                      <g  >
+                        <image xlink:href="assets/img/bg01-branch06.png" x="0px" y="343px" width="165px"/>
+                      </g>
+                      <g  >
+                        <image xlink:href="assets/img/bg01-branch08.png" x="183px" y="388px" width="138px"/>
+                      </g>
+          
+          
+          
+                    </g>
+
+
+                  </svg>
+                </img-container>
+
+
+
+
+              </bg>
+            </background>
+            <div class="thin-body">
+              <div flex-1 flex-column>
+                <p en="This journey is only for you, " zh="這趟是專屬你的旅程，"></p>
+                <p en="you can decide everything …" zh="一切由你決定 …"></p>
+              </div>
+            </div>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+          </div>
+
+
+          <div id="selection-5" class="wrapper stage selection" curtain-config="{max_i:2,reversible:false,next:stage_next}">
+            <background>
+              <cards>
+                <card drag="20">
+                  <card-text>
+                    <p>Mentally<br/>Satisfied</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Closely<br/>connected<br/>with God</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Catch up on<br/>technology</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+                <card drag="20">
+                  <card-text>
+                    <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+                  </card-text>
+                </card>
+              </cards>
+              <bg style="display: flex;">
+                <img-container style="height:100%;transition:none;">
+                  <!-- Specify height & width because svg cannot infer the width from height-->
+                  <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
+                    <g slow-transition>
+                      <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="100%"/>
+                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="100%"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="100%"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'easeInOutSine'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="100%"/>
+                      <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="100%"/>
+          
+          
+          
+                      <g style="transform-origin:180px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1200, duration:2600,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch01.png" x="188px" y="-10px" width="11%"/>
+                      </g>
+                      <g style="transform-origin:85px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:0, duration:3500,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch02.png" x="80px" y="0px" width="29px"/>
+                      </g>
+                      <g style="transform-origin:0px 196px" anime="{ direction: 'alternate',rotate: [-9,9], seek:1400, duration:4500,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch03.png" x="-3px" y="176px" width="38px"/>
+                      </g>
+                      <g style="transform-origin:0px 136px" anime="{ direction: 'alternate',rotate: [0,9], seek:3300, duration:3200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch04.png" x="0px" y="70px" width="64px"/>
+                      </g>
+                      <g style="transform-origin:400px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1500, duration:3000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch05.png" x="340px" y="-10px" width="140px"/>
+                      </g>
+                      <g style="transform-origin:110px 380px" anime="{ direction: 'alternate',rotate: [-0,9], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch07.png" x="106px" y="302px" width="26px"/>
+                      </g>
+                      <g style="transform-origin:150px 400px" anime="{ direction: 'alternate',rotate: [-0,5], seek:2200, duration:2200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch09.png" x="46px" y="268px" width="76px"/>
+                      </g>
+                      <g style="transform-origin:310px 480px" anime="{ direction: 'alternate',rotate: [-3,3], seek:0, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch10.png" x="292px" y="360px" width="113px"/>
+                      </g>
+                      <g style="transform-origin:70px 420px" anime="{ direction: 'alternate',rotate: [-3,0], seek:500, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch11.png" x="0px" y="328px" width="70px"/>
+                      </g>
+                      <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:0, duration:2000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch12.png" x="646px" y="329px" width="46px"/>
+                      </g>
+                      <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2000,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch13.png" x="550px" y="375px" width="100px"/>
+                      </g>
+                      <g style="transform-origin:776px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch14.png" x="750px" y="375px" width="50px"/>
+                      </g>  
+                      <g style="transform-origin:896px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1800, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch15.png" x="870px" y="367px" width="36px"/>
+                      </g>
+                      <g style="transform-origin:916px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2800,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch16.png" x="890px" y="357px" width="50px"/>
+                      </g>
+                      <g style="transform-origin:656px 280px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2400,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch17.png" x="630px" y="197px" width="46px"/>
+                      </g>
+                      <g style="transform-origin:1120px 350px" anime="{ direction: 'alternate',rotate: [-0,2], seek:2600, duration:3200,loop: true,easing: 'easeInOutSine'}" >
+                        <image xlink:href="assets/img/bg01-branch18.png" x="1000px" y="150px" width="80px"/>
+                      </g>
+                      <g  >
+                        <image xlink:href="assets/img/bg01-branch06.png" x="0px" y="343px" width="165px"/>
+                      </g>
+                      <g  >
+                        <image xlink:href="assets/img/bg01-branch08.png" x="183px" y="388px" width="138px"/>
+                      </g>
+          
+          
+          
+                    </g>
+
+
+                  </svg>
+                </img-container>
+
+
+
+
+              </bg>
+            </background>
+            <div class="thin-body">
+              <div flex-1 flex-column>
+                <p en="Almost time to go …" zh="差不多可以出發了 …"></p>
+              </div>
+            </div>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+          </div>
+
 
           <!--
 
-            Stage 4 - Selection Screen
+            Stage 4 - Sort Selection
 
           -->
 
           
+          <div id="intro-tran" class="wrapper stage" curtain-config="{reversible:false,next:sort_start}"  style="background: #547A41;">
+            <div flex-1 >
+            </div>
+            <div flex-4 middle-align id="intro-tran-text" class="thin-body">
+              <div width-100p flex-column>
+                <p en="One day afternoon" zh="有一天下午，"></p>
+                <p en="you received a letter, it wrote," zh="你收到一封信，信上寫著："></p>
+                <p en="“You are invited to join a long journey, " zh="「您受邀參加一趟悠長旅程，"></p>
+                <p en="which has no limit, and you can explore yourself as you want.”" zh="這趟旅程沒有任何限制，"></p>
+                <p en="and you can explore yourself as you want.”" zh="你可以隨心所欲地發掘自我。」"></p>
+                <p en="Why not give it a try? " zh="去嗎？"></p>
+              </div>
+            </div>
+            <div flex-1>
+            </div>
+          </div>
+
 
 
 
