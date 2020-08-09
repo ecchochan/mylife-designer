@@ -2,7 +2,7 @@ import {
   styler
 } from "./styler.min.js"
 
-var css = `.curtain {pointer-events: none;position: absolute;z-index: 999;left: 0;top: 0;-webkit-transform-origin: top left;transform-origin: top left;}.arrow{color:white;position: absolute;pointer-events: none;width: 25px;z-index:999;opacity: 0;transform: translate(-50%,-50%) rotateZ(180deg);}`
+var css = `.curtain {pointer-events: none;position: absolute;z-index: 999;left: 0;top: 0;-webkit-transform-origin: top left;transform-origin: top left;}.arrow{color:white;position: absolute;pointer-events: none;width: 25px;z-index:999;opacity: 0;transform: translate(-50%,-50%) rotateZ(0deg);}`
 
 styler('curtain-css', css);
 
@@ -201,6 +201,7 @@ var makeCurtain = (function () {
     reversible: true,
     but_y_pos: 0.25,
     nextFrame: [],
+    nextClick: [],
     startX: right_pad + but_size * but_horiz_offset * 3,
     startY: right_pad + but_size * but_horiz_offset,
 
@@ -698,6 +699,24 @@ var makeCurtain = (function () {
       self.endY = 0;
     }
 
+    function finishCurtain(){
+      self.startX = 0;
+      self.endX = -9999999;
+      if (self.next){
+        self.next(self);
+        Array.from(self.obj.parentElement.children).filter(e=>e!=self.obj).forEach(e=>{
+          e.style.pointerEvents="none";
+          setTimeout(function(){
+            e.style.display="none";
+          },3000)
+
+        })
+
+      }
+      if (!self.reversible)
+        self.closed = true;
+    }
+
     function endCurtain(e) {
       if (e === true){
         self.startX = 0;
@@ -732,21 +751,7 @@ var makeCurtain = (function () {
       );
 
       if (clicked || (self.endX - self.startX < (!opened ? -width / 3 : -width * 2 / 3))) {
-        self.startX = 0;
-        self.endX = -9999999;
-        if (self.next){
-          self.next(self);
-          Array.from(self.obj.parentElement.children).filter(e=>e!=self.obj).forEach(e=>{
-            e.style.pointerEvents="none";
-            setTimeout(function(){
-              e.style.display="none";
-            },3000)
-
-          })
-
-        }
-        if (!self.reversible)
-          self.closed = true;
+        finishCurtain()
       } else {
         self.startX = 0;
         self.startY = 0;
@@ -758,6 +763,7 @@ var makeCurtain = (function () {
     self.show = show;
     self.hide = hide;
     self.endCurtain = endCurtain;
+    self.finishCurtain = finishCurtain;
 
     var first_touch = true;
     document.addEventListener('mousedown', (e) => {
@@ -774,11 +780,17 @@ var makeCurtain = (function () {
             if (wscript !== null) {
                 wscript.SendKeys("{F11}");
             }
-        }*/
+        }
+        */
 
       }
-      if (startCurtain(e))
+      if (self.nextClick.length>0){
+        self.nextClick.shift()();
+      }
+      if (startCurtain(e)){
         document.addEventListener('mousemove', moveCurtain)
+      }
+
     })
 
     document.addEventListener('mouseup', (e) => {

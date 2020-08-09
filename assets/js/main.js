@@ -24,15 +24,32 @@ var TRANSITION = {
 
 
 const urlParams = Object.fromEntries(new URLSearchParams(window.location.search));
-console.log(urlParams)
 DEBUG = urlParams.debug
-
 
 /** 
 
   Utils
 
 **/
+
+function getRandomSubarray(arr, size) {
+  if (size === undefined)size = arr.length;
+  var shuffled = arr.slice(0), i = arr.length, temp, index;
+  while (i--) {
+      index = Math.floor((i + 1) * Math.random());
+      temp = shuffled[index];
+      shuffled[index] = shuffled[i];
+      shuffled[i] = temp;
+  }
+  var ret = shuffled.slice(0, size);
+  i = 0;
+  while (ret.length < 0)
+    shuffled.push(arr[Math.floor((arr.length) * Math.random())])
+  return ret;
+  
+}
+
+
 function requestFullScreen() {
   if ((document.fullScreenElement && document.fullScreenElement !== null) ||    
    (!document.mozFullScreen && !document.webkitIsFullScreen)) {
@@ -54,6 +71,18 @@ function requestFullScreen() {
   }  
 }
 
+var pointerEventToXY = function(e){
+  var out = {x:0, y:0};
+  if(e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
+    var touch = e.originalEvent?(e.originalEvent.touches[0] || e.originalEvent.changedTouches[0]):e.changedTouches[0];
+    out.x = touch.pageX;
+    out.y = touch.pageY;
+  } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
+    out.x = e.pageX;
+    out.y = e.pageY;
+  }
+  return out;
+};
 document.querySelectorAll('.fullscreen').forEach(e=>{
   e.addEventListener('click',requestFullScreen);
   e.addEventListener('touchstart',requestFullScreen);
@@ -79,6 +108,15 @@ Array.prototype.sum = function() {
   return this.reduce((a, b)=>(a+b), 0);
 };
 
+Object.defineProperty(Array.prototype, 'shuffle', {
+  value: function() {
+      for (let i = this.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [this[i], this[j]] = [this[j], this[i]];
+      }
+      return this;
+  }
+});
 
 const mix = function(a, b, p, h, k) {
   var d = k - h;
@@ -174,7 +212,7 @@ const skip = parseInt(urlParams.skip);
 if (skip){
   LOGT('Skipping '+skip+' stages')
   var stages_divs = Array.from(document.getElementById('stages').children);
-  stages_divs.splice(1,skip).forEach(e=>{LOG(e);e.remove()});
+  stages_divs.splice(1,skip).forEach(e=>{e.remove()});
   
 }
 
@@ -250,7 +288,7 @@ function update_vh() {
     document.getElementById('body').style.marginLeft = parseInt((_width - width) /  2) + 'px';
   }
 
-  document.getElementById('body').style.transform = scale==1?"":'scale('+scale+')';
+  document.getElementById('body').style.transform = scale==1?"":'scale('+scale*1.01+')';
   let vh = height * 0.01;
   let vw = width * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -259,11 +297,12 @@ function update_vh() {
   
   document.documentElement.style.setProperty('--window-height', `${height}px`);
   document.documentElement.style.setProperty('--window-width', `${width}px`);
-  document.documentElement.style.setProperty('--window-width-for-font', `${mix(400, 460, width, 330, 480)}px`);
+  document.documentElement.style.setProperty('--window-width-for-font', `${mix(400, 400, width, 330, 480)}px`);
 
   document.getElementById('zh-title-fix').setAttribute('zh',width < 360?`探索
 你的旅程`:`探索你的旅程`)
   setLang(current_lang);
+  window.setLang = setLang;
 
   document.querySelectorAll('[full-width-abs]').forEach(e=>{
     if (e.tagName == "svg")
@@ -305,16 +344,35 @@ var current_lang = isChinese?'zh':'en';
 doc.getElementById('app').classList.remove('hidden');
 FastClick.attach(doc.body);
 var setLang = function(L){
+  if (!L)L = current_lang;
   document.getElementById('body').setAttribute('lang',L);
   document.querySelectorAll('[en],[zh]').forEach(e=>{
     var EN = e.attributes['en'];
     var ZH = e.attributes['zh'];
     if (EN) EN = EN.value;
     if (ZH) ZH = ZH.value;
-    if ((L == 'en' && EN) || (L == 'zh' && !ZH))
-      e.textContent = EN;
-    if ((L == 'zh' && ZH) || (L == 'en' && !EN))
-      e.textContent = ZH;
+    if ((L == 'en' && EN) || (L == 'zh' && !ZH)){
+      EN = EN.replace(/{(.*?)}/g,(r)=>e.getAttribute(r.slice(1,-1)) || eval(r.slice(1,-1))).replace(/c/g,'<span fix-c>c</span>');
+      if (e._content != EN){
+        e._content = EN;
+        if (EN.indexOf('<span')>=0)
+          e.innerHTML = EN;
+        else
+          e.textContent = EN;
+
+      }
+        
+    }
+    if ((L == 'zh' && ZH) || (L == 'en' && !EN)){
+      ZH = ZH.replace(/{(.*?)}/g,(r)=>e.getAttribute(r.slice(1,-1)) || eval(r.slice(1,-1))).replace(/c/g,'<span fix-c>c</span>');
+      if (e._content != ZH){
+        e._content = ZH;
+        if (ZH.indexOf('<span')>=0)
+          e.innerHTML = ZH;
+        else
+          e.textContent = ZH;
+      }
+    }
   })
 
 }
@@ -520,20 +578,89 @@ window.CARDS_CHUNKS = CARDS_CHUNKS;
 
 var MUSIC_URL = 'https://www.bensound.com/bensound-music/bensound-beyondtheline.mp3';
 var files = `
-cover-bg.jpg
-cover.png
-cover-leaf-01.png
-cover-leaf-02.png
-cover-leaf-03.png
-cover-leaf-04.png
+bg01-bg.jpg
+bg01-branch01.png
+bg01-branch02.png
+bg01-branch03.png
+bg01-branch04.png
+bg01-branch05.png
+bg01-branch06.png
+bg01-branch07.png
+bg01-branch08.png
+bg01-branch09.png
+bg01-branch10.png
+bg01-branch11.png
+bg01-branch12.png
+bg01-branch13.png
+bg01-branch14.png
+bg01-branch15.png
+bg01-branch16.png
+bg01-branch17.png
+bg01-branch18.png
+bg01-card-bg-01.png
+bg01-card-bg-02.png
+bg01-card-bg-03.png
+bg01-card-bg-04.png
+bg01-card-bg-05.png
+bg01-card-bg-06.png
+bg01-card-bg-07.png
+bg01-card-bg-08.png
+bg01-card-bg-09.png
+bg01-card-bg-10.png
+bg01-card-bg-11.png
+bg01-card-bg-12.png
+bg01-greens.png
+bg01-lotus.png
+bg01-wave01.png
+bg01-wave02.png
 cloud01.png
 cloud02.png
 cloud03.png
 cloud04.png
-bg01-bg.jpg
-bg01-branch01.png
-bg01-branch02.png
+cover-bg.jpg
+cover-buddy.png
+cover-greens.png
+cover-leaf-01.png
+cover-leaf-02.png
+cover-leaf-03.png
+cover-leaf-04.png
+cover-stamen-01.png
+cover-stamen-02.png
+cover-stamen-03.png
+cover-wave.png
+cover.png
+cover.png
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+
+var card_1_bgs = `
+`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+
+var card_2_bgs = `
+`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+
+var card_3_bgs = `
+`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+
+var card_4_bgs = `
+`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+
+var card_5_bgs = `
+`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+
+var cards_bgs = [
+  card_1_bgs,
+  card_2_bgs,
+  card_3_bgs,
+  card_4_bgs,
+  card_5_bgs,
+]
+
+
+
+
+
+
+
 
 var files_loaded = 0;
 var files_total = files.length;
@@ -584,7 +711,10 @@ const generate_css = (config)=>{
   var translateY = config.translateY;
   var attr;
   var frames = [];
-  var content = [[0,0],[1,50],[0,100]].map(e=>{
+  var reverse = config.reverse
+  var content = (config.direction=='alternate'?
+                  [[reverse?1:0,0],[reverse?0:1,50],[reverse?1:0,100]]:
+                  [[reverse?1:0,0],[reverse?0:1,100]]).map(e=>{
       var i=e[0];
       var percent=e[1];
       var attrs = [];
@@ -601,14 +731,19 @@ const generate_css = (config)=>{
   }).join('');
   return [name, prefixes.map(p=>`@${p}keyframes ${name}{${content}}`).join('\n')];
 }
-
+const EASINGS = {
+  linear: 'linear',
+  swing: 'cubic-bezier(0.5, 0, 0.5, 1)'
+}
 const apply_css_from_animejs_config = (elem, config)=>{
   var name_class = 'animation_'+ makeid();
   var css = generate_css(config);
   var css_name = css[0];
   var css_keyframes = css[1];
   config.duration *= 1.5;
-  var css_elem = prefixes.map(p=>`${p}animation: ${config.duration||0}ms cubic-bezier(0.5, 0, 0.5, 1) -${config.seek||0}ms infinite running ${css_name};`).join('');
+  config.seek *= 1.5;
+  var timeing_func = EASINGS[config.easing];
+  var css_elem = prefixes.map(p=>`${p}animation: ${config.duration||0}ms ${timeing_func} -${config.seek||0}ms infinite running ${css_name};`).join('');
   var transformOrigin = elem.style.transformOrigin;
   if (transformOrigin){
     elem.style.webkitTransformOrigin = transformOrigin;
@@ -621,8 +756,7 @@ const apply_css_from_animejs_config = (elem, config)=>{
 
 }
 const activate_bg_animation = (background) =>{
-  if (!background)
-    return;
+  if (!background) return;
   var animes = background.querySelectorAll('[anime]');
   animes.forEach(e=>{
       var args = eval('('+e.getAttribute('anime')+')');
@@ -641,6 +775,7 @@ const activate_bg_animation = (background) =>{
 
 
 const deactivate_bg_animation = (background) =>{
+  if (!background) return;
   var animes = background.querySelectorAll('[anime]');
   animes.forEach(e=>{
     if (e.anime){
@@ -684,9 +819,36 @@ document.addEventListener('mousemove', function(e){
 var volumeButton = doc.getElementById('volume');
 var volumeSwitchContainer = volumeButton.querySelector('.switchContainer');
 
-var audio;
+var audio = new Audio(MUSIC_URL);
+var audio_can_start = false;
+var audio_canplaythrough = false;
+audio.addEventListener('canplaythrough', function() { 
+  audio_canplaythrough = true;
+  if (audio_can_start){
+    document.getElementById('float-top-right').classList.remove('hidden')
+    audio.play();
+  }
+}, false);
 var AUDIO_ON = volumeSwitchContainer.classList.contains('switchOn');
+var ua = window.navigator.userAgent;
+var iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+var webkit = !!ua.match(/WebKit/i);
+var iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
 var setVolume = (v)=>{
+  if (iOS){
+    try{
+      if (v < 0.5)
+        audio.pause()
+      else
+        audio.play()
+
+    }catch(err){
+      audio = new Audio(MUSIC_URL);
+      alert(err)
+    }
+    return;
+  }
+  
   anime({
     targets: audio,
     volume: v,
@@ -695,16 +857,22 @@ var setVolume = (v)=>{
   })
 
 };
+
 var playMusic = ()=>{
   if (!audio) {
-    audio = new Audio(MUSIC_URL);
     audio.volume = MAX_AUDIO_VOL;
   }
   
   audio.play();
 }
-
+var volume_recent = 0;
 var toggleMusic = ()=>{
+  var t = + new Date();
+  if (t - volume_recent < 200)
+    return
+  
+  volume_recent = t;
+
   if (AUDIO_ON) {
     AUDIO_ON = false;
     setVolume(0);
@@ -730,8 +898,11 @@ volumeButton.ontouchstart = toggleMusic;
 var start = function () {
   goNextFade(0, load_wrapper, e => {
     LOGT('Load wrapper removed.');
-    if (!skip){
+    if (!skip){{
       curtains[0].show();
+      curtains[0].nextClick.push(e=>{
+      })
+    }
     }
   });
   if (skip){
@@ -757,8 +928,8 @@ const defaultNextCutain = (self) => {
   return [function () {
     var nextCurtain = self.obj.querySelector('.curtain-page');
     deactivate_bg_animation(self.obj.querySelector('background'));
-    activate_bg_animation(nextCurtain.querySelector('background'));
     if (nextCurtain) {
+      activate_bg_animation(nextCurtain.querySelector('background'));
       nextCurtain.curtain.show();
       nextCurtain.curtain.nextFrame.push(update_vh);
     }
@@ -780,6 +951,7 @@ const sleep = (t)=> {
 
 */
 
+/*
 var cardSelectionTemplate = doc.getElementById('selection-1');
 /*
 var divClone;
@@ -833,11 +1005,13 @@ const timeline = function(frames){
   handler();
 }
 
-const fadeIn = (selector)=>{
-  LOG('fade',selector)
+const fadeIn = (selector, duration)=>{
+  if (!DEBUG)
+    duration = duration || FADE_DURATION;
+  LOG('duration',duration, 'for',selector);
   var animation = anime.timeline({
     targets: selector,
-    delay: anime.stagger(FADE_DURATION),
+    delay: anime.stagger(duration || FADE_DURATION),
     easing: 'linear'
   }).add({
     opacity: 1,
@@ -848,9 +1022,12 @@ const fadeIn = (selector)=>{
 }
 
 window.intro_next = function (self){
+  LOG(self.obj);
+  document.querySelector('html').style.background = self.obj.style.background
   var obj = self.obj;
   timeline([
-    ()=> document.getElementById('float-top-right').classList.remove('hidden'),
+    ()=> audio_can_start=true,
+    ()=> audio_canplaythrough?document.getElementById('float-top-right').classList.remove('hidden'):0,
     ()=> sleep(500),
     ()=> playMusic(),
     ()=> sleep(1000),
@@ -860,6 +1037,7 @@ window.intro_next = function (self){
 
   ])
 }
+
 
 const intro_drags = Array.from(document.querySelectorAll('#intro [drag]')).map(e=>[e, parseInt(e.getAttribute('drag'))]);
 window.coverUpdate = (self, p, p2)=>{
@@ -878,22 +1056,52 @@ window.coverUpdate = (self, p, p2)=>{
 */
 
 var current_cards_i = 0;
+var recent_touch = 0;
 const card_click_listener = function(e){
+  if (e.type == 'touchend'){
+    var cursor = pointerEventToXY(e);
+    if (last_cursor !== null && Math.sqrt(Math.pow(cursor.x - last_cursor.x,2) + Math.pow(cursor.y - last_cursor.y,2)) > 20)
+      return
+  }
+  var this_touch = + new Date();
+  if (this_touch - recent_touch < 50)
+    return;
+  recent_touch = this_touch
+
+  
+  last_cursor = null;
   var u = e.target;
-  while (u && u.tagName != 'CARD')
+  while (u && u.tagName != 'CARD'){
     u = u.parentElement;
-    
+    }
   if (u){
     u.classList.toggle('chosen');
     var card_id = parseInt(u.id);
     var card = CARDS[card_id];
     card.chosen = !card.chosen;
+    n_chosen_at_last += card.chosen?1:-1;
+    setLang();
 
+    window.dispatchEvent(new Event('card-clicked'));
+  
   }
 
+  var u = e.target;
+  while (u && u.tagName != "RESULT-DESCRIPTION"){
+    u = u.parentElement;
+  }
+  if (u){
+    var container = document.querySelector('result-container');
+    container.classList.toggle('active');
+
+    LOGT('!')
+  }
 }
+
+var last_cursor;
+doc.getElementById('app').addEventListener('touchstart',e=>last_cursor = pointerEventToXY(e));
 doc.getElementById('app').addEventListener('click',card_click_listener);
-doc.getElementById('app').addEventListener('touchstart',card_click_listener);
+doc.getElementById('app').addEventListener('touchend',card_click_listener);
 const stage_get_arrows = (obj)=>{
   return Array.from(obj.children).filter(e=>e.tagName == 'ARROWS')[0]
 }
@@ -907,8 +1115,17 @@ const move_bg = (obj, level, total)=>{
   })
 }
 
-const arrange_cards = (card_divs, right, full_height)=>{
+const arrange_cards = (card_type, card_divs, right, full_height)=>{
   card_divs = Array.from(card_divs).filter(e=>e.classList.contains('active'));
+  var bgs = getRandomSubarray(cards_bgs[card_type]);
+  card_divs.forEach((e, i)=>{
+    var bg = e.querySelector('[card-bg]');
+    var img = e.querySelector('image');
+    bg.style.display = bgs[i]?'unset':'none';
+    if (bgs[i])
+      img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', bgs[i] )
+  })
+  
   var alt = right===undefined? Math.random() > 0.5: right;
   var card_count = card_divs.length;
   var start = (alt?0:-0) - 0.125;
@@ -920,8 +1137,8 @@ const arrange_cards = (card_divs, right, full_height)=>{
   var last_left = 0;
   var actual_width = parseInt(document.documentElement.style.getPropertyValue('--window-width'));
   var horizon = mix(0.075, 0.1, actual_width, 340, 480);
-  var padding_right = mix(0.01, 0.075, actual_width, 340, 480);
-  var padding_left = mix(0.01, 0.075, actual_width, 340, 480) * 0.5;
+  var padding_right = mix(0.01, 0.03, actual_width, 340, 480);
+  var padding_left = mix(0.01, 0.03, actual_width, 340, 480) * 0.5;
   var height_adjust = 0;
   var last_div;
   var left = (e)=>{
@@ -1021,8 +1238,10 @@ const wait_for_arrows = (obj) =>{
 }
 
 window.stage_next = function(self){
+  document.querySelector('html').style.background = self.obj.style.background
   var obj = self.obj;
   var max_i = self.max_i;
+  var card_type = self.card_type;
   var card_divs = Array.from(obj.children).filter(e=>e.tagName == 'BACKGROUND')[0].querySelectorAll('card');
   var intro_text_container = Array.from(obj.children).filter(e=>e.classList.contains('thin-body'))[0];
   var intro_texts = intro_text_container.querySelectorAll('p');
@@ -1034,6 +1253,7 @@ window.stage_next = function(self){
 
   tl.push.apply(tl,[
     // Intro text
+      ()=> move_bg(obj, 0, max_i),
     ()=> sleep(1500),
     ()=> fadeIn(intro_texts),
     ()=> sleep(500),
@@ -1048,7 +1268,7 @@ window.stage_next = function(self){
       ()=> move_bg(obj, i+1, max_i),
       ()=> sleep(2000),
       ()=> set_card_divs(card_divs, current_cards_i++),
-      ()=> arrange_cards(card_divs, (i==max_i-1)?!last_page_is_left():undefined, (i==max_i-1)?true:undefined),
+      ()=> arrange_cards(card_type, card_divs, (i==max_i-1)?!last_page_is_left():undefined, (i==max_i-1)?true:undefined),
       ()=> fadeIn(card_divs),
       ()=> sleep(1500),
       ()=> (i==max_i-1)?1:wait_for_arrows(obj),
@@ -1067,18 +1287,182 @@ window.stage_next = function(self){
 
 
 
+/*
+    Sort result
+*/
+
+var n_chosen_at_last = 0;
 
 
 window.sort_start = function (self){
+  document.querySelector('html').style.background = self.obj.style.background
   var obj = self.obj;
+  var card_divs = [];
+  var intro_text_container = Array.from(obj.children).filter(e=>e.classList.contains('thin-body'))[0];
+  var intro_texts = intro_text_container.querySelectorAll('p');
+  var sort_container = doc.getElementById('sort-container');
+  var cards_container = sort_container.querySelector('cards');
+  n_chosen_at_last = 0;
+
+  var all_chosen = CARDS.filter(e=>e.chosen).map(e=>e);
+  var counter = all_chosen.reduce((acc, curr)=>(acc[curr.type] ? acc[curr.type]++ : acc[curr.type] = 1)&&acc, {});
+
+  const check_if_cards_enough = (obj) =>{
+    var nextCurtain = self.obj.querySelector('.curtain-page');
+    deactivate_bg_animation(self.obj.querySelector('background'));
+    activate_bg_animation(nextCurtain.querySelector('background'));
+    if (n_chosen_at_last == 10){
+      if (nextCurtain) {
+        nextCurtain.curtain.show();
+        nextCurtain.curtain.nextFrame.push(update_vh);
+      }
+
+    }else{
+      if (nextCurtain) {
+        nextCurtain.curtain.hide();
+        nextCurtain.curtain.nextFrame.push(update_vh);
+      }
+
+    }
+  }
+
+  console.log('chosen:',all_chosen)
+  console.log('stats:',counter);
+
+  if (all_chosen.length == 0){
+
+  }else if (all_chosen.length <= 10){
+    LOG(self);
+    var nextCurtain = self.obj.querySelector('.curtain-page');
+    nextCurtain.style.display = '';
+    nextCurtain.style.clipPath = '';
+    nextCurtain.style.webkitClipPath = '';
+    nextCurtain.style.opacity = 0;
+    nextCurtain.style.transition = "0.5s ease all";
+    nextCurtain.curtain.finishCurtain();
+    obj.offsetHeight; // no need to store this anywhere, the reference is enough
+    setTimeout(()=>{
+      nextCurtain.style.opacity = 1;
+
+    },5)
+
+  }else {
+
+    timeline([
+      ()=> fadeIn(intro_texts),
+      ()=> wait_for_arrows(obj),
+      ()=> hide(intro_texts),
+      ()=> sleep(500),
+      ()=> sort_container.style.display = "flex",
+      ()=> all_chosen.shuffle().forEach(card=>{
+        var card_div = doc.createElement('card');
+        var card_text_div = doc.createElement('card-text');
+        
+        var p = doc.createElement('p');
+        card_div.classList.add('card-sort');
+        Object.keys(card.name).forEach(
+          lang=> p.setAttribute(lang, card.name[lang].replace(/ *\u200b/g, '\n'))
+        )
+        setLang(current_lang);
+        card_div.appendChild(card_text_div);
+        card_text_div.appendChild(p);
+        card.chosen = false;
+        
+        card_div.setAttribute('id', card.id);
   
+        cards_container.appendChild(card_div);
+        card_divs.push(card_div);
+  
+      }),
+      ()=> show(sort_container),
+      ()=> card_divs.slice(8).forEach(e=>e.style.opacity=1),
+      ()=> fadeIn(doc.querySelectorAll('#sort-container .thin-body p')),
+      ()=> fadeIn(card_divs.slice(0,8), 200),
+      ()=> window.addEventListener('card-clicked', check_if_cards_enough, false),
+      //defaultNextCutain(self)
+  
+    ])
+  }
+
+}
+
+
+/*
+    Pre result
+*/
+
+
+
+
+window.pre_result = function (self){
+  document.querySelector('html').style.background = self.obj.style.background
+  var obj = self.obj;
+  var intro_text_container = Array.from(obj.children).filter(e=>e.classList.contains('thin-body'))[0];
+  var intro_texts = intro_text_container.querySelectorAll('p');
   timeline([
-    ()=> fadeIn('#intro-tran-text p'),
+    ()=> sleep(1000),
+    ()=> deactivate_bg_animation(doc.getElementById('intro').querySelector('background')),
+    ()=> fadeIn(intro_texts),
     defaultNextCutain(self)
 
   ])
 }
 
+
+
+
+window.show_result = function (self){
+  document.querySelector('html').style.background = self.obj.style.background
+  var obj = self.obj;
+  var result_container = self.obj.querySelector('result-container');
+  var all_chosen = CARDS.filter(e=>e.chosen).map(e=>e);
+  var counter_ = all_chosen.reduce((acc, curr)=>(acc[curr.type] ? acc[curr.type]++ : acc[curr.type] = 1)&&acc, {});
+  var counter = [0,0,0,0,0];
+  Object.keys(counter_).forEach(k=>counter[k]=counter_[k])
+  var dounuts = doc.getElementsByClassName('donut');
+  var total = all_chosen.length;
+  var stoke_max = 879.645943005142;
+  LOG(dounuts);
+
+  LOG(total);
+  LOG(counter_);
+  LOG(counter);
+
+
+  const start_dounuts = ()=>{
+    var config = {
+      targets: Array.from(dounuts).map(e=>e.querySelector('circle')) ,
+      easing: 'easeInOutQuint',
+      duration: 3000,
+    };
+    config['stroke-dashoffset'] = function(el, i, l) {
+      return [stoke_max,stoke_max * (1 - (counter[i] - 0.0) / total)];
+    }
+    anime(config);
+    var random_rotate = Math.random() * 45;
+    anime({
+      targets: dounuts,
+      easing: 'easeInOutQuint',
+      opacity: [0,1],
+      rotate: function(el, i, l) {
+        return [-450 - random_rotate,-90 - random_rotate+(i==0?0:(360*counter.slice(0,i).sum() / total))];
+      },
+      duration: 3000,
+      
+    });
+  
+
+  }
+
+  timeline([
+    ()=> sleep(1000),
+    ()=> show(result_container),
+    ()=> start_dounuts(),
+    ()=> sleep(1000),
+    defaultNextCutain(self)
+
+  ])
+}
 
 
 /*
@@ -1089,7 +1473,17 @@ var curtains = makeCurtains(doc.getElementById('stages') );
 
 activate_bg_animation(doc.getElementById('intro').querySelector('background'));
 
+if (urlParams.chosen){
+  let debug_chosen_count = 0;
+  getRandomSubarray(CARDS).forEach(e=>{
+    if (urlParams.num_cards && debug_chosen_count >= urlParams.num_cards)
+      return;
 
+    e.chosen=true;
+    debug_chosen_count += 1
+
+  })
+}
 
 
 /*
@@ -1097,5 +1491,21 @@ activate_bg_animation(doc.getElementById('intro').querySelector('background'));
 */
 if (skip){
   current_cards_i = [0,0,3,6,8,10,12][skip];
-  LOG('current_cards_i', current_cards_i);
 }
+// setInterval(update_vh,1000)
+
+
+const set_landscape = ()=>{
+  var is_landscape = window.orientation != 0;
+  if (is_landscape)
+    doc.body.setAttribute('is-landscape', '');
+  else
+    doc.body.removeAttribute('is-landscape');
+
+}
+window.addEventListener("orientationchange", set_landscape, false);
+
+
+set_landscape();
+
+setTimeout(update_vh,1000);
