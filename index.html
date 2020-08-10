@@ -114,18 +114,10 @@
 
                     <image xlink:href="assets/img/cover-wave.png" x="0" y="60px" width="100%" height="100%"/>
                     <image xlink:href="assets/img/cover-greens.png" x="0" y="0" width="100%" height="100%"/>
-                    <g anime="{translateX: [0,0], translateY: [-5,5], direction: 'alternate',seek:2000, duration:3000,loop: true,easing: 'swing'}">
-                      <image class="fullscreen" xlink:href="assets/img/cover-buddy.png" x="40px" y="70px" width="150px"/>
-                    </g>
-                    <g style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-15,15], seek:0, duration:3000,loop: true,easing: 'swing'}" >
-                      <image xlink:href="assets/img/cover-leaf-01.png" x="72px" y="330px" width="24px"/>
-                    </g>
-                    <g style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-10,10], seek:600, duration:3000,loop: true,easing: 'swing'}" >
-                      <image xlink:href="assets/img/cover-leaf-02.png" x="42px" y="330px" width="55px"/>
-                    </g>
-                    <g style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-10,10], seek:1200, duration:3000,loop: true,easing: 'swing'}" >
-                      <image xlink:href="assets/img/cover-stamen-01.png" x="58px" y="345px" width="24px"/>
-                    </g>
+                    <image anime="{translateX: [0,0], translateY: [-5,5], direction: 'alternate',seek:2000, duration:3000,loop: true,easing: 'swing'}" class="fullscreen" xlink:href="assets/img/cover-buddy.png" x="40px" y="70px" width="150px"/>
+                    <image style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-15,15], seek:0, duration:3000,loop: true,easing: 'swing'}" xlink:href="assets/img/cover-leaf-01.png" x="72px" y="330px" width="24px"/>
+                    <image style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-10,10], seek:600, duration:3000,loop: true,easing: 'swing'}" xlink:href="assets/img/cover-leaf-02.png" x="42px" y="330px" width="55px"/>
+                    <image style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-10,10], seek:1200, duration:3000,loop: true,easing: 'swing'}" xlink:href="assets/img/cover-stamen-01.png" x="58px" y="345px" width="24px"/>
 
 
                   </svg>
@@ -833,7 +825,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
 
 
 
-                <img style="clip-path: circle(50% at 50% 50%); background:#fff;"/>
+                <img style="clip-path: circle(50% at 50% 50%); -webkit-clip-path: circle(50% at 50% 50%);background:#fff;"/>
               </dounut-container>
               <learn-more en="Learn more", zh="了解更多">
               </learn-more>
