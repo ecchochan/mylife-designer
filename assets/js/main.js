@@ -1619,8 +1619,14 @@ const set_landscape = ()=>{
 
 }
 window.addEventListener("orientationchange", set_landscape, false);
-
-
 set_landscape();
+if (window.matchMedia("(orientation: portrait)").matches) {
+  doc.body.removeAttribute('is-landscape');
+}
+
+if (window.matchMedia("(orientation: landscape)").matches) {
+  doc.body.setAttribute('is-landscape', '');
+}
+
 
 setInterval(update_vh,1000);
