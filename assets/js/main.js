@@ -22,9 +22,14 @@ var TRANSITION = {
   EASING: 'easeOutQuart',
   DURATION: 500,
 };
-
-
-const urlParams = Object.fromEntries(new URLSearchParams(window.location.search));
+const urlParams = decodeURI(window.location.search)
+.replace('?', '')
+.split('&')
+.map(param => param.split('='))
+.reduce((values, [ key, value ]) => {
+  values[ key ] = value
+  return values
+}, {});
 DEBUG = urlParams.debug
 
 /** 
@@ -690,6 +695,11 @@ var increment_files_loaded = function () {
     update_vh();
   }
 };
+const loadjs = (fn, callback)=>{
+  var preload = new createjs.LoadQueue();
+  preload.addEventListener("fileload", callback);
+  preload.loadFile(fn);
+}
 window.onload = function() {
   files.forEach(fn => loadjs(fn, increment_files_loaded));
 };
@@ -952,7 +962,7 @@ var start = function () {
     Stage Defaults
 */
 
-const FADE_DURATION = DEBUG?0:800;
+const FADE_DURATION = DEBUG?0:350;
 
 const defaultNextCutain = (self) => {
   return [function () {
@@ -1058,12 +1068,12 @@ window.intro_next = function (self){
   timeline([
     ()=> audio_can_start=true,
     ()=> audio_canplaythrough?document.getElementById('float-top-right').classList.remove('hidden'):0,
-    ()=> sleep(1000),
+    ()=> sleep(500),
     ()=> playMusic(),
-    ()=> sleep(1000),
+    ()=> sleep(500),
     ()=> deactivate_bg_animation(doc.getElementById('intro').querySelector('background')),
-    ()=> fadeIn('#intro-tran-text p'),
-    ()=> sleep(1000),
+    ()=> fadeIn('#intro-tran-text p', 600),
+    ()=> sleep(200),
     defaultNextCutain(self)
 
   ])
@@ -1136,10 +1146,10 @@ const card_click_listener = function(e){
   if (u){
     var container = document.querySelector('result-container');
     if (is_scroll && container.classList.contains('active')){
-      if (!(document.querySelector('result-description').scrollTop == 0 && scroll_up))
+      if (!(document.querySelector('result-description').scrollTop <= 0 && scroll_up))
         return;
       
-    }
+    }document.querySelector('result-description').scrollTop = 0
     
     container.classList.toggle('active');
 
@@ -1313,7 +1323,7 @@ window.stage_next = function(self){
     // Intro text
       ()=> move_bg(obj, 0, max_i),
     ()=> sleep(1500),
-    ()=> fadeIn(intro_texts),
+    ()=> fadeIn(intro_texts, 600),
     ()=> sleep(500),
     ()=> wait_for_arrows(obj),
     ()=> hide(intro_text_container),
@@ -1396,7 +1406,7 @@ window.sort_start = function (self){
     setLang()
     timeline([
       ()=> sleep(1000),
-      ()=> fadeIn(intro_texts),
+      ()=> fadeIn(intro_texts, 600),
       ()=> wait_for_arrows(obj),
       ()=> hide(intro_texts),
       ()=> window.location = '/',
@@ -1425,7 +1435,7 @@ window.sort_start = function (self){
 
     timeline([
       ()=> sleep(1000),
-      ()=> fadeIn(intro_texts),
+      ()=> fadeIn(intro_texts, 600),
       ()=> wait_for_arrows(obj),
       ()=> hide(intro_texts),
       ()=> sleep(500),
@@ -1461,7 +1471,7 @@ window.sort_start = function (self){
       },
       ()=> show(sort_container),
       ()=> card_divs.slice(8).forEach(e=>e.style.opacity=1),
-      ()=> fadeIn(doc.querySelectorAll('#sort-container .thin-body p')),
+      ()=> fadeIn(doc.querySelectorAll('#sort-container .thin-body p'), 600),
       ()=> fadeIn(card_divs.slice(0,8), 200),
       ()=> window.addEventListener('card-clicked', check_if_cards_enough, false),
       ()=> sleep(2000),
@@ -1488,7 +1498,7 @@ window.pre_result = function (self){
   timeline([
     ()=> sleep(1000),
     ()=> deactivate_bg_animation(doc.getElementById('intro').querySelector('background')),
-    ()=> fadeIn(intro_texts),
+    ()=> fadeIn(intro_texts, 600),
     defaultNextCutain(self)
 
   ])
@@ -1629,4 +1639,4 @@ if (window.matchMedia("(orientation: landscape)").matches) {
 }
 
 
-setInterval(update_vh,1000);
+setInterval(update_vh,4000);

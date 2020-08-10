@@ -281,6 +281,8 @@ var makeCurtain = (function () {
       obj.style.clipPath = value;
       obj.style.webkitClipPath = value;
       clipPathEnabled = true;
+      self.nextFrame.push(e=>window.dispatchEvent(new Event('resize')))
+      
     }
     const disableClipPath = function(){
       if (!clipPathEnabled)
@@ -288,6 +290,7 @@ var makeCurtain = (function () {
       obj.style.clipPath = "";
       obj.style.webkitClipPath = "";
       clipPathEnabled = false;
+      self.nextFrame.push(e=>window.dispatchEvent(new Event('resize')))
     }
     enableClipPath();
 

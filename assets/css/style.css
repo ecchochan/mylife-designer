@@ -1383,7 +1383,6 @@ result-container dounut-container img {
 
 result-container result-description {
   height: 100vh;
-  overflow: visible;
   -webkit-transition: opacity 1.5s ease, -webkit-transform 1s cubic-bezier(0.2, 0.9, 0.25, 1);
   transition: opacity 1.5s ease, -webkit-transform 1s cubic-bezier(0.2, 0.9, 0.25, 1);
   -o-transition: opacity 1.5s ease, -o-transform 1s cubic-bezier(0.2, 0.9, 0.25, 1);
