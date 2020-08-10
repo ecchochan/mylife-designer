@@ -776,9 +776,9 @@ const activate_bg_animation = (background) =>{
   var animes = background.querySelectorAll('[anime]');
   animes.forEach(e=>{
       var args = eval('('+e.getAttribute('anime')+')');
-      //apply_css_from_animejs_config(e,args);
+      apply_css_from_animejs_config(e,args);
 
-      // return;
+      return;
       try{
         if (args.easing == 'swing'){
           args.easing = "easeInOutQuint"
@@ -1609,6 +1609,9 @@ if (skip){
 
 const set_landscape = ()=>{
   var is_landscape = window.orientation != 0;
+  if (window.orientation === undefined){
+    is_landscape = window.innerHeight < window.innerWidth
+  }
   if (is_landscape)
     doc.body.setAttribute('is-landscape', '');
   else
