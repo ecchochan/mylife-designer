@@ -776,16 +776,27 @@ const activate_bg_animation = (background) =>{
   var animes = background.querySelectorAll('[anime]');
   animes.forEach(e=>{
       var args = eval('('+e.getAttribute('anime')+')');
-      apply_css_from_animejs_config(e,args);
+      //apply_css_from_animejs_config(e,args);
 
-      return;
-      args.targets = e;
-      args.autoplay = false;
-      var animation = anime(args);
-      e.anime = animation;
-      if (args.seek)
-        animation.seek(args.seek)
-      animation.play();
+      // return;
+      try{
+        if (args.easing == 'swing'){
+          args.easing = "easeInOutQuint"
+
+        }
+        args.targets = e;
+        args.autoplay = false;
+        var animation = anime(args);
+        e.anime = animation;
+        if (args.seek)
+          animation.seek(args.seek)
+        animation.play();
+
+      }catch(err){
+        LOG(err)
+        LOG(e)
+
+      }
   })
 }
 
