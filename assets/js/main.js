@@ -1,5 +1,6 @@
 import { makeCurtains }  from './curtain.js';
 import {styler} from "./styler.min.js"
+// import {Howl, Howler} from 'howler';
 /*
 
   Configurations
@@ -288,7 +289,7 @@ function update_vh() {
     document.getElementById('body').style.marginLeft = parseInt((_width - width) /  2) + 'px';
   }
 
-  document.getElementById('body').style.transform = scale==1?"":'scale('+scale*1.01+')';
+  document.getElementById('body').style.transform = scale==1?"":'scale('+scale+')';
   let vh = height * 0.01;
   let vw = width * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -341,6 +342,8 @@ window.update_vh = update_vh
 var userLang = navigator.language || navigator.userLanguage; 
 var isChinese = userLang.indexOf('zh') > -1;
 var current_lang = isChinese?'zh':'en';
+if (urlParams.lang)
+  current_lang = urlParams.lang;
 doc.getElementById('app').classList.remove('hidden');
 FastClick.attach(doc.body);
 var setLang = function(L){
@@ -352,7 +355,8 @@ var setLang = function(L){
     if (EN) EN = EN.value;
     if (ZH) ZH = ZH.value;
     if ((L == 'en' && EN) || (L == 'zh' && !ZH)){
-      EN = EN.replace(/{(.*?)}/g,(r)=>e.getAttribute(r.slice(1,-1)) || eval(r.slice(1,-1))).replace(/c/g,'<span fix-c>c</span>');
+      
+      EN = EN.replace(/{(.*?)}/g,(r)=>e.getAttribute(r.slice(1,-1))|| eval(r.slice(1,-1))).replace(/c/g,'<span fix-c>c</span>');
       if (e._content != EN){
         e._content = EN;
         if (EN.indexOf('<span')>=0)
@@ -364,7 +368,8 @@ var setLang = function(L){
         
     }
     if ((L == 'zh' && ZH) || (L == 'en' && !EN)){
-      ZH = ZH.replace(/{(.*?)}/g,(r)=>e.getAttribute(r.slice(1,-1)) || eval(r.slice(1,-1))).replace(/c/g,'<span fix-c>c</span>');
+
+      ZH = ZH.replace(/\{(.*?)\}/g,(r)=>e.getAttribute(r.slice(1,-1))|| eval(r.slice(1,-1))).replace(/c/g,'<span fix-c>c</span>');
       if (e._content != ZH){
         e._content = ZH;
         if (ZH.indexOf('<span')>=0)
@@ -613,10 +618,18 @@ bg01-greens.png
 bg01-lotus.png
 bg01-wave01.png
 bg01-wave02.png
+cloud-bg.png
 cloud01.png
 cloud02.png
 cloud03.png
 cloud04.png
+contact-button-01.jpg
+contact-button-02.jpg
+contact-button-03.jpg
+contact-button-04.jpg
+contact-button-05.jpg
+contact-button-06.jpg
+contact.jpg
 cover-bg.jpg
 cover-buddy.png
 cover-greens.png
@@ -629,7 +642,8 @@ cover-stamen-02.png
 cover-stamen-03.png
 cover-wave.png
 cover.png
-cover.png
+intro.jpg
+luggage.jpg
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var card_1_bgs = `
@@ -676,7 +690,9 @@ var increment_files_loaded = function () {
     update_vh();
   }
 };
-files.forEach(fn => loadjs(fn, increment_files_loaded));
+window.onload = function() {
+  files.forEach(fn => loadjs(fn, increment_files_loaded));
+};
 if (files_total == 0)
 document.addEventListener("DOMContentLoaded", increment_files_loaded);
 
@@ -819,7 +835,7 @@ document.addEventListener('mousemove', function(e){
 var volumeButton = doc.getElementById('volume');
 var volumeSwitchContainer = volumeButton.querySelector('.switchContainer');
 
-var audio = new Audio(MUSIC_URL);
+var audio = new Audio();
 var audio_can_start = false;
 var audio_canplaythrough = false;
 audio.addEventListener('canplaythrough', function() { 
@@ -886,6 +902,8 @@ var toggleMusic = ()=>{
     playMusic();
   }
 }
+audio.src = MUSIC_URL;
+audio.load();  // add this line
 volumeButton.onclick = toggleMusic;
 volumeButton.ontouchstart = toggleMusic;
 
@@ -911,6 +929,7 @@ var start = function () {
     deactivate_bg_animation(doc.getElementById('intro').querySelector('background'));
     activate_bg_animation(doc.getElementById('intro').querySelectorAll('background')[1]);
     setTimeout(update_vh,100)
+    document.getElementById('float-top-right').classList.remove('hidden')
 
   }
 }
@@ -1012,7 +1031,7 @@ const fadeIn = (selector, duration)=>{
   var animation = anime.timeline({
     targets: selector,
     delay: anime.stagger(duration || FADE_DURATION),
-    easing: 'linear'
+    easing: 'linear',
   }).add({
     opacity: 1,
   });
@@ -1028,11 +1047,12 @@ window.intro_next = function (self){
   timeline([
     ()=> audio_can_start=true,
     ()=> audio_canplaythrough?document.getElementById('float-top-right').classList.remove('hidden'):0,
-    ()=> sleep(500),
+    ()=> sleep(1000),
     ()=> playMusic(),
     ()=> sleep(1000),
     ()=> deactivate_bg_animation(doc.getElementById('intro').querySelector('background')),
     ()=> fadeIn('#intro-tran-text p'),
+    ()=> sleep(1000),
     defaultNextCutain(self)
 
   ])
@@ -1057,11 +1077,19 @@ window.coverUpdate = (self, p, p2)=>{
 
 var current_cards_i = 0;
 var recent_touch = 0;
+var no_click = false;
 const card_click_listener = function(e){
+  var is_scroll = false;
+  var scroll_up = false;
+  if (no_click && e.type == 'click')
+    return;
   if (e.type == 'touchend'){
     var cursor = pointerEventToXY(e);
-    if (last_cursor !== null && Math.sqrt(Math.pow(cursor.x - last_cursor.x,2) + Math.pow(cursor.y - last_cursor.y,2)) > 20)
-      return
+    if (last_cursor !== null && Math.sqrt(Math.pow(cursor.x - last_cursor.x,2) + Math.pow(cursor.y - last_cursor.y,2)) > 20){
+      is_scroll = true
+      scroll_up = last_cursor.y < cursor.y;
+
+    }
   }
   var this_touch = + new Date();
   if (this_touch - recent_touch < 50)
@@ -1075,6 +1103,10 @@ const card_click_listener = function(e){
     u = u.parentElement;
     }
   if (u){
+    if (is_scroll)
+      return;
+
+      
     u.classList.toggle('chosen');
     var card_id = parseInt(u.id);
     var card = CARDS[card_id];
@@ -1092,14 +1124,24 @@ const card_click_listener = function(e){
   }
   if (u){
     var container = document.querySelector('result-container');
+    if (is_scroll && container.classList.contains('active')){
+      if (!(document.querySelector('result-description').scrollTop == 0 && scroll_up))
+        return;
+      
+    }
+    
     container.classList.toggle('active');
 
+    if (container.classList.contains('active'))
+      doc.body.setAttribute('float-higher','');
+    else
+      doc.body.removeAttribute('float-higher');
     LOGT('!')
   }
 }
 
 var last_cursor;
-doc.getElementById('app').addEventListener('touchstart',e=>last_cursor = pointerEventToXY(e));
+doc.getElementById('app').addEventListener('touchstart',e=>{last_cursor = pointerEventToXY(e);no_click=true;});
 doc.getElementById('app').addEventListener('click',card_click_listener);
 doc.getElementById('app').addEventListener('touchend',card_click_listener);
 const stage_get_arrows = (obj)=>{
@@ -1178,8 +1220,13 @@ const arrange_cards = (card_type, card_divs, right, full_height)=>{
 
 const hide = (things) => {
   var h = e=>{
-    e.style.opacity = "0";
     e.style.pointerEvents = "none";
+    anime({
+      targets: e,
+      opacity: 0,
+      duration: 400,
+      easing: 'linear',
+    })
   };
   things.forEach?things.forEach(h):h(things);
 }
@@ -1330,6 +1377,23 @@ window.sort_start = function (self){
   console.log('stats:',counter);
 
   if (all_chosen.length == 0){
+    intro_texts[0].setAttribute('zh','認真聆聽你內心的聲音，有什麼是你想要的？');
+    intro_texts[0].setAttribute('en','Listen carefully to your inner voice, what do you want?');
+
+    intro_texts[1].setAttribute('zh','（請最少選擇一張卡）');
+    intro_texts[1].setAttribute('en','(Please choose at least 1 card)');
+    setLang()
+    timeline([
+      ()=> sleep(1000),
+      ()=> fadeIn(intro_texts),
+      ()=> wait_for_arrows(obj),
+      ()=> hide(intro_texts),
+      ()=> window.location = '/',
+    ]);
+
+
+
+
 
   }else if (all_chosen.length <= 10){
     LOG(self);
@@ -1349,6 +1413,7 @@ window.sort_start = function (self){
   }else {
 
     timeline([
+      ()=> sleep(1000),
       ()=> fadeIn(intro_texts),
       ()=> wait_for_arrows(obj),
       ()=> hide(intro_texts),
@@ -1363,7 +1428,6 @@ window.sort_start = function (self){
         Object.keys(card.name).forEach(
           lang=> p.setAttribute(lang, card.name[lang].replace(/ *\u200b/g, '\n'))
         )
-        setLang(current_lang);
         card_div.appendChild(card_text_div);
         card_text_div.appendChild(p);
         card.chosen = false;
@@ -1374,11 +1438,22 @@ window.sort_start = function (self){
         card_divs.push(card_div);
   
       }),
+      ()=> setLang(),
+      ()=>{
+        var cards = Array.from(document.querySelectorAll('.card-sort'));
+        cards.forEach((e,i)=>{
+            if (i %2 == 0) return;
+            e.style.marginTop = (cards[i-1].clientHeight+50) + 'px'
+
+
+        })
+      },
       ()=> show(sort_container),
       ()=> card_divs.slice(8).forEach(e=>e.style.opacity=1),
       ()=> fadeIn(doc.querySelectorAll('#sort-container .thin-body p')),
       ()=> fadeIn(card_divs.slice(0,8), 200),
       ()=> window.addEventListener('card-clicked', check_if_cards_enough, false),
+      ()=> sleep(2000),
       //defaultNextCutain(self)
   
     ])
@@ -1409,12 +1484,17 @@ window.pre_result = function (self){
 }
 
 
+/*
+    Show result
+*/
+
+
 
 
 window.show_result = function (self){
-  document.querySelector('html').style.background = self.obj.style.background
   var obj = self.obj;
-  var result_container = self.obj.querySelector('result-container');
+  document.querySelector('html').style.background = obj.style.background
+  var result_container = obj.querySelector('result-container');
   var all_chosen = CARDS.filter(e=>e.chosen).map(e=>e);
   var counter_ = all_chosen.reduce((acc, curr)=>(acc[curr.type] ? acc[curr.type]++ : acc[curr.type] = 1)&&acc, {});
   var counter = [0,0,0,0,0];
@@ -1422,11 +1502,26 @@ window.show_result = function (self){
   var dounuts = doc.getElementsByClassName('donut');
   var total = all_chosen.length;
   var stoke_max = 879.645943005142;
+  var inner = document.querySelector('result-description-inner')
   LOG(dounuts);
 
   LOG(total);
   LOG(counter_);
   LOG(counter);
+  var rows = Array.from(doc.querySelectorAll('row'));
+  rows.forEach((e,i)=>e.score = counter[i]);
+  rows.sort((a,b)=>{
+    return a.score == b.score
+            ? 0
+            : (a.score < b.score ? 1 : -1);
+  })
+  doc.querySelectorAll('left h1').forEach((e, i)=>{
+    var p = parseInt((counter[i] / total)*100)
+    e.textContent = (p)+ '%';
+  })
+
+
+  rows.forEach(e=>inner.appendChild(e));
 
 
   const start_dounuts = ()=>{
@@ -1454,11 +1549,17 @@ window.show_result = function (self){
 
   }
 
+  console.log(self.obj);
+
   timeline([
     ()=> sleep(1000),
     ()=> show(result_container),
     ()=> start_dounuts(),
-    ()=> sleep(1000),
+    ()=> sleep(2000),
+    ()=> doc.querySelector('result-description').classList.add('active'),
+    ()=> doc.querySelector('learn-more').classList.add('active'),
+    ()=> inner.style.height = Array.from(document.querySelectorAll('result-description-inner > *')).map(e=>e.clientHeight).sum() + 'px',
+    ()=> rows.forEach(e=>e.style.flex = "1"),
     defaultNextCutain(self)
 
   ])
@@ -1508,4 +1609,4 @@ window.addEventListener("orientationchange", set_landscape, false);
 
 set_landscape();
 
-setTimeout(update_vh,1000);
+setInterval(update_vh,1000);

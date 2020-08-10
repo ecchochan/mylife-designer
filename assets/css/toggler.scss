@@ -30,7 +30,6 @@ $color-slash: #d65f5f;
   display: inline-block;
   position: absolute;
   left: 0px;
-  transform: translate3d(0, 0, 0);
 }
 
 .switchBtn {
@@ -51,34 +50,34 @@ $color-slash: #d65f5f;
 }
 @keyframes switchOn {
   0% {
-    transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
+    transform: scaleX(1) scaleY(1);
     transform-origin: center;
   }
   40% {
-    transform: scale3d(1.2, 0.8, 0) translate3d(0, 0, 0);
+    transform: scaleX(1.2) scaleY(0.8);
     transform-origin: center;
   }
   70% {
-    transform: scale3d(0.9, 1.15, 1) translate3d(0, 0, 0);
+    transform: scaleX(0.9) scaleY(1.15);
   }
   100% {
-    transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
+    transform: scaleX(1) scaleY(1);
   }
 }
 @keyframes switchOff {
   0% {
-    transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
+    transform: scaleX(1) scaleY(1);
     transform-origin: center;
   }
   40% {
-    transform: scale3d(1.2, 0.8, 0) translate3d(0, 0, 0);
+    transform: scaleX(1.2) scaleY(0.8);
     transform-origin: center;
   }
   70% {
-    transform: scale3d(0.9, 1.15, 1) translate3d(0, 0, 0);
+    transform: scaleX(0.9) scaleY(1.15);
   }
   100% {
-    transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
+    transform: scaleX(1) scaleY(1);
   }
 }
 

@@ -15,7 +15,8 @@
   <script src="https://unpkg.com/loadjs@latest/dist/loadjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
-  <script type="module" src="assets/js/curtain.js?v=1"></script>
+  <script type="module" src="assets/js/curtain.min.js?v=1"></script>
+  <script type="module" src="assets/js/howler.min.js"></script>
   <!--
   <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.1/dist/alpine.min.js" defer></script>-->
   <link type="text/css" rel="stylesheet" href="assets/css/style.css?v=2" />
@@ -325,9 +326,6 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
 
                   </svg>
                 </img-container>
-
-
-
 
               </bg>
             </background>
@@ -642,16 +640,10 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
-          
-          
                     </g>
-
 
                   </svg>
                 </img-container>
-
-
-
 
               </bg>
             </background>
@@ -672,6 +664,81 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
 
           
           <div id="sort" class="wrapper stage" curtain-config="{reversible:false,next:sort_start}"  style="background: #547A41;">
+            <background>
+              <bg style="display: flex;">
+                <img-container style="height:100%;transition:none;">
+                  <!-- Specify height & width because svg cannot infer the width from height-->
+                  <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
+                    <g slow-transition>
+                      <image xlink:href="assets/img/luggage.jpg" x="0" y="0" height="100%"/>
+                    </g>
+                  </svg>
+                </img-container>
+
+              </bg>
+            </background>
+            <div flex-1 >
+            </div>
+            <div flex-4 middle-align class="thin-body">
+              <div width-100p flex-column>
+                <p style="filter: drop-shadow(0px 0px 10px #fff) drop-shadow(0px 0px 10px #fff) drop-shadow(0px 0px 10px #fff) drop-shadow(0px 0px 10px #fff) drop-shadow(0px 0px 10px #fff);" en="You got too much for this journey, " zh="你有太多東西想要帶去這趙旅程，"></p>
+                <p style="filter: drop-shadow(0px 0px 10px #fff) drop-shadow(0px 0px 10px #fff) drop-shadow(0px 0px 10px #fff) drop-shadow(0px 0px 10px #fff) drop-shadow(0px 0px 10px #fff);" en="you have to pick the 10 most important things into your luggage" zh="現在你需要選出最重要的十項放進行李箱"></p>
+              </div>
+            </div>
+            <div flex-1>
+            </div>
+            <div id="sort-container">
+              <div flex-4 middle-align class="thin-body">
+                <div width-100p flex-column>
+                  <p en="You have {n_chosen_at_last} items in your luggage now" zh="你的行李箱現在有 {n_chosen_at_last} 件東西"></p>
+                </div>
+              </div>
+              <cards>
+              </cards>
+
+            </div>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+
+          </div>
+
+
+
+          <!--
+
+            Stage 5 - Transition to result
+
+          -->
+
+          
+          <div id="pre-result" class="wrapper stage" curtain-config="{update:coverUpdate, reversible:false,next:pre_result}"  style="background: #ffd78e;">
+            <background>
+              <bg style="display: flex;">
+                <img-container style="height:100%;transition:none;">
+                  <!-- Specify height & width because svg cannot infer the width from height-->
+                  <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
+                    <g slow-transition>
+                      <image xlink:href="assets/img/contact.jpg" x="0" y="0" height="100%"/>
+                    </g>
+                  </svg>
+                </img-container>
+
+              </bg>
+            </background>
+            <div flex-1 >
+            </div>
+            <div flex-4 middle-align class="thin-body">
+              <div width-100p flex-column>
+                <p en="After a long day," zh="經歷一天的辛勞，"></p>
+                <p en="You are ready and excited for this journey!" zh="現在你可以帶著內心的期待，"></p>
+                <p en="Ready to go !" zh="準備出發了！"></p>
+              </div>
+            </div>
+            <div flex-1>
+            </div>
+          </div>
+
+
+          <div id="result" class="wrapper stage" curtain-config="{update:coverUpdate, reversible:false,next:show_result}"  style="background: #547A41;">
             <background>
               <bg style="display: flex;">
                 <img-container style="height:100%;transition:none;">
@@ -749,60 +816,9 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   </svg>
                 </img-container>
 
-
-
-
               </bg>
             </background>
-            <div flex-1 >
-            </div>
-            <div flex-4 middle-align class="thin-body">
-              <div width-100p flex-column>
-                <p en="You got too much for this journey, " zh="你有太多東西想要帶去這趙旅程，"></p>
-                <p en="you have to pick the 10 most important things into your luggage" zh="現在你需要選出最重要的十項放進行李箱"></p>
-              </div>
-            </div>
-            <div flex-1>
-            </div>
-            <div id="sort-container">
-              <div flex-4 middle-align class="thin-body">
-                <div width-100p flex-column>
-                  <p en="You have {n_chosen_at_last} items in your luggage" zh="你的行李箱現在有 {} 件東西"></p>
-                </div>
-              </div>
-              <cards>
-              </cards>
-
-            </div>
-            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
-
-          </div>
-
-
-
-          <!--
-
-            Stage 5 - Transition to result
-
-          -->
-
-          
-          <div id="pre-result" class="wrapper stage" curtain-config="{update:coverUpdate, reversible:false,next:pre_result}"  style="background: #ffd78e;">
-            <div flex-1 >
-            </div>
-            <div flex-4 middle-align class="thin-body">
-              <div width-100p flex-column>
-                <p en="After a long day," zh="經歷一天的辛勞，"></p>
-                <p en="You are ready and excited for this journey!" zh="現在你可以帶著內心的期待，"></p>
-                <p en="Ready to go !" zh="準備出發了！"></p>
-              </div>
-            </div>
-            <div flex-1>
-            </div>
-          </div>
-
-
-          <div id="result" class="wrapper stage" curtain-config="{update:coverUpdate, reversible:false,next:show_result}"  style="background: #547A41;">
+            
             <result-container >
               <dounut-container>
                 <svg style="position:relative !important;" preserveAspectRatio="xMidYMid meet" transform="rotate( 90 )" viewBox="0 0 315 315" xmlns="http://www.w3.org/2000/svg">
@@ -827,10 +843,74 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
 
 
 
-                <img style="clip-path: circle(50% at 50% 50%);" src=""/>
+                <img style="clip-path: circle(50% at 50% 50%); background:#fff;"/>
               </dounut-container>
+              <learn-more en="Learn more", zh="了解更多">
+              </learn-more>
               <result-description>
                 <result-description-inner>
+                  <row>
+                    <left style="background:#65ba90;">
+                      <h1 middle-align width-100p>30%</h4>
+                    </left>
+                    <right style="background:#bbe8c1;">
+                      <h3 zh="內在滿足" en="Intrinsic satisfaction">
+                      </h3>
+                      <p zh="你不介意付出或作取捨，以換取心靈的滿足及內心的渴望。" en="You’re willing to compromise or scarifice, in order to gain intrinsic fulfillment and desire.">
+                      </p>
+                    </right>
+                  </row>
+
+
+
+
+                  <row>
+                    <left style="background:#efd686;">
+                      <h1 middle-align width-100p>30%</h4>
+                    </left>
+                    <right style="background:#fcedbd;">
+                      <h3 zh="人際關係" en="Inter-personal relationship">
+                      </h3>
+                      <p zh="你很著重人際關係，並願意花費心力、時間去經營每一段關係。" en="Inter-personal relationships are important to you, and you’re willing to pay effort and time to maintain each relationship.">
+                      </p>
+                    </right>
+                  </row>
+                  <row>
+                    <left style="background:#ffbca5;">
+                      <h1 middle-align width-100p>30%</h4>
+                    </left>
+                    <right style="background:#ffd7c9;">
+                      <h3 zh="物質享受" en="Materialistic">
+                      </h3>
+                      <p zh="你很享受高質、有品味的物質生活，不介意花錢換取更舒適的生活。" en="You enjoy high quality materialistic life, and do not mind to pay for more comfortable life.">
+                      </p>
+                    </right>
+                  </row>
+                  <row>
+                    <left style="background:#84d6f6;">
+                      <h1 middle-align width-100p>30%</h4>
+                    </left>
+                    <right style="background:#b7e6f8;">
+                      <h3 zh="生活模式" en="Life style">
+                      </h3>
+                      <p zh="你希望建立自己嚮往的生活模式，而且不用受到別人的限制。" en="You hope to build your own ideal lifestyle, and not be restricted by others.">
+                      </p>
+                    </right>
+                  </row>
+                  <row>
+                    <left style="background:#92ecdf;">
+                      <h1 middle-align width-100p>30%</h4>
+                    </left>
+                    <right style="background:#bfeee7;">
+                      <h3 zh="自我形象" en="Self-image">
+                      </h3>
+                      <p zh="有些價值是你一定要堅守的，抱持信念才是你的人生。" en="You have your own values and you must stick with your faith.">
+                      </p>
+                    </right>
+                  </row>
+
+
+
                 </result-description-inner>
 
 

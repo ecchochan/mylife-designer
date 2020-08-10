@@ -703,12 +703,13 @@ var makeCurtain = (function () {
       self.startX = 0;
       self.endX = -9999999;
       if (self.next){
+        
         self.next(self);
         Array.from(self.obj.parentElement.children).filter(e=>e!=self.obj).forEach(e=>{
           e.style.pointerEvents="none";
           setTimeout(function(){
             e.style.display="none";
-          },3000)
+          },1000)
 
         })
 
