@@ -1,12 +1,30 @@
 <!DOCTYPE html>
 <head>
-  <title>MyLife</title>
+  <title>MyLife Designer</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' >
-  <link rel="icon" type="image/png" href="">
+  <meta property="og:image" content="assets/img/favicon-128x128.jpg" />
+  <meta name="twitter:image:src" content="assets/img/favicon-128x128.jpg">
+  <meta property="og:description" content="Explore your journey - 探索你的旅程" />
+  <meta property="twitter:description" content="Explore your journey - 探索你的旅程">
+  <meta property="og:type" content="website" />
+
+
+
+  <link rel="icon" type="image/jpeg" href="assets/img/favicon-128x128.jpg">
+
+  <link rel="preload" href="assets/fonts/CrimsonText-Bold.ttf" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="assets/fonts/CrimsonText-Italic.ttf" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="assets/fonts/CrimsonText-Regular.ttf" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" as="font" crossorigin="anonymous">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" as="font" crossorigin="anonymous">
+  <!--
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
-      <link id="favicon" rel="shortcut icon" type="image/png" href="data:image/png;base64,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">
+  -->
+  <link id="favicon" rel="shortcut icon" type="image/jpeg" sizes="128x128" href="assets/img/favicon-128x128.jpg">
+  <link id="favicon" rel="shortcut icon" type="image/jpeg" sizes="64x64" href="assets/img/favicon-64x64.jpg">
+  <link id="favicon" rel="shortcut icon" type="image/jpeg" sizes="32x32" href="assets/img/favicon-32x32.jpg">
   <!--
   <script src="assets/js/preload-it.min.js"></script>
   <script src="assets/js/fastclick.min.js"></script>
@@ -17,12 +35,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
   <script type="module" src="assets/js/curtain.min.js?v=1"></script>
   <script type="module" src="assets/js/howler.min.js"></script>
-  <!--
-  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.1/dist/alpine.min.js" defer></script>-->
+
+  
   <link type="text/css" rel="stylesheet" href="assets/css/style.css?v=3" />
 
 </head> 
 <body style="overflow: hidden;">
+  <div class="font_preload" style="opacity: 0; position: absolute;">
+    <span style="font-family: 'CrimsonText', Arial, sans-serif;"></span>
+    <span style="font-family: 'CrimsonText', Arial, sans-serif;"></span>
+    <span style="font-family: 'myfontface#2font-family', Arial, sans-serif;"></span>
+  </div>
   <landscape-hint>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px"  viewBox="0 0 1155 1155" enable-background="new 0 0 1155 1155" xml:space="preserve">
       <use xlink:href="assets/img/qr-code.svg#Layer_1"/>
@@ -104,8 +127,8 @@
                 <img-container style="height:65%;width:100%;transition:none;background-color:#f7d8d1;">
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-width style="height:480px;width:360px;    transform-origin: top left;" version="1.0" xmlns="http://www.w3.org/2000/svg">
-                    <image xlink:href="assets/img/cover-bg.jpg" x="0" y="0" width="100%" height="100%"/>
-                    <image xlink:href="assets/img/cover.png" x="0" y="0" width="100%" height="100%"/>
+                    <image xlink:href="assets/img/cover-bg.jpg" x="0" y="0" width="360px" height="480px"/>
+                    <image xlink:href="assets/img/cover.png" x="0" y="0" width="360px" height="480px"/>
 
 
                     <image anime="{translateX: [400,-100], reverse:false, translateY: [-100,30], seek:12000, duration:40000,loop: true,easing: 'linear'}" xlink:href="assets/img/cloud01.png" x="0" y="0" height="50px"/>
@@ -115,8 +138,8 @@
                     <image anime="{translateX: [400,-100], reverse:false, translateY: [0,150], seek:7000, duration:33500,loop: true,easing: 'linear'}" xlink:href="assets/img/cloud03.png" x="0" y="0" height="50px"/>
                     <image anime="{translateX: [450,-100], reverse:false, translateY: [0,180], seek:2000, duration:47500,loop: true,easing: 'linear'}" xlink:href="assets/img/cloud04.png" x="0" y="0" height="50px"/>
 
-                    <image xlink:href="assets/img/cover-wave.png" x="0" y="60px" width="100%" height="100%"/>
-                    <image xlink:href="assets/img/cover-greens.png" x="0" y="0" width="100%" height="100%"/>
+                    <image xlink:href="assets/img/cover-wave.png" x="0" y="60px" width="360px" height="480px"/>
+                    <image xlink:href="assets/img/cover-greens.png" x="0" y="0" width="360px" height="480px"/>
                     <image anime="{translateX: [0,0], translateY: [-5,5], direction: 'alternate',seek:2000, duration:3000,loop: true,easing: 'swing'}" class="fullscreen" xlink:href="assets/img/cover-buddy.png" x="40px" y="70px" width="150px"/>
                     <image style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-15,15], seek:0, duration:3000,loop: true,easing: 'swing'}" xlink:href="assets/img/cover-leaf-01.png" x="72px" y="330px" width="24px"/>
                     <image style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-10,10], seek:600, duration:3000,loop: true,easing: 'swing'}" xlink:href="assets/img/cover-leaf-02.png" x="42px" y="330px" width="55px"/>
@@ -157,7 +180,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               <img-container style="height:100%;width:100%;transition:none;background-color:#fdeac3;">
                 <!-- Specify height & width because svg cannot infer the width from height-->
                 <svg scale-to-fit-parent-width style="height:480px;width:360px;    transform-origin: top left;">
-                  <image xlink:href="assets/img/intro.jpg" x="0" y="0" width="100%" height="100%"/>
+                  <image xlink:href="assets/img/intro.jpg" x="0" y="0" width="360px" height="480px"/>
                 </svg>
               </img-container>
             </bg>
@@ -241,11 +264,11 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
-                      <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="100%"/>
-                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="100%"/>
-                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="100%"/>
-                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="100%"/>
-                      <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="100%"/>
+                      <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="480px"/>
+                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="480px"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="480px"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="480px"/>
+                      <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="480px"/>
           
           
           
@@ -655,7 +678,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
-                      <image xlink:href="assets/img/luggage.jpg" x="0" y="0" height="100%"/>
+                      <image xlink:href="assets/img/luggage.jpg" x="0" y="0" height="480px"/>
                     </g>
                   </svg>
                 </img-container>
@@ -702,7 +725,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
-                      <image xlink:href="assets/img/contact.jpg" x="0" y="0" height="100%"/>
+                      <image xlink:href="assets/img/contact.jpg" x="0" y="0" height="480px"/>
                     </g>
                   </svg>
                 </img-container>
@@ -730,11 +753,11 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
-                      <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="100%"/>
-                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="100%"/>
-                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="100%"/>
-                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="100%"/>
-                      <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="100%"/>
+                      <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="480px"/>
+                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="480px"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="480px"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="480px"/>
+                      <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="480px"/>
           
           
           
@@ -835,10 +858,10 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               <result-description>
                 <result-description-inner>
                   <row>
-                    <left style="background:#65ba90;">
+                    <left style="background:#65ba90cc;">
                       <h1 middle-align width-100p>30%</h4>
                     </left>
-                    <right style="background:#bbe8c1;">
+                    <right style="background:#bbe8c1cc;">
                       <h3 zh="內在滿足" en="Intrinsic satisfaction">
                       </h3>
                       <p zh="你不介意付出或作取捨，以換取心靈的滿足及內心的渴望。" en="You’re willing to compromise or scarifice, in order to gain intrinsic fulfillment and desire.">
@@ -850,10 +873,10 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
 
 
                   <row>
-                    <left style="background:#efd686;">
+                    <left style="background:#efd686cc;">
                       <h1 middle-align width-100p>30%</h4>
                     </left>
-                    <right style="background:#fcedbd;">
+                    <right style="background:#fcedbdcc;">
                       <h3 zh="人際關係" en="Inter-personal relationship">
                       </h3>
                       <p zh="你很著重人際關係，並願意花費心力、時間去經營每一段關係。" en="Inter-personal relationships are important to you, and you’re willing to pay effort and time to maintain each relationship.">
@@ -861,10 +884,10 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                     </right>
                   </row>
                   <row>
-                    <left style="background:#ffbca5;">
+                    <left style="background:#ffbca5cc;">
                       <h1 middle-align width-100p>30%</h4>
                     </left>
-                    <right style="background:#ffd7c9;">
+                    <right style="background:#ffd7c9cc;">
                       <h3 zh="物質享受" en="Materialistic">
                       </h3>
                       <p zh="你很享受高質、有品味的物質生活，不介意花錢換取更舒適的生活。" en="You enjoy high quality materialistic life, and do not mind to pay for more comfortable life.">
@@ -872,10 +895,10 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                     </right>
                   </row>
                   <row>
-                    <left style="background:#84d6f6;">
+                    <left style="background:#84d6f6cc;">
                       <h1 middle-align width-100p>30%</h4>
                     </left>
-                    <right style="background:#b7e6f8;">
+                    <right style="background:#b7e6f8cc;">
                       <h3 zh="生活模式" en="Life style">
                       </h3>
                       <p zh="你希望建立自己嚮往的生活模式，而且不用受到別人的限制。" en="You hope to build your own ideal lifestyle, and not be restricted by others.">
@@ -883,10 +906,10 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                     </right>
                   </row>
                   <row>
-                    <left style="background:#92ecdf;">
+                    <left style="background:#92ecdfcc;">
                       <h1 middle-align width-100p>30%</h4>
                     </left>
-                    <right style="background:#bfeee7;">
+                    <right style="background:#bfeee7cc;">
                       <h3 zh="自我形象" en="Self-image">
                       </h3>
                       <p zh="有些價值是你一定要堅守的，抱持信念才是你的人生。" en="You have your own values and you must stick with your faith.">
@@ -901,8 +924,16 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
 
               </result-description>
             </result-container>
-          </div>
 
+            
+            <learn-more-container>
+              <learn-more-inner>
+                <learn-more en="Back to result", zh="返回結果">
+                </learn-more>
+              </learn-more-inner>
+
+            </learn-more-container>
+          </div>
 
 
         </div>

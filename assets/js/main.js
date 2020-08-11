@@ -1,6 +1,5 @@
 import { makeCurtains }  from './curtain.js';
-import {styler} from "./styler.min.js"
-// import {Howl, Howler} from 'howler';
+import {styler} from "./styler.min.js";
 /*
 
   Configurations
@@ -12,7 +11,7 @@ var DEBUG = false;
 var CARDS_PER_PAGE = 6;
 var NUM_SCENES = 4;
 
-var MAX_AUDIO_VOL = 0.5;
+var MAX_AUDIO_VOL = 0.7;
 
 var OPACITY = {
   EASING: 'easeOutQuad',
@@ -159,11 +158,8 @@ const chunks = (arr, len) => {
 var doc = document;
 
 const encode = (str)=>encodeURIComponent(btoa(unescape(encodeURIComponent(str))));
-window.encode = encode;
 const decode = (str)=>atob(str);
-window.decode = decode;
 const hash = (str)=>btoa(unescape(encodeURIComponent(str))).replace(/^=+|=+$|[\+/]/g, '').substr(0,5);
-window.hash = hash
 
 
 const getBgImageDim = (elem) => {
@@ -384,6 +380,7 @@ var setLang = function(L){
       }
     }
   })
+  window.dispatchEvent(new Event('set-lang'));
 
 }
 
@@ -586,7 +583,7 @@ window.CARDS_CHUNKS = CARDS_CHUNKS;
 
 
 
-var MUSIC_URL = 'https://www.bensound.com/bensound-music/bensound-beyondtheline.mp3';
+var MUSIC_URL = 'assets/audio/bensound-beyondtheline.mp3';
 var files = `
 bg01-bg.jpg
 bg01-branch01.png
@@ -685,24 +682,56 @@ var files_loaded = 0;
 var files_total = files.length;
 
 var load_counter = doc.getElementById('load-percent');
-var load_wrapper = doc.getElementById('loading-wrapper')
-var increment_files_loaded = function () {
+var load_wrapper = doc.getElementById('loading-wrapper');
+var files_obj = {}
+window.files_obj = files_obj;
+var increment_files_loaded = function (e) {
   load_counter.textContent = files_total?parseInt(++files_loaded / files_total * 100):100;
+  files_obj[e.item.id] = e.result
   if (files_loaded == files_total){
     LOGT('All assets loaded.');
 
     start();
     update_vh();
+
+
+    /*
+
+      Fix old browser for unable to infer height/width automatically when not specified
+
+    */
+    const closest = (e, x)=>{
+        while (e && e.tagName != x)
+            e = e.parentElement;
+        return e
+
+    }
+    document.querySelectorAll('image').forEach(e=>{
+      var src = e.getAttributeNS('http://www.w3.org/1999/xlink', 'href')
+      var obj = files_obj[src];
+      if (!obj) return;
+      var real_size = obj;
+      var w = e.getAttribute('width');
+      var h = e.getAttribute('height');
+      var container = closest(e,'SVG');
+      var container_height = 
+
+      h = h?parseFloat(h):h;
+      w = w?parseFloat(w):w;
+      if (w && h) return;
+      if (!w) e.setAttribute('width', (real_size.width * h / real_size.height) + 'px');
+      if (!h) e.setAttribute('height', (real_size.height * w / real_size.width) + 'px');
+      
+    })
+
+
   }
 };
-const loadjs = (fn, callback)=>{
-  var preload = new createjs.LoadQueue();
-  preload.addEventListener("fileload", callback);
-  preload.loadFile(fn);
-}
-window.onload = function() {
-  files.forEach(fn => loadjs(fn, increment_files_loaded));
-};
+var preload = new createjs.LoadQueue();
+preload.setMaxConnections(100);
+preload.addEventListener("fileload", increment_files_loaded);
+preload.loadManifest(files);
+
 if (files_total == 0)
 document.addEventListener("DOMContentLoaded", increment_files_loaded);
 
@@ -856,56 +885,46 @@ document.addEventListener('mousemove', function(e){
 var volumeButton = doc.getElementById('volume');
 var volumeSwitchContainer = volumeButton.querySelector('.switchContainer');
 
-var audio = new Audio();
-var audio_can_start = false;
-var audio_canplaythrough = false;
-audio.addEventListener('canplaythrough', function() { 
+var audio = new Howl({
+  src: [MUSIC_URL],
+  loop: true,
+  volume: MAX_AUDIO_VOL
+});
+window.audio = audio;
+
+audio.once('load', function(){
   audio_canplaythrough = true;
   if (audio_can_start){
-    document.getElementById('float-top-right').classList.remove('hidden')
-    audio.play();
+    playMusic();
   }
-}, false);
+});
+
+
+var audio_can_start = false;
+var audio_canplaythrough = false;
 var AUDIO_ON = volumeSwitchContainer.classList.contains('switchOn');
 var ua = window.navigator.userAgent;
 var iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
 var webkit = !!ua.match(/WebKit/i);
 var iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+var current_volume = MAX_AUDIO_VOL;
 var setVolume = (v)=>{
-  if (iOS){
-    try{
-      if (v < 0.5)
-        audio.pause()
-      else
-        audio.play()
-
-    }catch(err){
-      audio = new Audio(MUSIC_URL);
-      alert(err)
-    }
-    return;
-  }
-  
-  anime({
-    targets: audio,
-    volume: v,
-    duration: 500,
-    easing: 'easeOutQuad',
-  })
-
+  Howler.volume(v);
+  current_volume = v;
 };
 
 var playMusic = ()=>{
-  if (!audio) {
-    audio.volume = MAX_AUDIO_VOL;
+  if (!audio.playing()){
+    Howler.volume(current_volume);
+    audio.play();
+
   }
-  
-  audio.play();
 }
+window.playMusic = playMusic;
 var volume_recent = 0;
 var toggleMusic = ()=>{
   var t = + new Date();
-  if (t - volume_recent < 200)
+  if (t - volume_recent < 300)
     return
   
   volume_recent = t;
@@ -923,8 +942,6 @@ var toggleMusic = ()=>{
     playMusic();
   }
 }
-audio.src = MUSIC_URL;
-audio.load();  // add this line
 volumeButton.onclick = toggleMusic;
 volumeButton.ontouchstart = toggleMusic;
 
@@ -1145,11 +1162,18 @@ const card_click_listener = function(e){
   }
   if (u){
     var container = document.querySelector('result-container');
-    if (is_scroll && container.classList.contains('active')){
-      if (!(document.querySelector('result-description').scrollTop <= 0 && scroll_up))
-        return;
-      
-    }document.querySelector('result-description').scrollTop = 0
+    if (is_scroll){
+      if (container.classList.contains('active')){
+        if (!(document.querySelector('result-description').scrollTop <= 0 && scroll_up))
+          return;
+        
+      }else if (scroll_up){
+        return
+      }
+    }
+    
+    
+    document.querySelector('result-description').scrollTop = 0
     
     container.classList.toggle('active');
 
@@ -1159,10 +1183,24 @@ const card_click_listener = function(e){
       doc.body.removeAttribute('float-higher');
     LOGT('!')
   }
+  var u = e.target;
+  while (u && u.tagName != "LEARN-MORE"){
+    u = u.parentElement;
+  }
+  if (u){
+    var container = document.getElementById('result');
+    if (is_scroll)return;
+    container.classList.toggle('switch')
+    
+
+  }
 }
 
 var last_cursor;
-doc.getElementById('app').addEventListener('touchstart',e=>{last_cursor = pointerEventToXY(e);no_click=true;});
+doc.getElementById('app').addEventListener('touchstart',e=>{
+  last_cursor = pointerEventToXY(e);
+  no_click=true;
+});
 doc.getElementById('app').addEventListener('click',card_click_listener);
 doc.getElementById('app').addEventListener('touchend',card_click_listener);
 const stage_get_arrows = (obj)=>{
@@ -1337,7 +1375,7 @@ window.stage_next = function(self){
       ()=> sleep(2000),
       ()=> set_card_divs(card_divs, current_cards_i++),
       ()=> arrange_cards(card_type, card_divs, (i==max_i-1)?!last_page_is_left():undefined, (i==max_i-1)?true:undefined),
-      ()=> fadeIn(card_divs),
+      ()=> fadeIn(getRandomSubarray(card_divs)),
       ()=> sleep(1500),
       ()=> (i==max_i-1)?1:wait_for_arrows(obj),
     ])
@@ -1472,7 +1510,7 @@ window.sort_start = function (self){
       ()=> show(sort_container),
       ()=> card_divs.slice(8).forEach(e=>e.style.opacity=1),
       ()=> fadeIn(doc.querySelectorAll('#sort-container .thin-body p'), 600),
-      ()=> fadeIn(card_divs.slice(0,8), 200),
+      ()=> fadeIn(getRandomSubarray(card_divs.slice(0,8)), 200),
       ()=> window.addEventListener('card-clicked', check_if_cards_enough, false),
       ()=> sleep(2000),
       //defaultNextCutain(self)
@@ -1517,25 +1555,22 @@ window.show_result = function (self){
   document.querySelector('html').style.background = obj.style.background
   var result_container = obj.querySelector('result-container');
   var all_chosen = CARDS.filter(e=>e.chosen).map(e=>e);
+  var data = btoa(all_chosen.map(e=>e.id))
   var counter_ = all_chosen.reduce((acc, curr)=>(acc[curr.type] ? acc[curr.type]++ : acc[curr.type] = 1)&&acc, {});
   var counter = [0,0,0,0,0];
-  Object.keys(counter_).forEach(k=>counter[k]=counter_[k])
+  Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
   var dounuts = doc.getElementsByClassName('donut');
   var total = all_chosen.length;
   var stoke_max = 879.645943005142;
-  var inner = document.querySelector('result-description-inner')
+  var inner = document.querySelector('result-description-inner');
   LOG(dounuts);
 
   LOG(total);
   LOG(counter_);
   LOG(counter);
   var rows = Array.from(doc.querySelectorAll('row'));
-  rows.forEach((e,i)=>e.score = counter[i]);
-  rows.sort((a,b)=>{
-    return a.score == b.score
-            ? 0
-            : (a.score < b.score ? 1 : -1);
-  })
+  rows.forEach((e,i)=>{e.dtype = i;e.score = counter[i]});
+  rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
   doc.querySelectorAll('left h1').forEach((e, i)=>{
     var p = parseInt((counter[i] / total)*100)
     e.textContent = (p)+ '%';
@@ -1543,6 +1578,11 @@ window.show_result = function (self){
 
 
   rows.forEach(e=>inner.appendChild(e));
+  var best_type = rows[0].dtype;
+  var TYPE = CARDS_TYPES[best_type];
+  LOG(TYPE);
+  var sharable_link = window.location.origin+'/'+TYPE.code+'?d='+data;
+  LOGT(sharable_link);
 
 
   const start_dounuts = ()=>{
@@ -1572,6 +1612,17 @@ window.show_result = function (self){
 
   console.log(self.obj);
 
+  const resize_result_desc_inner = ()=>{
+    inner.style.height = '';
+    // rows.forEach(e=>e.style.flex = "");
+    Array.from(document.querySelectorAll('result-description-inner > *')).forEach(e=>e.style.height = '')
+    inner.style.height = Array.from(document.querySelectorAll('result-description-inner > *')).map(e=>e.clientHeight).sum() + 'px';
+
+    // rows.forEach(e=>e.style.flex = "1")
+  }
+
+  window.addEventListener('set-lang',resize_result_desc_inner)
+
   timeline([
     ()=> sleep(1000),
     ()=> show(result_container),
@@ -1579,8 +1630,7 @@ window.show_result = function (self){
     ()=> sleep(2000),
     ()=> doc.querySelector('result-description').classList.add('active'),
     ()=> doc.querySelector('learn-more').classList.add('active'),
-    ()=> inner.style.height = Array.from(document.querySelectorAll('result-description-inner > *')).map(e=>e.clientHeight).sum() + 'px',
-    ()=> rows.forEach(e=>e.style.flex = "1"),
+    ()=> resize_result_desc_inner(),
     defaultNextCutain(self)
 
   ])

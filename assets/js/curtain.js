@@ -2,7 +2,7 @@ import {
   styler
 } from "./styler.min.js"
 
-var css = `.curtain {pointer-events: none;position: absolute;z-index: 999;left: 0;top: 0;-webkit-transform-origin: top left;transform-origin: top left;}.arrow{color:white;position: absolute;pointer-events: none;width: 25px;z-index:999;opacity: 0;transform: translate(-50%,-50%) rotateZ(0deg);}`
+var css = `.curtain {pointer-events: none;position: absolute;z-index: 999;left: 0;top: 0;-webkit-transform-origin: top left;transform-origin: top left;}.arrow{color:white;position: absolute;pointer-events: none;width: 25px;z-index:999;opacity: 0;transform: translate(-50%,-50%) rotateZ(0deg);    transform-origin: 150% 50%;}`
 
 styler('curtain-css', css);
 
@@ -186,8 +186,6 @@ var makeCurtain = (function () {
   var index = 0;
   var debug = false; 
   let but_drag = 1.2;
-  let but_size = 40;
-  let right_pad = 18;
   let smoothing = 0.15;
   let but_horiz_offset = 0.9;
   let but_horiz_offset2 = 1.3;
@@ -200,10 +198,10 @@ var makeCurtain = (function () {
     closing: true,
     reversible: true,
     but_y_pos: 0.25,
+    right_pad: 18,
+    but_size: 40,
     nextFrame: [],
     nextClick: [],
-    startX: right_pad + but_size * but_horiz_offset * 3,
-    startY: right_pad + but_size * but_horiz_offset,
 
 
     next: function (self) {
@@ -248,6 +246,7 @@ var makeCurtain = (function () {
     var path_dom = document.createElementNS(ns, 'path');
     var clipPath = document.createElementNS(ns, 'clipPath');
     var but_y_pos_actual;
+    
     clipPath.id = curtain_id;
     curtain.appendChild(clipPath);
     curtain.appendChild(document.createElementNS(ns, 'g'));
@@ -264,11 +263,17 @@ var makeCurtain = (function () {
 
     obj.insertBefore(arrow, obj.firstChild);
     var self = Object.assign({}, defaults, config);
+    var but_size = self.but_size
+    var right_pad = self.right_pad || 0;
     self.curtain = curtain;
     self.path_dom = path_dom;
+    if (!self.startX) self.startX = right_pad + but_size * but_horiz_offset * 3;
+    if (!self.startY) self.startY = 0;
     self.endX = self.startX;
     self.endY = self.startY;
     self.mousedown = false;
+    arrow.style.transform = "translate(-50%,-50%) rotateZ(0deg) scale("+(but_size / 40)+")";
+
 
     var displayNone = false; 
 
@@ -502,8 +507,8 @@ var makeCurtain = (function () {
       var middle_zx3 = mix(
         mix(0, closing ? 50 : -45, percent_done, 0, 0.7), 0, percent_done, 0.7, 1.0) +
         (closing ? 1 : 0) * mix(mix(0, width**1.5 / 1500, percent_done, 0, mm), 0, percent_done, 0, 1); 
-
-      var middle_zx2 = but_size / 7 - mix(mix(0, closing?width / 7:30, percent_done, mm, 1.0), 0, percent_done, 0.7, 1.0) +
+      
+      var middle_zx2 = but_size / 7 - mix(mix(0, closing?(width / 7*but_size/40):30, percent_done, mm, 1.0), 0, percent_done, 0.7, 1.0) +
         (closing ? (mix(mix(0, 9, percent_done, 0, mm), 0, percent_done, 0, 0.3)) :
           0);
       var middle_zx = width - right_pad - but_offset + x;
