@@ -1246,7 +1246,7 @@ card p {
   left: 0;
   height: 100%;
   width: 100%;
-  z-index: 12;
+  z-index: 2;
   opacity: 0;
   padding: -webkit-calc(20 * var(--window-width-for-font, 100vw) / 100) -webkit-calc(0 * var(--window-width-for-font, 100vw) / 100);
   padding: -moz-calc(20 * var(--window-width-for-font, 100vw) / 100) -moz-calc(0 * var(--window-width-for-font, 100vw) / 100);
