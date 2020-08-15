@@ -979,7 +979,7 @@ var start = function () {
     Stage Defaults
 */
 
-const FADE_DURATION = DEBUG?0:350;
+const FADE_DURATION = DEBUG?0:200;
 
 const defaultNextCutain = (self) => {
   return [function () {
@@ -1348,11 +1348,11 @@ window.stage_next = function(self){
   var obj = self.obj;
   var max_i = self.max_i;
   var card_type = self.card_type;
-  var card_divs = Array.from(obj.children).filter(e=>e.tagName == 'BACKGROUND')[0].querySelectorAll('card');
+  var card_divs = Array.from(Array.from(obj.children).filter(e=>e.tagName == 'BACKGROUND')[0].querySelectorAll('card'));
   var intro_text_container = Array.from(obj.children).filter(e=>e.classList.contains('thin-body'))[0];
   var intro_texts = intro_text_container.querySelectorAll('p');
 
-  var last_page_is_left = ()=>Array.from(card_divs).filter(e=>e.classList.contains('active')).length % 2 == 0;
+  var last_page_is_left = ()=>card_divs.filter(e=>e.classList.contains('active')).length % 2 == 0;
 
 
   var tl = [];
@@ -1417,7 +1417,7 @@ window.sort_start = function (self){
     var nextCurtain = self.obj.querySelector('.curtain-page');
     deactivate_bg_animation(self.obj.querySelector('background'));
     activate_bg_animation(nextCurtain.querySelector('background'));
-    if (n_chosen_at_last == 10){
+    if (n_chosen_at_last <= 10 && n_chosen_at_last > 0){
       if (nextCurtain) {
         nextCurtain.curtain.show();
         nextCurtain.curtain.nextFrame.push(update_vh);

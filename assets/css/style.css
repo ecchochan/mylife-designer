@@ -944,7 +944,7 @@ block {
 }
 
 .thin-body p {
-  font-size: 1.2em;
+  font-size: 1em;
   opacity: 0;
   white-space: pre-wrap;
 }
@@ -1123,6 +1123,11 @@ arrows > * {
       -ms-transform: rotate(180deg) !important;
        -o-transform: rotateZ(180deg) !important;
           transform: rotateZ(180deg) !important;
+  -webkit-transform-origin: center center !important;
+     -moz-transform-origin: center center !important;
+      -ms-transform-origin: center center !important;
+       -o-transform-origin: center center !important;
+          transform-origin: center center !important;
 }
 
 card {
@@ -1180,13 +1185,6 @@ card-text {
       -ms-flex-align: center;
           align-items: center;
   color: white;
-}
-
-card-text p {
-  -webkit-transition: opacity 0.8s ease, text-shadow 0.3s ease-out;
-  -o-transition: opacity 0.8s ease, text-shadow 0.3s ease-out;
-  -moz-transition: opacity 0.8s ease, text-shadow 0.3s ease-out;
-  transition: opacity 0.8s ease, text-shadow 0.3s ease-out;
 }
 
 .chosen {

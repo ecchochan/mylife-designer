@@ -391,7 +391,7 @@ block {
   text-align: center;
   transition: all 0.4s ease;
   p{
-    font-size: 1.2em;
+    font-size: 1em;
     opacity:0;
     white-space: pre-wrap;
     // transition: all 0.4s ease;
@@ -563,9 +563,8 @@ arrows > * {
   opacity: 1 !important;
   margin-right: -3px;
   transform: rotateZ(180deg) !important;
+  transform-origin: center center !important;
 }
-
-
 card {
   position: absolute;
   display: flex;
@@ -593,7 +592,7 @@ card-text {
     align-items: center;
     color:white;
     p {
-      transition: opacity 0.8s ease, text-shadow 0.3s ease-out;
+      // transition: opacity 0.8s ease, text-shadow 0.3s ease-out;
       // text-shadow: 1px 1px #0005;
 
     }
