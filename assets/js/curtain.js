@@ -632,6 +632,8 @@ var makeCurtain = (function () {
       var pos = pointerEventToXY(e);
       self.endX = (pos.x - offset.x)/scale;
       self.endY = (pos.y - offset.y)/scale;
+      e.preventDefault();
+      e.stopPropagation();
       
     }
     
@@ -655,8 +657,6 @@ var makeCurtain = (function () {
       }
       hasBeenTouchedRecently = true;
       setTimeout(() => { hasBeenTouchedRecently = false; }, 300);
-      e.preventDefault();
-      e.stopPropagation();
       
       let _x, _y;
       let path = e.composedPath();
@@ -682,6 +682,8 @@ var makeCurtain = (function () {
       if (opened) {
         closeNextCurtain();
       }
+      e.preventDefault();
+      e.stopPropagation();
       self.closing = !opened;
 
       self.mousedown = true;
@@ -739,9 +741,6 @@ var makeCurtain = (function () {
       }
 
 
-      e.preventDefault();
-      e.stopPropagation();
-      
       let _x, _y;
       var pos = pointerEventToXY(e);
       
@@ -759,6 +758,9 @@ var makeCurtain = (function () {
         )
       );
 
+      e.preventDefault();
+      e.stopPropagation();
+      
       if (clicked || (self.endX - self.startX < (!opened ? -width / 3 : -width * 2 / 3))) {
         finishCurtain()
       } else {
@@ -775,7 +777,11 @@ var makeCurtain = (function () {
     self.finishCurtain = finishCurtain;
 
     var first_touch = true;
-    document.addEventListener('mousedown', (e) => {
+
+    var eventElem = document;
+    var eventElem = self.obj.parentElement;
+
+    eventElem.addEventListener('mousedown', (e) => {
       if (first_touch){
         first_touch = false;
         // Supports most browsers and their versions.
@@ -797,22 +803,22 @@ var makeCurtain = (function () {
         self.nextClick.shift()();
       }
       if (startCurtain(e)){
-        document.addEventListener('mousemove', moveCurtain)
+        eventElem.addEventListener('mousemove', moveCurtain)
       }
 
     })
 
-    document.addEventListener('mouseup', (e) => {
+    eventElem.addEventListener('mouseup', (e) => {
       endCurtain(e)
-      document.removeEventListener('mousemove', moveCurtain);
+      eventElem.removeEventListener('mousemove', moveCurtain);
     })
 
-    document.addEventListener('touchstart', startCurtain);
-    document.addEventListener('touchend', function (e) {
+    eventElem.addEventListener('touchstart', startCurtain);
+    eventElem.addEventListener('touchend', function (e) {
       endCurtain(e)
     });
 
-    document.addEventListener('touchmove', moveCurtain, { passive: false });
+    eventElem.addEventListener('touchmove', moveCurtain, { passive: false });
 
     return self;
 

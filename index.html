@@ -35,6 +35,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
   <script type="module" src="assets/js/curtain.min.js?v=1"></script>
   <script type="module" src="assets/js/howler.min.js"></script>
+  <script type="module" src="assets/js/bignumber.min.js"></script>
+  <script type="module" src="assets/js/html2canvas.min.js"></script>
 
   
   <link type="text/css" rel="stylesheet" href="assets/css/style.css?v=3" />
@@ -428,7 +430,6 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
             <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
           </div>
 
-
           
           <div id="selection-3" class="wrapper stage selection" style="background:#aecfde;" curtain-config="{card_type:2,max_i:2,reversible:false,next:stage_next}">
             <background>
@@ -508,7 +509,6 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
             </div>
             <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
           </div>
-
 
           
           <div id="selection-4" class="wrapper stage selection" style="background:#ffdc99;" curtain-config="{card_type:3,max_i:2,reversible:false,next:stage_next}">
@@ -746,11 +746,12 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
           </div>
 
 
-          <div id="result" class="wrapper stage" curtain-config="{update:coverUpdate, reversible:false,next:show_result}"  style="background: #547A41;">
+          <div id="result" class="wrapper stage" curtain-config="{update:coverUpdate, reversible:false,next:show_result}"  style="background: #ffffff;">
+            <background></background>
+            <!--
             <background>
               <bg style="display: flex;">
                 <img-container style="height:100%;transition:none;">
-                  <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
                       <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="480px"/>
@@ -826,6 +827,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
 
               </bg>
             </background>
+            -->
             
             <result-container >
               <dounut-container>
@@ -858,10 +860,10 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               <result-description>
                 <result-description-inner>
                   <row>
-                    <left style="background:#65ba90cc;">
+                    <left style="background:#c3f3d4cc;">
                       <h1 middle-align width-100p>30%</h4>
                     </left>
-                    <right style="background:#bbe8c1cc;">
+                    <right style="background:#e0ffebcc;">
                       <h3 zh="內在滿足" en="Intrinsic satisfaction">
                       </h3>
                       <p zh="你不介意付出或作取捨，以換取心靈的滿足及內心的渴望。" en="You’re willing to compromise or scarifice, in order to gain intrinsic fulfillment and desire.">
@@ -873,10 +875,10 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
 
 
                   <row>
-                    <left style="background:#efd686cc;">
+                    <left style="background:#ffdddccc;">
                       <h1 middle-align width-100p>30%</h4>
                     </left>
-                    <right style="background:#fcedbdcc;">
+                    <right style="background:#fdededcc;">
                       <h3 zh="人際關係" en="Inter-personal relationship">
                       </h3>
                       <p zh="你很著重人際關係，並願意花費心力、時間去經營每一段關係。" en="Inter-personal relationships are important to you, and you’re willing to pay effort and time to maintain each relationship.">
@@ -884,10 +886,10 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                     </right>
                   </row>
                   <row>
-                    <left style="background:#ffbca5cc;">
+                    <left style="background:#c1e4f4cc;">
                       <h1 middle-align width-100p>30%</h4>
                     </left>
-                    <right style="background:#ffd7c9cc;">
+                    <right style="background:#e4f7ffcc;">
                       <h3 zh="物質享受" en="Materialistic">
                       </h3>
                       <p zh="你很享受高質、有品味的物質生活，不介意花錢換取更舒適的生活。" en="You enjoy high quality materialistic life, and do not mind to pay for more comfortable life.">
@@ -895,10 +897,10 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                     </right>
                   </row>
                   <row>
-                    <left style="background:#84d6f6cc;">
+                    <left style="background:#ffebc2cc;">
                       <h1 middle-align width-100p>30%</h4>
                     </left>
-                    <right style="background:#b7e6f8cc;">
+                    <right style="background:#fff8e9cc;">
                       <h3 zh="生活模式" en="Life style">
                       </h3>
                       <p zh="你希望建立自己嚮往的生活模式，而且不用受到別人的限制。" en="You hope to build your own ideal lifestyle, and not be restricted by others.">
@@ -906,10 +908,10 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                     </right>
                   </row>
                   <row>
-                    <left style="background:#92ecdfcc;">
+                    <left style="background:#daffffcc;">
                       <h1 middle-align width-100p>30%</h4>
                     </left>
-                    <right style="background:#bfeee7cc;">
+                    <right style="background:#f0ffffcc;">
                       <h3 zh="自我形象" en="Self-image">
                       </h3>
                       <p zh="有些價值是你一定要堅守的，抱持信念才是你的人生。" en="You have your own values and you must stick with your faith.">
@@ -931,6 +933,158 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 <learn-more en="Back to result", zh="返回結果">
                 </learn-more>
                 <learn-more-content>
+                  <div flex-1>
+                    <div flex-1></div>
+
+                  </div>
+                  <div flex-4 flex-column>
+                    <p en="In your mind what does career planning do?" zh="你印象中生涯規劃係做咩？"></p>
+                    <p en="Don’t know what you want?" zh="唔知自己想要啲咩？"></p>
+                    <p en="Want to find/accomplish your goal?" zh="想搵／實踐自己嘅目標？"></p>
+                    <p en="Want to overcome difficulties in life?" zh="想跨過生活嘅難關？"></p>
+                    <p en="Tali-phone – you will never walk alone" zh="Tali-phone 聽你發噏瘋"></p>
+
+
+                  </div>
+                  
+                  <div flex-2>
+                    <icon class="contact-us" contact-us-channel="whatsapp" flex-1 flex-vert-center middle-align>
+                      <svg xmlns="http://www.w3.org/2000/svg" style="color: white" width="3em" height="100%" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" fill="currentColor"/></svg>
+                      <popup>
+                        <popup-inner>
+                          <ul>
+                            <li><h1 en="I want to chat about …" zh="我想傾吓 …"></h1></li>
+                            <div flex-2>
+                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                                <background>
+                                  <bg style="display: flex;">
+                                    <img-container style="height:100%;width:100%">
+                                      <svg scale-to-fit-parent-width-middle-bottom style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                                        <image xlink:href="assets/img/contact-button-01.jpg" x="0" y="0" width="345px" height="280px"/>
+                                      </svg>
+                                    </img-container>
+                                  </bg>
+                                </background>
+                                <p en-text="who I am" en="Who am I" zh="我係個\n點嘅人"></p>
+                                <smoke></smoke>
+          
+                              </div>
+                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                                <background>
+                                  <bg style="display: flex;">
+                                    <img-container style="height:100%;width:100%">
+                                      <svg scale-to-fit-parent-width-middle-top style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                                        <image xlink:href="assets/img/contact-button-02.jpg" x="0" y="0" width="345px" height="280px"/>
+                                      </svg>
+                                    </img-container>
+                                  </bg>
+                                </background>
+                                <p en-text="how to achieve goals" en="How to\nachieve goals" zh="點達成目標"></p>
+                                <smoke></smoke>
+          
+                              </div>
+                              
+                            </div>
+          
+                            
+                            <div flex-2>
+                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                                <background>
+                                  <bg style="display: flex;">
+                                    <img-container style="height:100%;width:100%">
+                                      <svg scale-to-fit-parent-width-middle-top style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                                        <image xlink:href="assets/img/contact-button-03.jpg" x="0" y="0" width="345px" height="280px"/>
+                                      </svg>
+                                    </img-container>
+                                  </bg>
+                                </background>
+                                <p en-text="how to find direction in life" en="How to find\ndirection in life" zh="點搵生活方向"></p>
+                                <smoke></smoke>
+          
+          
+                              </div>
+          
+                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                                <background>
+                                  <bg style="display: flex;">
+                                    <img-container style="height:100%;width:100%">
+                                      <svg scale-to-fit-parent-width-middle-top style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                                        <image xlink:href="assets/img/contact-button-04.jpg" x="0" y="0" width="345px" height="280px"/>
+                                      </svg>
+                                    </img-container>
+                                  </bg>
+                                </background>
+                                <p en-text="how to get along with others" en="How to\nget along\nwith others" zh="點同人相處"></p>
+                                <smoke></smoke>
+          
+                              </div>
+          
+          
+                            </div>
+          
+          
+                            <div flex-2>
+                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                                <background>
+                                  <bg style="display: flex;">
+                                    <img-container style="height:100%;width:100%">
+                                      <svg scale-to-fit-parent-width-middle-top style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                                        <image xlink:href="assets/img/contact-button-05.jpg" x="0" y="0" width="345px" height="280px"/>
+                                      </svg>
+                                    </img-container>
+                                  </bg>
+                                </background>
+                                <p en-text="F.3/F.6 choosing subject" en="F.3/F.6\nchoosing subject" zh="中三中六選咩科"></p>
+                                <smoke></smoke>
+          
+                              </div>
+          
+                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                                <background>
+                                  <bg style="display: flex;">
+                                    <img-container style="height:100%;width:100%">
+                                      <svg scale-to-fit-parent-width-middle-top style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
+                                        <image xlink:href="assets/img/contact-button-06.jpg" x="0" y="0" width="345px" height="280px"/>
+                                      </svg>
+                                    </img-container>
+                                  </bg>
+                                </background>
+                                <p en-text="what job I should do" en="What job\nshould I do" zh="出嚟搵咩工"></p>
+                                <smoke></smoke>
+          
+                              </div>
+          
+          
+                            </div>
+
+                            <div flex-2>
+                              <div flex-1 hide-overflow relative></div>
+                              <div class="contact-us-button" flex-2 hide-overflow relative>
+                                <background>
+                                  <bg style="display: flex;">
+                                    <img-container style="height:100%;width:100%">
+                                    </img-container>
+                                  </bg>
+                                </background>
+                                <p en-text="other things" en="Others" zh-text="其他嘢"  zh="其他"></p>
+                                <smoke></smoke>
+          
+                              </div>
+                              <div flex-1 hide-overflow relative></div>
+          
+          
+                            </div>
+                            
+                          </ul>
+                        </popup-inner>
+                      </popup>
+                    </icon>
+                    <icon class="contact-us" contact-us-channel="telegram" flex-1 flex-vert-center middle-align>
+                      <svg xmlns="http://www.w3.org/2000/svg" style="color: white" width="3em" height="100%" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" fill="currentColor"/></svg>
+                    </icon>
+
+                  </div>
+                  <div flex-1></div>
 
                 </learn-more-content>
               </learn-more-inner>

@@ -9,18 +9,10 @@ import {styler} from "./styler.min.js";
 var DEBUG = false;
 
 var CARDS_PER_PAGE = 6;
-var NUM_SCENES = 4;
-
 var MAX_AUDIO_VOL = 0.7;
 
-var OPACITY = {
-  EASING: 'easeOutQuad',
-  DURATION: 500,
-};
-var TRANSITION = {
-  EASING: 'easeOutQuart',
-  DURATION: 500,
-};
+var WHATSAPP_TEL = "+85261404750";
+
 const urlParams = decodeURI(window.location.search)
 .replace('?', '')
 .split('&')
@@ -36,6 +28,8 @@ DEBUG = urlParams.debug
   Utils
 
 **/
+
+
 
 function getRandomSubarray(arr, size) {
   if (size === undefined)size = arr.length;
@@ -133,6 +127,12 @@ const mix = function(a, b, p, h, k) {
   }
   return a
 }
+
+function getLinkWhastapp(number, message) {
+  LOG(encodeURI(message))
+  return 'https://api.whatsapp.com/send?phone=' + number + '&text=' + encodeURI(message);
+}
+
 /**
  * Shuffles array in place.
  * @param {Array} a items An array containing the items.
@@ -202,23 +202,6 @@ if (!DEBUG){
 
 
 
-/*
-
-  Skip
-
-*/
-
-
-
-const skip = parseInt(urlParams.skip);
-if (skip){
-  LOGT('Skipping '+skip+' stages')
-  var stages_divs = Array.from(document.getElementById('stages').children);
-  stages_divs.splice(1,skip).forEach(e=>{e.remove()});
-  
-}
-
-
 
 
 /*
@@ -239,6 +222,42 @@ const scale_to_fit_parent = ()=>{
     e.scale = ratio;
     e.style.transform = "translateX("+(e.translateX || "0px")+")" + ' scale('+(e.scale || 1)+')';
   })
+  doc.querySelectorAll('[scale-to-fit-parent-width-middle]').forEach(e=>{
+    var ratio = e.parentElement.clientWidth / e.clientWidth;
+    var ratio2 = e.parentElement.clientHeight / e.clientHeight;
+    if (ratio <= ratio2)
+      ratio = ratio2
+    e.scale = ratio;
+    e.style.position = "absolute";
+    e.style.left = "50%";
+    e.style.top = "50%";
+    e.style.transform = "translate(-"+(e.clientWidth/2)+"px, -"+(e.clientHeight/2)+"px)"+' scale('+( e.scale || 1)+')';
+  });
+  doc.querySelectorAll('[scale-to-fit-parent-width-middle-bottom]').forEach(e=>{
+    var ratio = e.parentElement.clientWidth / e.clientWidth;
+    var ratio2 = e.parentElement.clientHeight / e.clientHeight;
+    if (ratio <= ratio2)
+      ratio = ratio2
+    e.scale = ratio;
+    e.style.position = "absolute";
+    e.style.transformOrigin = "center bottom ";
+    e.style.left = "50%";
+    e.style.bottom = "0";
+    e.style.transform = "translate(-"+(e.clientWidth/2)+"px, -"+(0)+"px)"+' scale('+( e.scale || 1)+')';
+  });
+  doc.querySelectorAll('[scale-to-fit-parent-width-middle-top]').forEach(e=>{
+    var ratio = e.parentElement.clientWidth / e.clientWidth;
+    var ratio2 = e.parentElement.clientHeight / e.clientHeight;
+    if (ratio <= ratio2)
+      ratio = ratio2
+    e.scale = ratio;
+    e.style.position = "absolute";
+    e.style.transformOrigin = "center top ";
+    e.style.left = "50%";
+    e.style.top = "0";
+    e.style.transform = "translate(-"+(e.clientWidth/2)+"px, -"+(0)+"px)"+' scale('+( e.scale || 1)+')';
+  });
+
   doc.querySelectorAll('[scale-to-fit-parent-height]').forEach(e=>{
     var ratio = e.parentElement.clientHeight / e.clientHeight;
     var ratio2 = e.parentElement.clientWidth / e.clientWidth;
@@ -357,10 +376,13 @@ var setLang = function(L){
     if (ZH) ZH = ZH.value;
     if ((L == 'en' && EN) || (L == 'zh' && !ZH)){
       
-      EN = EN.replace(/{(.*?)}/g,(r)=>e.getAttribute(r.slice(1,-1))|| eval(r.slice(1,-1))).replace(/c/g,'<span fix-c>c</span>');
+      EN = EN
+           .replace(/\{(.*?)\}/g,(r)=>e.getAttribute(r.slice(1,-1))|| eval(r.slice(1,-1)))
+           .replace(/\\n/g, '<br/>')
+           .replace(/c/g,'<span fix-c>c</span>');
       if (e._content != EN){
         e._content = EN;
-        if (EN.indexOf('<span')>=0)
+        if (EN.indexOf('<span')>=0 || EN.indexOf('<br/>')>=0)
           e.innerHTML = EN;
         else
           e.textContent = EN;
@@ -370,10 +392,13 @@ var setLang = function(L){
     }
     if ((L == 'zh' && ZH) || (L == 'en' && !EN)){
 
-      ZH = ZH.replace(/\{(.*?)\}/g,(r)=>e.getAttribute(r.slice(1,-1))|| eval(r.slice(1,-1))).replace(/c/g,'<span fix-c>c</span>');
+      ZH = ZH
+           .replace(/\{(.*?)\}/g,(r)=>e.getAttribute(r.slice(1,-1))|| eval(r.slice(1,-1)))
+           .replace(/\\n/g, '<br/>')
+           .replace(/c/g,'<span fix-c>c</span>');
       if (e._content != ZH){
         e._content = ZH;
-        if (ZH.indexOf('<span')>=0)
+        if (ZH.indexOf('<span')>=0 || ZH.indexOf('<br/>')>=0)
           e.innerHTML = ZH;
         else
           e.textContent = ZH;
@@ -558,16 +583,66 @@ var CARDS_SHUFFLED = CARDS.slice(0);
 shuffle(CARDS_SHUFFLED);
 
 var CARDS_CHUNKS = chunks(CARDS_SHUFFLED, CARDS_PER_PAGE);
-console.log(CARDS_TYPES);
 
 
-
+/*
 
 window.CARDS = CARDS;
 window.CARDS_TYPES = CARDS_TYPES;
 window.CARDS_ITEMS = CARDS_ITEMS;
 window.CARDS_SHUFFLED = CARDS_SHUFFLED;
 window.CARDS_CHUNKS = CARDS_CHUNKS;
+
+*/
+
+
+var encoded_base = BigNumber.ALPHABET.length;
+var encoded_expand_base = CARDS.length;
+const get_decoded = (encoded)=>{
+  var decoded = new BigNumber(encoded,encoded_base);
+  var decoded_vals = [];
+  for (var j=0; j < 100; j++){
+    var mod = parseInt(decoded.modulo(encoded_expand_base).toString());
+    if (j > 0 && mod == 0) break;
+    decoded_vals.push(mod);
+    decoded = decoded.minus(mod).dividedBy(encoded_expand_base);
+  }
+  return decoded_vals;
+
+}
+
+
+let d = urlParams.d;
+if (d){
+  LOG(d);
+  try{
+    let decoded = get_decoded(d);
+    urlParams.skip = 8;
+    decoded.forEach(i=>CARDS[i].chosen=true);
+
+  }catch(err){
+
+  }
+}
+
+
+
+
+/*
+
+  Skip
+
+*/
+
+
+
+const skip = parseInt(urlParams.skip);
+if (skip){
+  LOGT('Skipping '+skip+' stages')
+  var stages_divs = Array.from(document.getElementById('stages').children);
+  stages_divs.splice(1,skip).forEach(e=>{e.remove()});
+  
+}
 
 
 
@@ -1065,7 +1140,7 @@ const timeline = function(frames){
 const fadeIn = (selector, duration)=>{
   if (!DEBUG)
     duration = duration || FADE_DURATION;
-  LOG('duration',duration, 'for',selector);
+    
   var animation = anime.timeline({
     targets: selector,
     delay: anime.stagger(duration || FADE_DURATION),
@@ -1079,7 +1154,6 @@ const fadeIn = (selector, duration)=>{
 }
 
 window.intro_next = function (self){
-  LOG(self.obj);
   document.querySelector('html').style.background = self.obj.style.background
   var obj = self.obj;
   timeline([
@@ -1116,13 +1190,21 @@ window.coverUpdate = (self, p, p2)=>{
 var current_cards_i = 0;
 var recent_touch = 0;
 var no_click = false;
+
+// for safari, this event not working under clip-path
+// click event is dispatched even user clicks on
+// somewhere that is not masked (that is hidden by mask)
+var current_stage = 0;
+function is_hidden(el) {
+  return (el.offsetParent === null)
+}
 const card_click_listener = function(e){
   var is_scroll = false;
   var scroll_up = false;
   if (no_click && e.type == 'click')
     return;
+  var cursor = pointerEventToXY(e);
   if (e.type == 'touchend'){
-    var cursor = pointerEventToXY(e);
     if (last_cursor !== null && Math.sqrt(Math.pow(cursor.x - last_cursor.x,2) + Math.pow(cursor.y - last_cursor.y,2)) > 20){
       is_scroll = true
       scroll_up = last_cursor.y < cursor.y;
@@ -1132,66 +1214,164 @@ const card_click_listener = function(e){
   var this_touch = + new Date();
   if (this_touch - recent_touch < 50)
     return;
-  recent_touch = this_touch
-
-  
+  recent_touch = this_touch;
   last_cursor = null;
-  var u = e.target;
-  while (u && u.tagName != 'CARD'){
-    u = u.parentElement;
-    }
-  if (u){
-    if (is_scroll)
-      return;
 
-      
-    u.classList.toggle('chosen');
-    var card_id = parseInt(u.id);
-    var card = CARDS[card_id];
-    card.chosen = !card.chosen;
-    n_chosen_at_last += card.chosen?1:-1;
-    setLang();
 
-    window.dispatchEvent(new Event('card-clicked'));
+
+  var cards = Array.from(doc.querySelectorAll('card'));
   
-  }
 
-  var u = e.target;
-  while (u && u.tagName != "RESULT-DESCRIPTION"){
-    u = u.parentElement;
+  if (!is_scroll){
+    cards.forEach(e=>{
+      if (is_hidden(e))return;
+      var bbox = e.getBoundingClientRect();
+      if (cursor.x < bbox.x || cursor.y < bbox.y) return;
+      if (cursor.x > bbox.x + bbox.width || cursor.y > bbox.y + bbox.height) return;
+      // clicked card
+      e.classList.toggle('chosen');
+      var card_id = parseInt(e.id);
+      var card = CARDS[card_id];
+      card.chosen = !card.chosen;
+      n_chosen_at_last += card.chosen?1:-1;
+      setLang();
+
+      window.dispatchEvent(new Event('card-clicked'));
+    
+    })
   }
-  if (u){
-    var container = document.querySelector('result-container');
-    if (is_scroll){
-      if (container.classList.contains('active')){
-        if (!(document.querySelector('result-description').scrollTop <= 0 && scroll_up))
-          return;
-        
-      }else if (scroll_up){
-        return
+  
+  if (current_stage == 8){
+    var u = e.target;
+    while (u && u.tagName != "RESULT-DESCRIPTION")
+      u = u.parentElement;
+    
+    if (u){
+      var container = document.querySelector('result-container');
+      if (is_scroll){
+        if (container.classList.contains('active')){
+          if (!(document.querySelector('result-description').scrollTop <= 0 && scroll_up))
+            return;
+          
+        }else if (scroll_up){
+          return
+        }
       }
+      // if (!is_scroll && container.classList.contains('active'))
+      //   return;
+      
+      document.querySelector('result-description').scrollTop = 0
+      
+      container.classList.toggle('active');
+  
+      if (container.classList.contains('active'))
+        doc.body.setAttribute('float-higher','');
+      else
+        doc.body.removeAttribute('float-higher');
+        
     }
+    var u = e.target;
+    while (u && u.tagName != "LEARN-MORE")
+      u = u.parentElement;
     
-    
-    document.querySelector('result-description').scrollTop = 0
-    
-    container.classList.toggle('active');
+    if (u){
+      var container = document.getElementById('result');
+      if (is_scroll)return;
+      container.classList.toggle('switch')
+    }
 
-    if (container.classList.contains('active'))
-      doc.body.setAttribute('float-higher','');
-    else
-      doc.body.removeAttribute('float-higher');
-    LOGT('!')
-  }
-  var u = e.target;
-  while (u && u.tagName != "LEARN-MORE"){
-    u = u.parentElement;
-  }
-  if (u){
-    var container = document.getElementById('result');
-    if (is_scroll)return;
-    container.classList.toggle('switch')
+    var u = e.target;
+    while (u && !u.classList.contains('contact-us'))
+      u = u.parentElement;
     
+    if (u){
+      if (is_scroll && !document.querySelector('.contact-us-opened'))return;
+
+      var t = e.target;
+      var popup = document.querySelector('popup');
+      var opened = popup.classList.contains('opened');
+      while (true){
+        if (!t) break;
+        if (t.classList.contains('contact-us-button'))
+          break
+        t = t.parentElement;
+      }
+      var channel = u.getAttribute('contact-us-channel');
+      
+      
+      if (!is_scroll && t && document.querySelector('.contact-us-opened')){
+
+        var p = t;
+        if (p){
+          var chat_about = p.getAttribute(current_lang+'-text') || p.getAttribute(current_lang);
+          var send_text = "";
+          if (current_lang == 'zh')
+            send_text = "我想傾吓"+ chat_about + "。";
+          else
+            send_text = "I want to talk about " + chat_about +'.';
+
+          send_text += "\n" + sharable_link;
+
+          if (channel == 'whatsapp'){
+            var link = getLinkWhastapp(WHATSAPP_TEL, send_text);
+            var win = window.open(link, '_blank');
+            win.focus();
+
+          }else if (channel == 'telegram'){
+
+          }
+          return;
+          
+        }
+
+
+      }     
+      
+      var offset = doc.getElementById('app').getBoundingClientRect();
+      var scale = parseFloat(document.documentElement.style.getPropertyValue('--scale') || 1);
+      var center;
+      
+
+      if (!opened){
+        center = {
+          x: (cursor.x - offset.x) / scale,
+          y: (cursor.y - offset.y) / scale,
+          
+        };
+        popup.style.transition = "";
+        popup.style.clipPath = "circle(0% at "+center.x+"px "+center.y+"px)";
+        popup.style.webkitClipPath = "circle(0% at "+center.x+"px "+center.y+"px)";
+        popup.offsetHeight; // no need to store this anywhere, the reference is enough
+        popup.style.transition = "all 2s cubic-bezier(0.2, 0.9, 0.25, 1)";
+        popup.style.clipPath = "circle(150% at "+center.x+"px "+center.y+"px)";
+        popup.style.webkitClipPath = "circle(150% at "+center.x+"px "+center.y+"px)";
+        popup.style.pointerEvents = "all";
+
+      }else{
+        LOG(e); 
+        var bbox = popup.last_contact_us.getBoundingClientRect();
+        center = {
+          x: (bbox.x+bbox.width/2 - offset.x) / scale,
+          y: (bbox.y+bbox.height/2 - offset.y) / scale,
+          
+        };
+        popup.style.transition = "all 1s cubic-bezier(0.2, 0.9, 0.25, 1)";
+        popup.style.clipPath = "circle(0% at "+center.x+"px "+center.y+"px)";
+        popup.style.webkitClipPath = "circle(0% at "+center.x+"px "+center.y+"px)";
+        popup.style.pointerEvents = "none";
+
+
+      }
+
+      popup.classList.toggle('opened')
+
+      document.getElementById('result').classList.toggle('contact-us-opened')
+    
+
+      popup.last_contact_us = u;
+
+
+    }
 
   }
 }
@@ -1199,15 +1379,76 @@ const card_click_listener = function(e){
 var last_cursor;
 doc.getElementById('app').addEventListener('touchstart',e=>{
   last_cursor = pointerEventToXY(e);
+  if (sort_container_cards)
+    sort_container_cards_last_scroll_top = sort_container_cards.scrollTop
   no_click=true;
+});
+var sort_container_cards = document.querySelector('#sort-container cards');
+var sort_container_cards_last_scroll_top;
+
+doc.getElementById('app').addEventListener('touchmove',e=>{
+  if (current_stage != 6 || !sort_container_cards) return;
+  e.preventDefault()
+  e.stopPropagation();
+  var cursor = pointerEventToXY(e);
+  if (!last_cursor)last_cursor = cursor;
+  var dy = (cursor.y - last_cursor.y) / parseFloat(document.documentElement.style.getPropertyValue('--scale') || 1);
+  sort_container_cards.scrollTop = sort_container_cards_last_scroll_top-dy;
 });
 doc.getElementById('app').addEventListener('click',card_click_listener);
 doc.getElementById('app').addEventListener('touchend',card_click_listener);
+
+
+
+var mousedowning = false;
+doc.getElementById('app').addEventListener('mousedown',e=>{
+  if (no_click || !sort_container_cards) return;
+  last_cursor = pointerEventToXY(e);
+  sort_container_cards_last_scroll_top = sort_container_cards.scrollTop;
+  mousedowning = true;
+});
+doc.getElementById('app').addEventListener('mouseup',e=>{
+  if (no_click) return;
+  mousedowning = false;
+  card_click_listener(e)
+});
+
+doc.getElementById('app').addEventListener('mousemove',e=>{
+  if (no_click || !mousedowning || !sort_container_cards) return;
+  if (current_stage != 6) return;
+  e.preventDefault()
+  e.stopPropagation();
+  var cursor = pointerEventToXY(e);
+  if (!last_cursor)last_cursor = cursor;
+  var dy = (cursor.y - last_cursor.y) / parseFloat(document.documentElement.style.getPropertyValue('--scale') || 1);
+  sort_container_cards.scrollTop = sort_container_cards_last_scroll_top-dy;
+});
+
+
+
+
+
+
+/*
+
+  Fix clip-path in Safari
+
+*/
+
+// the only scrollable that is blocked by clip-path
+
+
+
+
+
+
+
+
 const stage_get_arrows = (obj)=>{
   return Array.from(obj.children).filter(e=>e.tagName == 'ARROWS')[0]
 }
 const move_bg = (obj, level, total)=>{
-  console.log('level:',level,'/',total);
+  LOG('level:',level,'/',total);
   return new Promise(function(resolve, reject) {
     var img = Array.from(obj.children).filter(e=>e.tagName == 'BACKGROUND')[0].querySelector('bg g');
     img.translateX = "calc((-100% + var(--window-width, 100vw)) / "+total+" * "+level+")";
@@ -1455,7 +1696,6 @@ window.sort_start = function (self){
 
 
   }else if (all_chosen.length <= 10){
-    LOG(self);
     var nextCurtain = self.obj.querySelector('.curtain-page');
     nextCurtain.style.display = '';
     nextCurtain.style.clipPath = '';
@@ -1509,10 +1749,11 @@ window.sort_start = function (self){
       },
       ()=> show(sort_container),
       ()=> card_divs.slice(8).forEach(e=>e.style.opacity=1),
+      ()=> current_stage = 6,
       ()=> fadeIn(doc.querySelectorAll('#sort-container .thin-body p'), 600),
       ()=> fadeIn(getRandomSubarray(card_divs.slice(0,8)), 200),
       ()=> window.addEventListener('card-clicked', check_if_cards_enough, false),
-      ()=> sleep(2000),
+      ()=> check_if_cards_enough(),
       //defaultNextCutain(self)
   
     ])
@@ -1537,7 +1778,7 @@ window.pre_result = function (self){
     ()=> sleep(1000),
     ()=> deactivate_bg_animation(doc.getElementById('intro').querySelector('background')),
     ()=> fadeIn(intro_texts, 600),
-    defaultNextCutain(self)
+    defaultNextCutain(self),
 
   ])
 }
@@ -1547,43 +1788,52 @@ window.pre_result = function (self){
     Show result
 */
 
-
-
-
+var counter = [0,0,0,0,0];
+var colors = "abdfbd,ffcfcd,aecfde,ffdc99,ccffff".split(',');
+var sharable_link;
 window.show_result = function (self){
   var obj = self.obj;
   document.querySelector('html').style.background = obj.style.background
   var result_container = obj.querySelector('result-container');
   var all_chosen = CARDS.filter(e=>e.chosen).map(e=>e);
-  var data = btoa(all_chosen.map(e=>e.id))
+
+  // LOG('truth', all_chosen.map(e=>e.id))
+
+  var encoded = all_chosen.reduce(
+    (e, x, i)=>{
+      var temp = new BigNumber('1');
+      for (var j=0; j<i; j++)
+        temp = temp.multipliedBy(encoded_expand_base)
+      temp = temp.multipliedBy(x.id)
+      return e.plus(temp)
+    }, new BigNumber('0')
+  ).toString(encoded_base);
+
   var counter_ = all_chosen.reduce((acc, curr)=>(acc[curr.type] ? acc[curr.type]++ : acc[curr.type] = 1)&&acc, {});
-  var counter = [0,0,0,0,0];
   Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
   var dounuts = doc.getElementsByClassName('donut');
   var total = all_chosen.length;
   var stoke_max = 879.645943005142;
   var inner = document.querySelector('result-description-inner');
-  LOG(dounuts);
-
-  LOG(total);
-  LOG(counter_);
-  LOG(counter);
+  
   var rows = Array.from(doc.querySelectorAll('row'));
   rows.forEach((e,i)=>{e.dtype = i;e.score = counter[i]});
   rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
   doc.querySelectorAll('left h1').forEach((e, i)=>{
     var p = parseInt((counter[i] / total)*100)
-    e.textContent = (p)+ '%';
+    e.innerHTML = (p)+ '<span font-smaller>%</span>';
   })
 
 
   rows.forEach(e=>inner.appendChild(e));
   var best_type = rows[0].dtype;
   var TYPE = CARDS_TYPES[best_type];
-  LOG(TYPE);
-  var sharable_link = window.location.origin+'/'+TYPE.code+'?d='+data;
+  
+  document.querySelector('html').style.background = '#'+colors[best_type];
+  document.getElementById('result').style.background = '#'+colors[best_type];
+  
+  sharable_link = window.location.origin+'/'+TYPE.code+'?d='+encoded+'&lang='+current_lang;
   LOGT(sharable_link);
-
 
   const start_dounuts = ()=>{
     var config = {
@@ -1610,7 +1860,7 @@ window.show_result = function (self){
 
   }
 
-  console.log(self.obj);
+  
 
   const resize_result_desc_inner = ()=>{
     inner.style.height = '';
@@ -1631,10 +1881,16 @@ window.show_result = function (self){
     ()=> doc.querySelector('result-description').classList.add('active'),
     ()=> doc.querySelector('learn-more').classList.add('active'),
     ()=> resize_result_desc_inner(),
+    ()=> current_stage = 8,
     defaultNextCutain(self)
 
   ])
 }
+
+
+
+
+
 
 
 /*
