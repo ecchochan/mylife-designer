@@ -13,11 +13,16 @@
 
   <link rel="icon" type="image/jpeg" href="assets/img/favicon-128x128.jpg">
 
+  <link rel="preload" href="assets/fonts/huninn.ttf" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="assets/fonts/CrimsonText-Bold.ttf" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="assets/fonts/CrimsonText-Italic.ttf" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="assets/fonts/CrimsonText-Regular.ttf" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" as="font" crossorigin="anonymous">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" as="font" crossorigin="anonymous">
+
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
   <!--
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
@@ -164,7 +169,7 @@
                 <p font-large bold en="EXPLORE
 YOUR
 JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
-                <p drag="-10" en="Test your inner values" zh="透視你的內心世界"></p>
+                <p style="font-family:Quicksand;" drag="-10" en="Test your inner values" zh="透視你的內心世界"></p>
               </div>
             </block>
 
@@ -423,7 +428,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
             </background>
             <div class="thin-body">
               <div flex-1 flex-column>
-                <p en="It there anything else you want," zh="還有什麼你想要的，"></p>
+                <p en="Is there anything else you want," zh="還有什麼你想要的，"></p>
                 <p en="even you never think of …" zh="即使你未曾想像過 …"></p>
               </div>
             </div>
@@ -938,24 +943,27 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
 
                   </div>
                   <div flex-4 flex-column>
-                    <p en="In your mind what does career planning do?" zh="你印象中生涯規劃係做咩？"></p>
-                    <p en="Don’t know what you want?" zh="唔知自己想要啲咩？"></p>
-                    <p en="Want to find/accomplish your goal?" zh="想搵／實踐自己嘅目標？"></p>
-                    <p en="Want to overcome difficulties in life?" zh="想跨過生活嘅難關？"></p>
-                    <p en="Tali-phone – you will never walk alone" zh="Tali-phone 聽你發噏瘋"></p>
-
+                    <div style="height: fit-content; margin: auto" class="thin-body">
+                      <p en="In your mind what does career planning do?" zh="你印象中生涯規劃係做咩？"></p>
+                      <p en="Don’t know what you want?" zh="唔知自己想要啲咩？"></p>
+                      <p en="Want to find/accomplish your goal?" zh="想搵／實踐自己嘅目標？"></p>
+                      <p en="Want to overcome difficulties in life?" zh="想跨過生活嘅難關？"></p>
+                      <p en="Tali-phone – you will never walk alone" zh="Tali-phone 聽你發噏瘋"></p>
+  
+  
+                    </div>
 
                   </div>
                   
                   <div flex-2>
-                    <icon class="contact-us" contact-us-channel="whatsapp" flex-1 flex-vert-center middle-align>
+                    <icon class="contact-us" style="margin-left: calc(15 * var(--window-width, 100vw) / 100);" contact-us-channel="whatsapp" flex-1 flex-vert-center middle-align>
                       <svg xmlns="http://www.w3.org/2000/svg" style="color: white" width="3em" height="100%" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" fill="currentColor"/></svg>
                       <popup>
                         <popup-inner>
                           <ul>
                             <li><h1 en="I want to chat about …" zh="我想傾吓 …"></h1></li>
-                            <div flex-2>
-                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                            <div flex-3>
+                              <div class="contact-us-button" flex-1 relative>
                                 <background>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
@@ -969,7 +977,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                                 <smoke></smoke>
           
                               </div>
-                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                              <div class="contact-us-button" flex-1 relative>
                                 <background>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
@@ -987,8 +995,8 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                             </div>
           
                             
-                            <div flex-2>
-                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                            <div flex-3>
+                              <div class="contact-us-button" flex-1 relative>
                                 <background>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
@@ -1004,7 +1012,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
           
                               </div>
           
-                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                              <div class="contact-us-button" flex-1 relative>
                                 <background>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
@@ -1023,8 +1031,8 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                             </div>
           
           
-                            <div flex-2>
-                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                            <div flex-3>
+                              <div class="contact-us-button" flex-1 relative>
                                 <background>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
@@ -1039,7 +1047,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
           
                               </div>
           
-                              <div class="contact-us-button" flex-1 hide-overflow relative>
+                              <div class="contact-us-button" flex-1 relative>
                                 <background>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
@@ -1058,8 +1066,8 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                             </div>
 
                             <div flex-2>
-                              <div flex-1 hide-overflow relative></div>
-                              <div class="contact-us-button" flex-2 hide-overflow relative>
+                              <!--<div style="margin-left:0;" flex-1 relative></div>-->
+                              <div class="contact-us-button" flex-2 relative>
                                 <background>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
@@ -1070,17 +1078,21 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                                 <smoke></smoke>
           
                               </div>
-                              <div flex-1 hide-overflow relative></div>
+                              <!--<div style="margin-left:0;" flex-1 relative></div>-->
           
           
+                            </div>
+                            <div flex-1>
                             </div>
                             
                           </ul>
                         </popup-inner>
                       </popup>
                     </icon>
-                    <icon class="contact-us" contact-us-channel="telegram" flex-1 flex-vert-center middle-align>
-                      <svg xmlns="http://www.w3.org/2000/svg" style="color: white" width="3em" height="100%" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" fill="currentColor"/></svg>
+                    <icon class="contact-us" style="margin-right: calc(15 * var(--window-width, 100vw) / 100);" contact-us-channel="telegram" flex-1 flex-vert-center middle-align>
+                      <svg xmlns="http://www.w3.org/2000/svg" style="color: white; transform:translateY(3px)" width="3.4em" height="100%" viewBox="0 0 54 54">
+                        <path xmlns="http://www.w3.org/2000/svg" d="M49.7,16.5c1.3,3.1,2,6.3,2,9.7s-0.7,6.6-2,9.7c-1.3,3.1-3.1,5.7-5.3,8c-2.2,2.2-4.9,4-8,5.3c-3.1,1.3-6.3,2-9.7,2   c-3.4,0-6.6-0.7-9.7-2s-5.7-3.1-8-5.3c-2.2-2.2-4-4.9-5.3-8c-1.3-3.1-2-6.3-2-9.7s0.7-6.6,2-9.7c1.3-3.1,3.1-5.7,5.3-8   c2.2-2.2,4.9-4,8-5.3s6.3-2,9.7-2c3.4,0,6.6,0.7,9.7,2c3.1,1.3,5.7,3.1,8,5.3C46.6,10.8,48.3,13.5,49.7,16.5z M34.8,37.7l4.1-19.3   c0.2-0.8,0.1-1.4-0.3-1.8c-0.4-0.4-0.8-0.4-1.4-0.2l-24.1,9.3c-0.5,0.2-0.9,0.4-1.1,0.7c-0.2,0.3-0.2,0.5-0.1,0.7   c0.1,0.2,0.4,0.4,0.9,0.5l6.2,1.9l14.3-9c0.4-0.3,0.7-0.3,0.9-0.2c0.1,0.1,0.1,0.2-0.1,0.4L22.5,31.3L22,37.7   c0.4,0,0.8-0.2,1.3-0.6l3-2.9l6.2,4.6C33.8,39.5,34.5,39.1,34.8,37.7z" fill="currentColor"/>
+                      </svg>
                     </icon>
 
                   </div>

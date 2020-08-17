@@ -634,11 +634,11 @@ if (d){
 
 */
 
-
-
+const bgs = Array.from(document.querySelectorAll('[id^="selection"] background')).filter(e=>e).map(e=>e.innerHTML);
+LOG(bgs);
 const skip = parseInt(urlParams.skip);
 if (skip){
-  LOGT('Skipping '+skip+' stages')
+  LOGT('Skipping '+skip+' stages');
   var stages_divs = Array.from(document.getElementById('stages').children);
   stages_divs.splice(1,skip).forEach(e=>{e.remove()});
   
@@ -724,6 +724,18 @@ luggage.jpg
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var card_1_bgs = `
+bg01-card-bg-01.png
+bg01-card-bg-02.png
+bg01-card-bg-03.png
+bg01-card-bg-04.png
+bg01-card-bg-05.png
+bg01-card-bg-06.png
+bg01-card-bg-07.png
+bg01-card-bg-08.png
+bg01-card-bg-09.png
+bg01-card-bg-10.png
+bg01-card-bg-11.png
+bg01-card-bg-12.png
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var card_2_bgs = `
@@ -1296,12 +1308,12 @@ const card_click_listener = function(e){
           break
         t = t.parentElement;
       }
-      var channel = u.getAttribute('contact-us-channel');
       
       
       if (!is_scroll && t && document.querySelector('.contact-us-opened')){
 
-        var p = t;
+        var channel = popup.last_contact_us.getAttribute('contact-us-channel');
+        var p = t.querySelector('p');
         if (p){
           var chat_about = p.getAttribute(current_lang+'-text') || p.getAttribute(current_lang);
           var send_text = "";
@@ -1310,7 +1322,9 @@ const card_click_listener = function(e){
           else
             send_text = "I want to talk about " + chat_about +'.';
 
-          send_text += "\n" + sharable_link;
+          send_text += "\n" + sharable_link+"&lang="+current_lang;
+
+          LOG(channel);
 
           if (channel == 'whatsapp'){
             var link = getLinkWhastapp(WHATSAPP_TEL, send_text);
@@ -1831,6 +1845,10 @@ window.show_result = function (self){
   
   document.querySelector('html').style.background = '#'+colors[best_type];
   document.getElementById('result').style.background = '#'+colors[best_type];
+  var background = document.getElementById('result').querySelector('background');
+  background.innertHTML = bgs[best_type]
+
+  activate_bg_animation();
   
   sharable_link = window.location.origin+'/'+TYPE.code+'?d='+encoded+'&lang='+current_lang;
   LOGT(sharable_link);
@@ -1882,7 +1900,8 @@ window.show_result = function (self){
     ()=> doc.querySelector('learn-more').classList.add('active'),
     ()=> resize_result_desc_inner(),
     ()=> current_stage = 8,
-    defaultNextCutain(self)
+    ()=> sleep(3500),
+    ()=> LOG('ready'),
 
   ])
 }

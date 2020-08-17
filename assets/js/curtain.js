@@ -198,7 +198,7 @@ var makeCurtain = (function () {
     closing: true,
     reversible: true,
     but_y_pos: 0.25,
-    right_pad: 18,
+    right_pad: 8,
     but_size: 40,
     nextFrame: [],
     nextClick: [],

@@ -1,4 +1,8 @@
 @import 'toggler';
+@font-face {
+  font-family: "huninn";
+  src: url("../fonts/huninn.ttf");
+}
 
 @font-face {
   font-family: "CrimsonText";
@@ -236,14 +240,14 @@ body, html {
 
 
 #body {
-  font-family: 'CrimsonText', 'Noto Sans TC', sans-serif;
+  font-family: 'Kalam', 'CrimsonText', 'huninn', 'Noto Sans TC', sans-serif;
   margin: 0;
   padding: 0;
   height:100vh;
   width:100vw;
   width: calc(var(--vw, 1vw) * 100);
   height: calc(var(--vh, 1vh) * 100);
-  box-shadow: 0 0 35px #0009;
+  // box-shadow: 0 0 35px #0009;
   font-size: calc(5 * var(--window-width-for-font, 100vw) / 100);
 
 }
@@ -251,8 +255,10 @@ body, html {
 p {
   white-space: pre;
   margin: 0;
+  line-height: 1.2;
 }
 .thin-body{
+  font-family: 'Overlock', 'huninn' !important;
   p {
     margin-bottom: 0.7em;
 
@@ -300,12 +306,13 @@ block {
 }
 [card-bg]{
   position:absolute;
+  // display: none !important;
   height:100px;
   width:100px; 
   transform-origin: center center;
   left: 50%;
   top: 50%;
-  transform: translate3d(-50%, -50%, 0) scale(3);
+  transform: translate(-50%, -50%) scale(2.7, 2.2);
   pointer-events: none;
   z-index: -1;
 }
@@ -483,6 +490,7 @@ background {
   width: 100%;
   height: 100%;
   position: absolute;
+  overflow: hidden;
   // pointer-events: none;
 }
 img-container {
@@ -603,11 +611,36 @@ card-text {
       // text-shadow: 1px 1px #0005;
 
     }
+    & p:before{
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 100%;
+      width: 100%;
+      border-radius: 100%;
+      transition: background 0.5s ease-out, box-shadow 0.5s ease-out;
+      background: #fff0;
+      width: calc(100% + 2em);
+      height: calc(100% + 2em);
+    }
 }
 .chosen {
   // text-shadow: 1px 1px 6px rgba(255, 190, 51, 0.5), 1px 1px 6px rgba(255, 190, 51, 0.5), 1px 1px 6px rgba(255, 190, 51, 0.5);
   
-  background: #fff3;
+  // background: #fff3;
+
+  svg {
+
+  }
+
+  card-text p:before{
+    background: #fff5;
+    // box-shadow: 0 0 10px 2px #fff;
+    
+
+  }
   
 }
 
@@ -688,6 +721,10 @@ card p {
 }
 #result{
   transition: opacity 1.5s ease, transform 1.0s cubic-bezier(0.2, 0.9, 0.25, 1);
+  .thin-body p{
+    transition: all 0.5s ease;
+    margin-bottom:1.3em;
+  }
   &.switch{
     result-container{
       transform:translateX(-100%);
@@ -697,6 +734,17 @@ card p {
       learn-more-inner{
         transform:translateX(0);
       }
+    }
+    .thin-body p{
+
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+            $td: ($i*.1+.3s);
+            $ts: ($i*.08+.4s);
+            transition: $ts cubic-bezier($smooth) $td;
+        }
+      }
+      opacity: 1;
     }
   }
 }
@@ -788,6 +836,7 @@ result-container {
           h1 {
             margin-top:.7em;
             font-size: 1.5em;
+            font-family: 'huninn';
           }
 
 
@@ -883,41 +932,24 @@ learn-more-container {
       width: 100%;
       display: flex;
       flex-direction: column;
-      & > * {
-        & > .contact-us > svg{
-          transition: opacity 1.5s ease, transform 1.0s cubic-bezier(0.2, 0.9, 0.25, 1);
 
-        }
-        & > *{
-
-          transition: opacity 1.5s ease, transform 1.0s cubic-bezier(0.2, 0.9, 0.25, 1);
-          margin: 0.7em;
-          margin-bottom: 0;
-          border-radius: 0.6em;
-          & + * {
-            margin-left: 0;
-
-          }
-        }
-      }
-
-      background + p {
+      background + p, background + p + p {
         font-size: 0.75em;
         position: absolute;
         bottom: 0;
         padding: 0.6em;
         color: #76bba2;
-        font-weight: 700;
+        font-weight: 500;
         text-align: left;
       }
-      
+
       smoke {
           position: absolute;
           left: 0;
           top: 0;
           height: 100%;
           width: 100%;
-          box-shadow: inset 0 0 12px 3px #76bba2;
+          box-shadow: inset 0 0 12px 3px #76bba2; // , 0 0 15px #0002;
       }
 
 
@@ -931,7 +963,8 @@ learn-more-container {
   learn-more-content{
     & > * {
       & > *:not(.contact-us), & > .contact-us > svg{
-        opacity: 0;
+        transition: all 1s ease !important;
+        opacity: 0 !important;
       }
     }
   }
@@ -951,7 +984,7 @@ popup{
   popup-inner{
     position:absolute;
     background: #fffe;
-    background: #f1fdf9;
+    background: #f5fffce0;
     width: calc(100% - 2 * 2 * var(--window-width, 100vw) / 100);
     height: calc(100% - 4em);
     top: 0;
@@ -967,6 +1000,13 @@ popup{
     left: 0;
     margin: 0em calc(0 * var(--window-width, 100vw) / 100);
     border-radius: 0em;
+
+
+    .contact-us-button{
+      background, smoke{
+        border-radius: 0.6em;
+      }
+    }
   }
   ul{
     list-style-type: none;
@@ -979,12 +1019,12 @@ popup{
     padding: 2em 0em;
 
     & > div > * {
-      margin: 1em;
+      margin: 0.5em;
       margin-right: 0;
       margin-bottom: 0;
       border-radius: 0.7em;
       &:last-child {
-        margin-right: 1em;
+        margin-right: 0.5em;
       }
       opacity: 0;
       transition: all 0.5s ease;
