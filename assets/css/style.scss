@@ -210,6 +210,17 @@ landscape-hint {
     height: 100%;
     margin: auto;
     display: flex;
+    transform: translate(0, 40%);
+  }
+  p{
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -00%);
+    font-family: 'Kalam', 'setofont', 'Noto Sans TC', sans-serif;
+    text-align: center;
+    font-size: calc(var(--window-width, 100vw) * 5 / 100);
+
   }
 }
 
