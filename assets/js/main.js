@@ -1781,37 +1781,17 @@ window.sort_start = function (self){
 */
 
 
-
+var result_bg_loaded = false;
 
 window.pre_result = function (self){
   document.querySelector('html').style.background = self.obj.style.background
   var obj = self.obj;
   var intro_text_container = Array.from(obj.children).filter(e=>e.classList.contains('thin-body'))[0];
   var intro_texts = intro_text_container.querySelectorAll('p');
-  timeline([
-    ()=> sleep(1000),
-    ()=> deactivate_bg_animation(doc.getElementById('intro').querySelector('background')),
-    ()=> fadeIn(intro_texts, 600),
-    defaultNextCutain(self),
 
-  ])
-}
-
-
-/*
-    Show result
-*/
-
-var counter = [0,0,0,0,0];
-var colors = "abdfbd,ffcfcd,aecfde,ffdc99,ccffff".split(',');
-var sharable_link;
-window.show_result = function (self){
-  var obj = self.obj;
+  obj = doc.getElementById('result')
   document.querySelector('html').style.background = obj.style.background
-  var result_container = obj.querySelector('result-container');
   var all_chosen = CARDS.filter(e=>e.chosen).map(e=>e);
-
-  // LOG('truth', all_chosen.map(e=>e.id))
 
   var encoded = all_chosen.reduce(
     (e, x, i)=>{
@@ -1825,9 +1805,7 @@ window.show_result = function (self){
 
   var counter_ = all_chosen.reduce((acc, curr)=>(acc[curr.type] ? acc[curr.type]++ : acc[curr.type] = 1)&&acc, {});
   Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
-  var dounuts = doc.getElementsByClassName('donut');
   var total = all_chosen.length;
-  var stoke_max = 879.645943005142;
   var inner = document.querySelector('result-description-inner');
   
   var rows = Array.from(doc.querySelectorAll('row'));
@@ -1849,10 +1827,72 @@ window.show_result = function (self){
   background.innertHTML = bgs[best_type]
 
   activate_bg_animation();
-  
+  result_bg_loaded = true;
+
   sharable_link = window.location.origin+'/'+TYPE.code+'?d='+encoded+'&lang='+current_lang;
   LOGT(sharable_link);
 
+
+
+  
+  timeline([
+    ()=> sleep(1000),
+    ()=> deactivate_bg_animation(doc.getElementById('intro').querySelector('background')),
+    ()=> fadeIn(intro_texts, 600),
+    defaultNextCutain(self),
+
+  ])
+}
+
+
+/*
+    Show result
+*/
+
+var counter = [0,0,0,0,0];
+var colors = "abdfbd,ffcfcd,aecfde,ffdc99,ccffff".split(',');
+var sharable_link;
+window.show_result = function (self){
+  var obj = self.obj;
+  obj = doc.getElementById('result')
+  document.querySelector('html').style.background = obj.style.background
+  var result_container = obj.querySelector('result-container');
+  var all_chosen = CARDS.filter(e=>e.chosen).map(e=>e);
+
+
+  var counter_ = all_chosen.reduce((acc, curr)=>(acc[curr.type] ? acc[curr.type]++ : acc[curr.type] = 1)&&acc, {});
+  Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
+  var total = all_chosen.length;
+
+  if (!result_bg_loaded){
+    var inner = document.querySelector('result-description-inner');
+    
+    var rows = Array.from(doc.querySelectorAll('row'));
+    rows.forEach((e,i)=>{e.dtype = i;e.score = counter[i]});
+    rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
+    doc.querySelectorAll('left h1').forEach((e, i)=>{
+      var p = parseInt((counter[i] / total)*100)
+      e.innerHTML = (p)+ '<span font-smaller>%</span>';
+    })
+  
+  
+    rows.forEach(e=>inner.appendChild(e));
+    var best_type = rows[0].dtype;
+    var TYPE = CARDS_TYPES[best_type];
+    
+    document.querySelector('html').style.background = '#'+colors[best_type];
+    document.getElementById('result').style.background = '#'+colors[best_type];
+    var background = document.getElementById('result').querySelector('background');
+    background.innertHTML = bgs[best_type]
+  
+    activate_bg_animation();
+    
+
+
+  }
+
+  var dounuts = doc.getElementsByClassName('donut');
+  var stoke_max = 879.645943005142;
   const start_dounuts = ()=>{
     var config = {
       targets: Array.from(dounuts).map(e=>e.querySelector('circle')) ,
