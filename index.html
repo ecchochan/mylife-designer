@@ -13,13 +13,14 @@
 
   <link rel="icon" type="image/jpeg" href="assets/img/favicon-128x128.jpg">
 
-  <link rel="preload" href="assets/fonts/huninn.ttf" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="assets/fonts/setofont.ttf" as="font" type="font/woff2" crossorigin="anonymous">
+  <!--
   <link rel="preload" href="assets/fonts/CrimsonText-Bold.ttf" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="assets/fonts/CrimsonText-Italic.ttf" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="assets/fonts/CrimsonText-Regular.ttf" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" as="font" crossorigin="anonymous">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" as="font" crossorigin="anonymous">
-
+-->
   <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@1,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
@@ -34,6 +35,7 @@
   <script src="assets/js/preload-it.min.js"></script>
   <script src="assets/js/fastclick.min.js"></script>
   <script src="assets/js/anime.min.js"></script>
+  <script type="module" src="assets/js/html2canvas.min.js"></script>
   -->
   <script src="https://code.createjs.com/1.0.0/preloadjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
@@ -41,7 +43,6 @@
   <script type="module" src="assets/js/curtain.min.js?v=1"></script>
   <script type="module" src="assets/js/howler.min.js"></script>
   <script type="module" src="assets/js/BigNumber.min.js"></script>
-  <script type="module" src="assets/js/html2canvas.min.js"></script>
 
   
   <link type="text/css" rel="stylesheet" href="assets/css/style.css?v=3" />
@@ -169,7 +170,7 @@
                 <p font-large bold en="EXPLORE
 YOUR
 JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
-                <p style="font-family:Quicksand;" drag="-10" en="Test your inner values" zh="透視你的內心世界"></p>
+                <p style="font-family:Quicksand, setofont;" drag="-10" en="Test your inner values" zh="透視你的內心世界"></p>
               </div>
             </block>
 
@@ -272,7 +273,6 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
                       <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="480px"/>
-                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="480px"/>
                       <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="480px"/>
                       <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="480px"/>
                       <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="480px"/>
@@ -679,9 +679,9 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
           <div id="sort" class="wrapper stage" curtain-config="{reversible:false,next:sort_start}"  style="background: #547A41;">
             <background>
               <bg style="display: flex;">
-                <img-container style="height:100%;transition:none;">
+                <img-container style="height:100%;width:100%;transition:none;">
                   <!-- Specify height & width because svg cannot infer the width from height-->
-                  <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
+                  <svg scale-to-fit-parent-width style="height:480px; width: 360px; transform-origin: top left;">
                     <g slow-transition>
                       <image xlink:href="assets/img/luggage.jpg" x="0" y="0" height="480px"/>
                     </g>
@@ -726,9 +726,9 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
           <div id="pre-result" class="wrapper stage" curtain-config="{update:coverUpdate, reversible:false,next:pre_result}"  style="background: #ffd78e;">
             <background>
               <bg style="display: flex;">
-                <img-container style="height:100%;transition:none;">
+                <img-container style="height:100%;width:100%;transition:none;">
                   <!-- Specify height & width because svg cannot infer the width from height-->
-                  <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
+                  <svg scale-to-fit-parent-height style="height:480px; width: 360px; transform-origin: top left;">
                     <g slow-transition>
                       <image xlink:href="assets/img/contact.jpg" x="0" y="0" height="480px"/>
                     </g>

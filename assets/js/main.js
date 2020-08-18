@@ -814,7 +814,7 @@ var increment_files_loaded = function (e) {
 
   }
 };
-var preload = new createjs.LoadQueue();
+var preload = new createjs.LoadQueue(false);
 preload.setMaxConnections(100);
 preload.addEventListener("fileload", increment_files_loaded);
 preload.loadManifest(files);
