@@ -129,7 +129,6 @@ const mix = function(a, b, p, h, k) {
 }
 
 function getLinkWhastapp(number, message) {
-  LOG(encodeURI(message))
   return 'https://api.whatsapp.com/send?phone=' + number + '&text=' + encodeURI(message);
 }
 
@@ -614,7 +613,6 @@ const get_decoded = (encoded)=>{
 
 let d = urlParams.d;
 if (d){
-  LOG(d);
   try{
     let decoded = get_decoded(d);
     urlParams.skip = 8;
@@ -635,7 +633,7 @@ if (d){
 */
 
 const bgs = Array.from(document.querySelectorAll('[id^="selection"] background')).filter(e=>e).map(e=>e.innerHTML);
-LOG(bgs);
+
 const skip = parseInt(urlParams.skip);
 if (skip){
   LOGT('Skipping '+skip+' stages');
@@ -1217,9 +1215,9 @@ const card_click_listener = function(e){
     return;
   var cursor = pointerEventToXY(e);
   if (e.type == 'touchend'){
-    if (last_cursor !== null && Math.sqrt(Math.pow(cursor.x - last_cursor.x,2) + Math.pow(cursor.y - last_cursor.y,2)) > 20){
+    if (last_start_cursor !== null && Math.sqrt(Math.pow(cursor.x - last_start_cursor.x,2) + Math.pow(cursor.y - last_start_cursor.y,2)) > 20){
       is_scroll = true
-      scroll_up = last_cursor.y < cursor.y;
+      scroll_up = last_start_cursor.y < cursor.y;
 
     }
   }
@@ -1227,7 +1225,7 @@ const card_click_listener = function(e){
   if (this_touch - recent_touch < 50)
     return;
   recent_touch = this_touch;
-  last_cursor = null;
+  last_start_cursor = null;
 
 
 
@@ -1324,7 +1322,6 @@ const card_click_listener = function(e){
 
           send_text += "\n" + sharable_link;
 
-          LOG(channel);
 
           if (channel == 'whatsapp'){
             var link = getLinkWhastapp(WHATSAPP_TEL, send_text);
@@ -1362,7 +1359,6 @@ const card_click_listener = function(e){
         popup.style.pointerEvents = "all";
 
       }else{
-        LOG(e); 
         var bbox = popup.last_contact_us.getBoundingClientRect();
         center = {
           x: (bbox.x+bbox.width/2 - offset.x) / scale,
@@ -1391,8 +1387,10 @@ const card_click_listener = function(e){
 }
 
 var last_cursor;
+var last_start_cursor;
 doc.getElementById('app').addEventListener('touchstart',e=>{
   last_cursor = pointerEventToXY(e);
+  last_start_cursor = last_cursor;
   if (sort_container_cards)
     sort_container_cards_last_scroll_top = sort_container_cards.scrollTop
   no_click=true;
@@ -1954,7 +1952,6 @@ window.show_result = function (self){
     ()=> resize_result_desc_inner(),
     ()=> current_stage = 8,
     ()=> sleep(3500),
-    ()=> LOG('ready'),
 
   ])
 }
