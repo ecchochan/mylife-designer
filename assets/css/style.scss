@@ -742,6 +742,10 @@ card p {
     transition: all 0.5s ease;
     margin-bottom:1.3em;
   }
+  .contact-us{
+    transition: all 0.5s ease;
+    opacity: 0;
+  }
   &.switch{
     result-container{
       transform:translateX(-100%);
@@ -757,6 +761,17 @@ card p {
       @for $i from 1 through 10 {
         &:nth-child(#{$i}) {
             $td: ($i*.1+.3s);
+            $ts: ($i*.08+.4s);
+            transition: $ts cubic-bezier($smooth) $td;
+        }
+      }
+      opacity: 1;
+    }
+    .contact-us{
+
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+            $td: ($i*.1+.9s);
             $ts: ($i*.08+.4s);
             transition: $ts cubic-bezier($smooth) $td;
         }

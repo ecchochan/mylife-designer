@@ -1406,6 +1406,14 @@ card p {
   margin-bottom: 1.3em;
 }
 
+#result .contact-us {
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  opacity: 0;
+}
+
 #result.switch result-container {
   -webkit-transform: translateX(-100%);
      -moz-transform: translateX(-100%);
@@ -1502,6 +1510,80 @@ card p {
   -o-transition: 1.2s cubic-bezier(0.62, 0.02, 0.34, 1) 1.3s;
   -moz-transition: 1.2s cubic-bezier(0.62, 0.02, 0.34, 1) 1.3s;
   transition: 1.2s cubic-bezier(0.62, 0.02, 0.34, 1) 1.3s;
+}
+
+#result.switch .contact-us {
+  opacity: 1;
+}
+
+#result.switch .contact-us:nth-child(1) {
+  -webkit-transition: 0.48s cubic-bezier(0.62, 0.02, 0.34, 1) 1s;
+  -o-transition: 0.48s cubic-bezier(0.62, 0.02, 0.34, 1) 1s;
+  -moz-transition: 0.48s cubic-bezier(0.62, 0.02, 0.34, 1) 1s;
+  transition: 0.48s cubic-bezier(0.62, 0.02, 0.34, 1) 1s;
+}
+
+#result.switch .contact-us:nth-child(2) {
+  -webkit-transition: 0.56s cubic-bezier(0.62, 0.02, 0.34, 1) 1.1s;
+  -o-transition: 0.56s cubic-bezier(0.62, 0.02, 0.34, 1) 1.1s;
+  -moz-transition: 0.56s cubic-bezier(0.62, 0.02, 0.34, 1) 1.1s;
+  transition: 0.56s cubic-bezier(0.62, 0.02, 0.34, 1) 1.1s;
+}
+
+#result.switch .contact-us:nth-child(3) {
+  -webkit-transition: 0.64s cubic-bezier(0.62, 0.02, 0.34, 1) 1.2s;
+  -o-transition: 0.64s cubic-bezier(0.62, 0.02, 0.34, 1) 1.2s;
+  -moz-transition: 0.64s cubic-bezier(0.62, 0.02, 0.34, 1) 1.2s;
+  transition: 0.64s cubic-bezier(0.62, 0.02, 0.34, 1) 1.2s;
+}
+
+#result.switch .contact-us:nth-child(4) {
+  -webkit-transition: 0.72s cubic-bezier(0.62, 0.02, 0.34, 1) 1.3s;
+  -o-transition: 0.72s cubic-bezier(0.62, 0.02, 0.34, 1) 1.3s;
+  -moz-transition: 0.72s cubic-bezier(0.62, 0.02, 0.34, 1) 1.3s;
+  transition: 0.72s cubic-bezier(0.62, 0.02, 0.34, 1) 1.3s;
+}
+
+#result.switch .contact-us:nth-child(5) {
+  -webkit-transition: 0.8s cubic-bezier(0.62, 0.02, 0.34, 1) 1.4s;
+  -o-transition: 0.8s cubic-bezier(0.62, 0.02, 0.34, 1) 1.4s;
+  -moz-transition: 0.8s cubic-bezier(0.62, 0.02, 0.34, 1) 1.4s;
+  transition: 0.8s cubic-bezier(0.62, 0.02, 0.34, 1) 1.4s;
+}
+
+#result.switch .contact-us:nth-child(6) {
+  -webkit-transition: 0.88s cubic-bezier(0.62, 0.02, 0.34, 1) 1.5s;
+  -o-transition: 0.88s cubic-bezier(0.62, 0.02, 0.34, 1) 1.5s;
+  -moz-transition: 0.88s cubic-bezier(0.62, 0.02, 0.34, 1) 1.5s;
+  transition: 0.88s cubic-bezier(0.62, 0.02, 0.34, 1) 1.5s;
+}
+
+#result.switch .contact-us:nth-child(7) {
+  -webkit-transition: 0.96s cubic-bezier(0.62, 0.02, 0.34, 1) 1.6s;
+  -o-transition: 0.96s cubic-bezier(0.62, 0.02, 0.34, 1) 1.6s;
+  -moz-transition: 0.96s cubic-bezier(0.62, 0.02, 0.34, 1) 1.6s;
+  transition: 0.96s cubic-bezier(0.62, 0.02, 0.34, 1) 1.6s;
+}
+
+#result.switch .contact-us:nth-child(8) {
+  -webkit-transition: 1.04s cubic-bezier(0.62, 0.02, 0.34, 1) 1.7s;
+  -o-transition: 1.04s cubic-bezier(0.62, 0.02, 0.34, 1) 1.7s;
+  -moz-transition: 1.04s cubic-bezier(0.62, 0.02, 0.34, 1) 1.7s;
+  transition: 1.04s cubic-bezier(0.62, 0.02, 0.34, 1) 1.7s;
+}
+
+#result.switch .contact-us:nth-child(9) {
+  -webkit-transition: 1.12s cubic-bezier(0.62, 0.02, 0.34, 1) 1.8s;
+  -o-transition: 1.12s cubic-bezier(0.62, 0.02, 0.34, 1) 1.8s;
+  -moz-transition: 1.12s cubic-bezier(0.62, 0.02, 0.34, 1) 1.8s;
+  transition: 1.12s cubic-bezier(0.62, 0.02, 0.34, 1) 1.8s;
+}
+
+#result.switch .contact-us:nth-child(10) {
+  -webkit-transition: 1.2s cubic-bezier(0.62, 0.02, 0.34, 1) 1.9s;
+  -o-transition: 1.2s cubic-bezier(0.62, 0.02, 0.34, 1) 1.9s;
+  -moz-transition: 1.2s cubic-bezier(0.62, 0.02, 0.34, 1) 1.9s;
+  transition: 1.2s cubic-bezier(0.62, 0.02, 0.34, 1) 1.9s;
 }
 
 result-container {
