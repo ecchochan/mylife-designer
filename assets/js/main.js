@@ -1863,9 +1863,9 @@ window.show_result = function (self){
   var counter_ = all_chosen.reduce((acc, curr)=>(acc[curr.type] ? acc[curr.type]++ : acc[curr.type] = 1)&&acc, {});
   Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
   var total = all_chosen.length;
+  var inner = document.querySelector('result-description-inner');
 
   if (!result_bg_loaded){
-    var inner = document.querySelector('result-description-inner');
     
     var rows = Array.from(doc.querySelectorAll('row'));
     rows.forEach((e,i)=>{e.dtype = i;e.score = counter[i]});
