@@ -1754,6 +1754,9 @@ window.sort_start = function (self){
     obj.offsetHeight; // no need to store this anywhere, the reference is enough
     setTimeout(()=>{
       nextCurtain.style.opacity = 1;
+      setTimeout(()=>{
+        update_vh();
+      }, 5);
 
     },5)
 
