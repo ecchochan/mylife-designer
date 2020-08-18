@@ -1322,7 +1322,7 @@ const card_click_listener = function(e){
           else
             send_text = "I want to talk about " + chat_about +'.';
 
-          send_text += "\n" + sharable_link+"&lang="+current_lang;
+          send_text += "\n" + sharable_link;
 
           LOG(channel);
 
@@ -1829,7 +1829,7 @@ window.pre_result = function (self){
       return e.plus(temp)
     }, new BigNumber('0')
   ).toString(encoded_base);
-  sharable_link = window.location.origin+'/'+TYPE.code+'?d='+encoded+'&lang='+current_lang;
+  sharable_link = window.location.origin+'/'+TYPE.code+'-'+current_lang+'?d='+encoded;
   LOGT(sharable_link);
 
 
@@ -1897,7 +1897,7 @@ window.show_result = function (self){
         return e.plus(temp)
       }, new BigNumber('0')
     ).toString(encoded_base);
-    sharable_link = window.location.origin+'/'+TYPE.code+'?d='+encoded+'&lang='+current_lang;
+    sharable_link = window.location.origin+'/'+TYPE.code+'-'+current_lang+'?d='+encoded;
     LOGT(sharable_link);
 
 
