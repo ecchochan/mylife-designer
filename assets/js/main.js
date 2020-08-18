@@ -1077,7 +1077,8 @@ var start = function () {
     deactivate_bg_animation(doc.getElementById('intro').querySelector('background'));
     activate_bg_animation(doc.getElementById('intro').querySelectorAll('background')[1]);
     setTimeout(update_vh,100)
-    document.getElementById('float-top-right').classList.remove('hidden')
+    document.getElementById('float-top-right').classList.remove('hidden');
+    playMusic();
 
   }
 }
