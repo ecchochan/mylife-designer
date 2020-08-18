@@ -1318,7 +1318,7 @@ const card_click_listener = function(e){
           var chat_about = p.getAttribute(current_lang+'-text') || p.getAttribute(current_lang);
           var send_text = "";
           if (current_lang == 'zh')
-            send_text = "我想傾吓"+ chat_about + "。";
+            send_text = "我想傾吓"+ chat_about.replace(/\\n/g, '') + "。";
           else
             send_text = "I want to talk about " + chat_about +'.';
 
@@ -1793,15 +1793,6 @@ window.pre_result = function (self){
   document.querySelector('html').style.background = obj.style.background
   var all_chosen = CARDS.filter(e=>e.chosen).map(e=>e);
 
-  var encoded = all_chosen.reduce(
-    (e, x, i)=>{
-      var temp = new BigNumber('1');
-      for (var j=0; j<i; j++)
-        temp = temp.multipliedBy(encoded_expand_base)
-      temp = temp.multipliedBy(x.id)
-      return e.plus(temp)
-    }, new BigNumber('0')
-  ).toString(encoded_base);
 
   var counter_ = all_chosen.reduce((acc, curr)=>(acc[curr.type] ? acc[curr.type]++ : acc[curr.type] = 1)&&acc, {});
   Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
@@ -1829,6 +1820,15 @@ window.pre_result = function (self){
   activate_bg_animation();
   result_bg_loaded = true;
 
+  var encoded = all_chosen.reduce(
+    (e, x, i)=>{
+      var temp = new BigNumber('1');
+      for (var j=0; j<i; j++)
+        temp = temp.multipliedBy(encoded_expand_base)
+      temp = temp.multipliedBy(x.id)
+      return e.plus(temp)
+    }, new BigNumber('0')
+  ).toString(encoded_base);
   sharable_link = window.location.origin+'/'+TYPE.code+'?d='+encoded+'&lang='+current_lang;
   LOGT(sharable_link);
 
@@ -1887,6 +1887,19 @@ window.show_result = function (self){
   
     activate_bg_animation();
     
+
+    var encoded = all_chosen.reduce(
+      (e, x, i)=>{
+        var temp = new BigNumber('1');
+        for (var j=0; j<i; j++)
+          temp = temp.multipliedBy(encoded_expand_base)
+        temp = temp.multipliedBy(x.id)
+        return e.plus(temp)
+      }, new BigNumber('0')
+    ).toString(encoded_base);
+    sharable_link = window.location.origin+'/'+TYPE.code+'?d='+encoded+'&lang='+current_lang;
+    LOGT(sharable_link);
+
 
 
   }
@@ -1960,8 +1973,9 @@ var curtains = makeCurtains(doc.getElementById('stages') );
 
 activate_bg_animation(doc.getElementById('intro').querySelector('background'));
 
-if (urlParams.chosen){
+if (urlParams.chosen || urlParams.num_cards){
   let debug_chosen_count = 0;
+  urlParams.num_cards = urlParams.num_cards || urlParams.chosen || 1;
   getRandomSubarray(CARDS).forEach(e=>{
     if (urlParams.num_cards && debug_chosen_count >= urlParams.num_cards)
       return;
