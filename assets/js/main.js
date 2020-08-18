@@ -70,6 +70,31 @@ function requestFullScreen() {
   }  
 }
 
+function copyToClipboard(text) {
+  if (window.clipboardData && window.clipboardData.setData) {
+      // Internet Explorer-specific code path to prevent textarea being shown while dialog is visible.
+      return clipboardData.setData("Text", text);
+
+  }
+  else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+      var textarea = document.createElement("textarea");
+      textarea.textContent = text;
+      textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in Microsoft Edge.
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+          return document.execCommand("copy");  // Security exception may be thrown by some browsers.
+      }
+      catch (ex) {
+          console.warn("Copy to clipboard failed.", ex);
+          return false;
+      }
+      finally {
+          document.body.removeChild(textarea);
+      }
+  }
+}
+
 var pointerEventToXY = function(e){
   var out = {x:0, y:0};
   if(e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
@@ -1329,6 +1354,17 @@ const card_click_listener = function(e){
             win.focus();
 
           }else if (channel == 'telegram'){
+            var link = 'https://t.me/taliphoneservice';
+            copyToClipboard(send_text);
+            var prompt;
+            if (current_lang == 'zh')
+              prompt = '已將文字信息複製，請在打開 Telegram 後貼上信息！'
+            else
+              prompt = 'Contact message is copied! You can paste it after Telegram is opened!'
+
+            alert(prompt);
+            var win = window.open(link, '_blank');
+            win.focus();
 
           }
           return;
