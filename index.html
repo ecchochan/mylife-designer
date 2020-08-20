@@ -22,8 +22,6 @@
   
 
 
-
-
   <link rel="preload" href="assets/fonts/setofont.ttf" as="font" type="font/woff2" crossorigin="anonymous">
   <!--
   <link rel="preload" href="assets/fonts/CrimsonText-Bold.ttf" as="font" type="font/woff2" crossorigin="anonymous">
@@ -53,6 +51,7 @@
   <script type="module" src="assets/js/curtain.min.js?v=1"></script>
   <script type="module" src="assets/js/howler.min.js"></script>
   <script type="module" src="assets/js/BigNumber.min.js"></script>
+  <script type="module" src="assets/js/canvg.min.js"></script>
 
   
   <link type="text/css" rel="stylesheet" href="assets/css/style.css?v=3" />
@@ -60,23 +59,44 @@
 </head> 
 <body style="overflow: hidden;">
   <div class="font_preload" style="opacity: 0; position: absolute;">
-    <span style="font-family: 'CrimsonText', Arial, sans-serif;"></span>
-    <span style="font-family: 'CrimsonText', Arial, sans-serif;"></span>
-    <span style="font-family: 'myfontface#2font-family', Arial, sans-serif;"></span>
+    
+    <span style="font-family: 'setofont', Arial, sans-serif;"></span>
+    <span style="font-family: 'Kalam', Arial, sans-serif;"></span>
+    <span style="font-family: 'Overlock', Arial, sans-serif;"></span>
+    <span style="font-family: 'Quicksand', Arial, sans-serif;"></span>
+  </div>
+  <div id="loading-wrapper" class="wrapper">
+    <div>
+      <div margin-auto>
+        <span en="Loading" zh="載入中"></span>: <span id="load-percent">0</span>%
+      </div>
+    </div>
+
+
   </div>
   <landscape-hint>
+    
+    <background style="position:absolute; left:0;top:0;">
+      <bg style="display: flex; justify-content: center;">
+        <img-container style="height:100%;width:100%;transition:none;">
+          <!-- Specify height & width because svg cannot infer the width from height-->
+          <svg scale-to-fit-parent-width style="height:480px;width:1080px;    transform-origin: top left;" version="1.0" xmlns="http://www.w3.org/2000/svg">
+            <image  x="0" y="0" height="480px" width="1080px"/>
+          </svg>
+        </img-container>
+      </bg>
+    </background>
     <p zh="請使用手機掃描 QR code
 以獲得最佳的瀏覽體驗" en="Scan the QR code with your phone 
 For optimized mobile experience "></p>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px"  viewBox="0 0 1155 1155" enable-background="new 0 0 1155 1155" xml:space="preserve">
-      <use xlink:href="assets/img/qr-code.svg#Layer_1"/>
+      <use data-href="assets/img/qr-code.svg#Layer_1"/>
     </svg>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"><g><path d="M27.252,71.997H7.48c-0.198,0-0.359-0.161-0.359-0.36V24.602c0-0.199,0.161-0.36,0.359-0.36h26.531   c0.199,0,0.36,0.161,0.36,0.36V51.57h1.889V19.206c0-2.186-1.772-3.957-3.958-3.957h-0.904c-0.057-0.123-0.18-0.21-0.325-0.21   h-3.447c-0.145,0-0.268,0.087-0.325,0.21H9.1c-2.186,0-3.958,1.771-3.958,3.957v5.112c-0.123,0.058-0.209,0.18-0.209,0.325v1.308   c0,0.145,0.086,0.268,0.209,0.324v1.521c-0.123,0.057-0.209,0.18-0.209,0.325v1.308c0,0.144,0.086,0.267,0.209,0.324v47.161   c0,2.186,1.772,3.957,3.958,3.957h18.152V71.997z M20.582,17.797c0.332,0,0.599,0.268,0.599,0.599c0,0.332-0.268,0.6-0.599,0.6   c-0.331,0-0.6-0.269-0.6-0.6C19.982,18.065,20.25,17.797,20.582,17.797z M18.483,20.615h4.497c0.199,0,0.359,0.161,0.359,0.359   c0,0.198-0.161,0.359-0.359,0.359h-4.497c-0.198,0-0.36-0.161-0.36-0.359C18.123,20.775,18.285,20.615,18.483,20.615z    M20.941,79.37c-1.719,0-3.117-1.397-3.117-3.116s1.398-3.117,3.117-3.117c1.72,0,3.118,1.398,3.118,3.117   S22.661,79.37,20.941,79.37z"/><path d="M20.956,73.826c-1.322,0-2.398,1.076-2.398,2.397c0,1.323,1.076,2.397,2.398,2.397c1.323,0,2.398-1.074,2.398-2.397   C23.354,74.902,22.278,73.826,20.956,73.826z"/><path d="M33.667,66.631c-1.322,0-2.398,1.076-2.398,2.397c0,1.323,1.076,2.399,2.398,2.399s2.398-1.076,2.398-2.399   C36.064,67.707,34.989,66.631,33.667,66.631z"/><path d="M94.672,75.391V57.188c0-2.187-1.77-3.957-3.958-3.957h-5.112c-0.055-0.124-0.179-0.21-0.324-0.21H83.97   c-0.144,0-0.268,0.086-0.322,0.21h-1.522c-0.057-0.124-0.181-0.21-0.326-0.21h-1.306c-0.146,0-0.268,0.086-0.324,0.21H33.007   c-2.186,0-3.957,1.771-3.957,3.957v23.203c0,2.187,1.771,3.957,3.957,3.957h57.707c2.188,0,3.958-1.771,3.958-3.957v-0.904   c0.123-0.057,0.21-0.179,0.21-0.325v-3.447C94.882,75.569,94.795,75.447,94.672,75.391z M33.667,72.146   c-1.719,0-3.118-1.397-3.118-3.118c0-1.718,1.399-3.118,3.118-3.118s3.118,1.4,3.118,3.118   C36.784,70.749,35.386,72.146,33.667,72.146z M85.68,82.1c0,0.199-0.163,0.359-0.361,0.359H38.283c-0.199,0-0.359-0.16-0.359-0.359   V55.568c0-0.199,0.161-0.359,0.359-0.359h47.035c0.198,0,0.361,0.16,0.361,0.359V82.1z M89.306,71.068   c0,0.197-0.161,0.359-0.359,0.359s-0.359-0.162-0.359-0.359v-4.497c0-0.199,0.161-0.36,0.359-0.36s0.359,0.161,0.359,0.36V71.068z    M91.523,69.268c-0.33,0-0.6-0.267-0.6-0.598s0.27-0.6,0.6-0.6c0.332,0,0.601,0.269,0.601,0.6S91.855,69.268,91.523,69.268z"/><path d="M44.382,27.092l-1.828,1.692c9.584,0.961,14.145,6.547,16.289,11.157c2.386,5.135,2.343,10.049,2.343,10.256l-0.008,0.53   H59.74l0.008-0.549c0.004-0.046,0.031-4.835-2.231-9.674c-2.84-6.068-7.858-9.515-14.925-10.268l1.604,1.73l-2.07-0.079   l-2.344-2.53l2.53-2.345L44.382,27.092z"/></g></svg>
   </landscape-hint>
   <div id="body">
 
     <div id="debug" style="display:none;">
-      <div id="lang-switcher"><span>en</span><span>zh</span></div>
       <div id="debug-message"></div>
       <div id="curtain-active"></div>
       <script>
@@ -98,15 +118,6 @@ For optimized mobile experience "></p>
 
 
     <div id="app" class="hidden">
-      <div id="loading-wrapper" class="wrapper">
-        <div>
-          <div margin-auto>
-            <span en="Loading" zh="載入中"></span>: <span id="load-percent">0</span>%
-          </div>
-        </div>
-
-
-      </div>
 
 
       <div id="desktop"><span>Use Desktop</span></div>
@@ -130,6 +141,7 @@ For optimized mobile experience "></p>
           </div>
         </div>
       </div>
+      <div id="lang-switcher"><span data-lang="en">en</span><span data-lang="zh">中</span></div>
 
       <div id="mobile" class="wrapper">
 
@@ -148,23 +160,23 @@ For optimized mobile experience "></p>
                 <img-container style="height:65%;width:100%;transition:none;background-color:#f7d8d1;">
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-width style="height:480px;width:360px;    transform-origin: top left;" version="1.0" xmlns="http://www.w3.org/2000/svg">
-                    <image xlink:href="assets/img/cover-bg.jpg" x="0" y="0" width="360px" height="480px"/>
-                    <image xlink:href="assets/img/cover.png" x="0" y="0" width="360px" height="480px"/>
+                    <image data-href="assets/img/cover-bg.jpg" x="0" y="0" width="360px" height="480px"/>
+                    <image data-href="assets/img/cover.png" x="0" y="0" width="360px" height="480px"/>
 
 
-                    <image anime="{translateX: [400,-100], reverse:false, translateY: [-100,30], seek:12000, duration:40000,loop: true,easing: 'linear'}" xlink:href="assets/img/cloud01.png" x="0" y="0" height="50px"/>
-                    <image anime="{translateX: [500,-100], reverse:false, translateY: [-100,80], seek:20000, duration:29500,loop: true,easing: 'linear'}" xlink:href="assets/img/cloud02.png" x="0" y="0" height="50px"/>
+                    <image anime="{translateX: [400,-100], reverse:false, translateY: [-100,30], seek:12000, duration:40000,loop: true,easing: 'linear'}" data-href="assets/img/cloud01.png" x="0" y="0" height="50px"/>
+                    <image anime="{translateX: [500,-100], reverse:false, translateY: [-100,80], seek:20000, duration:29500,loop: true,easing: 'linear'}" data-href="assets/img/cloud02.png" x="0" y="0" height="50px"/>
                     
                     
-                    <image anime="{translateX: [400,-100], reverse:false, translateY: [0,150], seek:7000, duration:33500,loop: true,easing: 'linear'}" xlink:href="assets/img/cloud03.png" x="0" y="0" height="50px"/>
-                    <image anime="{translateX: [450,-100], reverse:false, translateY: [0,180], seek:2000, duration:47500,loop: true,easing: 'linear'}" xlink:href="assets/img/cloud04.png" x="0" y="0" height="50px"/>
+                    <image anime="{translateX: [400,-100], reverse:false, translateY: [0,150], seek:7000, duration:33500,loop: true,easing: 'linear'}" data-href="assets/img/cloud03.png" x="0" y="0" height="50px"/>
+                    <image anime="{translateX: [450,-100], reverse:false, translateY: [0,180], seek:2000, duration:47500,loop: true,easing: 'linear'}" data-href="assets/img/cloud04.png" x="0" y="0" height="50px"/>
 
-                    <image xlink:href="assets/img/cover-wave.png" x="0" y="60px" width="360px" height="480px"/>
-                    <image xlink:href="assets/img/cover-greens.png" x="0" y="0" width="360px" height="480px"/>
-                    <image anime="{translateX: [0,0], translateY: [-5,5], direction: 'alternate',seek:2000, duration:3000,loop: true,easing: 'swing'}" class="fullscreen" xlink:href="assets/img/cover-buddy.png" x="40px" y="70px" width="150px"/>
-                    <image style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-15,15], seek:0, duration:3000,loop: true,easing: 'swing'}" xlink:href="assets/img/cover-leaf-01.png" x="72px" y="330px" width="24px"/>
-                    <image style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-10,10], seek:600, duration:3000,loop: true,easing: 'swing'}" xlink:href="assets/img/cover-leaf-02.png" x="42px" y="330px" width="55px"/>
-                    <image style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-10,10], seek:1200, duration:3000,loop: true,easing: 'swing'}" xlink:href="assets/img/cover-stamen-01.png" x="58px" y="345px" width="24px"/>
+                    <image data-href="assets/img/cover-wave.png" x="0" y="60px" width="360px" height="480px"/>
+                    <image data-href="assets/img/cover-greens.png" x="0" y="0" width="360px" height="480px"/>
+                    <image anime="{translateX: [0,0], translateY: [-5,5], direction: 'alternate',seek:2000, duration:3000,loop: true,easing: 'swing'}" class="fullscreen" data-href="assets/img/cover-buddy.png" x="40px" y="70px" width="150px"/>
+                    <image style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-15,15], seek:0, duration:3000,loop: true,easing: 'swing'}" data-href="assets/img/cover-leaf-01.png" x="72px" y="330px" width="24px"/>
+                    <image style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-10,10], seek:600, duration:3000,loop: true,easing: 'swing'}" data-href="assets/img/cover-leaf-02.png" x="42px" y="330px" width="55px"/>
+                    <image style="transform-origin:72px 355px"anime="{ direction: 'alternate',rotate: [-10,10], seek:1200, duration:3000,loop: true,easing: 'swing'}" data-href="assets/img/cover-stamen-01.png" x="58px" y="345px" width="24px"/>
 
 
                   </svg>
@@ -201,7 +213,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               <img-container style="height:100%;width:100%;transition:none;background-color:#fdeac3;">
                 <!-- Specify height & width because svg cannot infer the width from height-->
                 <svg scale-to-fit-parent-width style="height:480px;width:360px;    transform-origin: top left;">
-                  <image xlink:href="assets/img/intro.jpg" x="0" y="0" width="360px" height="480px"/>
+                  <image data-href="assets/img/intro.jpg" x="0" y="0" width="360px" height="480px"/>
                 </svg>
               </img-container>
             </bg>
@@ -212,7 +224,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 <p en="One day afternoon" zh="有一天下午，"></p>
                 <p en="you received a letter, it wrote," zh="你收到一封信，信上寫著："></p>
                 <p en="“You are invited to join a long journey, " zh="「您受邀參加一趟悠長旅程，"></p>
-                <p en="which has no limit, and you can explore yourself as you want.”" zh="這趟旅程沒有任何限制，"></p>
+                <p en="which has no limit, " zh="這趟旅程沒有任何限制，"></p>
                 <p en="and you can explore yourself as you want.”" zh="你可以隨心所欲地發掘自我。」"></p>
                 <p en="Why not give it a try? " zh="去嗎？"></p>
               </div>
@@ -233,7 +245,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               <cards>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Mentally<br/>Satisfied</p>
@@ -241,7 +253,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -249,7 +261,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Closely<br/>connected<br/>with God</p>
@@ -257,7 +269,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Catch up on<br/>technology</p>
@@ -265,7 +277,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -273,7 +285,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -285,67 +297,67 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
-                      <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="480px"/>
-                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="480px"></image>
-                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="480px"/>
-                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="480px"/>
-                      <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="480px"/>
+                      <image data-href="assets/img/bg01-bg.jpg" x="0" y="0" height="480px"/>
+                      <image data-href="assets/img/bg01-greens.png" x="0" y="0" height="480px"></image>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'swing'}" data-href="assets/img/bg01-wave01.png" x="213px" y="0" height="480px"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'swing'}" data-href="assets/img/bg01-wave02.png" x="213px" y="0" height="480px"/>
+                      <image data-href="assets/img/bg01-lotus.png" x="234px" y="0" height="480px"/>
           
           
           
                       <g style="transform-origin:180px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1200, duration:2600,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch01.png" x="188px" y="-10px" width="115px" />
+                        <image data-href="assets/img/bg01-branch01.png" x="188px" y="-10px" width="115px" />
                       </g>
                       <g style="transform-origin:85px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:0, duration:3500,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch02.png" x="80px" y="0px" width="29px"/>
+                        <image data-href="assets/img/bg01-branch02.png" x="80px" y="0px" width="29px"/>
                       </g>
                       <g style="transform-origin:0px 196px" anime="{ direction: 'alternate',rotate: [-9,9], seek:1400, duration:4500,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch03.png" x="-3px" y="176px" width="38px"/>
+                        <image data-href="assets/img/bg01-branch03.png" x="-3px" y="176px" width="38px"/>
                       </g>
                       <g style="transform-origin:0px 136px" anime="{ direction: 'alternate',rotate: [0,9], seek:3300, duration:3200,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch04.png" x="0px" y="70px" width="64px"/>
+                        <image data-href="assets/img/bg01-branch04.png" x="0px" y="70px" width="64px"/>
                       </g>
                       <g style="transform-origin:400px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1500, duration:3000,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch05.png" x="340px" y="-10px" width="140px"/>
+                        <image data-href="assets/img/bg01-branch05.png" x="340px" y="-10px" width="140px"/>
                       </g>
                       <g style="transform-origin:110px 380px" anime="{ direction: 'alternate',rotate: [-0,9], seek:0, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch07.png" x="106px" y="302px" width="26px"/>
+                        <image data-href="assets/img/bg01-branch07.png" x="106px" y="302px" width="26px"/>
                       </g>
                       <g style="transform-origin:150px 400px" anime="{ direction: 'alternate',rotate: [-0,5], seek:2200, duration:2200,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch09.png" x="46px" y="268px" width="76px"/>
+                        <image data-href="assets/img/bg01-branch09.png" x="46px" y="268px" width="76px"/>
                       </g>
                       <g style="transform-origin:310px 480px" anime="{ direction: 'alternate',rotate: [-3,3], seek:0, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch10.png" x="292px" y="360px" width="113px"/>
+                        <image data-href="assets/img/bg01-branch10.png" x="292px" y="360px" width="113px"/>
                       </g>
                       <g style="transform-origin:70px 420px" anime="{ direction: 'alternate',rotate: [-3,0], seek:500, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch11.png" x="0px" y="328px" width="70px"/>
+                        <image data-href="assets/img/bg01-branch11.png" x="0px" y="328px" width="70px"/>
                       </g>
                       <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:0, duration:2000,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch12.png" x="646px" y="329px" width="46px"/>
+                        <image data-href="assets/img/bg01-branch12.png" x="646px" y="329px" width="46px"/>
                       </g>
                       <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2000,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch13.png" x="550px" y="375px" width="100px"/>
+                        <image data-href="assets/img/bg01-branch13.png" x="550px" y="375px" width="100px"/>
                       </g>
                       <g style="transform-origin:776px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch14.png" x="750px" y="375px" width="50px"/>
+                        <image data-href="assets/img/bg01-branch14.png" x="750px" y="375px" width="50px"/>
                       </g>  
                       <g style="transform-origin:896px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1800, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch15.png" x="870px" y="367px" width="36px"/>
+                        <image data-href="assets/img/bg01-branch15.png" x="870px" y="367px" width="36px"/>
                       </g>
                       <g style="transform-origin:916px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch16.png" x="890px" y="357px" width="50px"/>
+                        <image data-href="assets/img/bg01-branch16.png" x="890px" y="357px" width="50px"/>
                       </g>
                       <g style="transform-origin:656px 280px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2400,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch17.png" x="630px" y="197px" width="46px"/>
+                        <image data-href="assets/img/bg01-branch17.png" x="630px" y="197px" width="46px"/>
                       </g>
                       <g style="transform-origin:1120px 350px" anime="{ direction: 'alternate',rotate: [-0,2], seek:2600, duration:3200,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch18.png" x="1000px" y="150px" width="80px"/>
+                        <image data-href="assets/img/bg01-branch18.png" x="1000px" y="150px" width="80px"/>
                       </g>
                       <g  >
-                        <image xlink:href="assets/img/bg01-branch06.png" x="0px" y="343px" width="165px"/>
+                        <image data-href="assets/img/bg01-branch06.png" x="0px" y="343px" width="165px"/>
                       </g>
                       <g  >
-                        <image xlink:href="assets/img/bg01-branch08.png" x="183px" y="388px" width="138px"/>
+                        <image data-href="assets/img/bg01-branch08.png" x="183px" y="388px" width="138px"/>
                       </g>
           
           
@@ -365,7 +377,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 <p style="font-size: 0.8em;color: rgb(62 95 0);" zh="（你可以無上限地選擇）" en="(You can choose without limit)"></p>
               </div>
             </div>
-            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg></arrows>
           </div>
 
 
@@ -375,7 +387,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               <cards>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Mentally<br/>Satisfied</p>
@@ -383,7 +395,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -391,7 +403,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Closely<br/>connected<br/>with God</p>
@@ -399,7 +411,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Catch up on<br/>technology</p>
@@ -407,7 +419,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -415,7 +427,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -427,8 +439,110 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
+                      <image data-href="assets/img/bg02-bg.jpg" x="0" y="0" height="480px"/>
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -10], scale:[1,1.01], direction: '', seek:0, duration:3600,loop: true}">
+                        <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:0, duration:3600,loop: true}" data-href="assets/img/bg02-ripples01.png" x="62" y="295" width="35px"/>
+                      </g>
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 5], scale:[1,1.01], direction: '', seek:800, duration:3200,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:800, duration:3200,loop: true}" data-href="assets/img/bg02-ripples02.png" x="35" y="313" width="42px"/>
+                      </g>
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -8], scale:[1,1.01], direction: '', seek:3000, duration:3800,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:3000, duration:3800,loop: true}" data-href="assets/img/bg02-ripples03.png" x="126" y="322" width="76px"/>
+                      </g>
+                      
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 10], scale:[1,1.01], direction: '', seek:1100, duration:3700,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:1100, duration:3700,loop: true}" data-href="assets/img/bg02-ripples04.png" x="86" y="394" width="67px"/>
+                      </g>
+                      
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:2500, duration:2800,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2500, duration:2800,loop: true}" data-href="assets/img/bg02-ripples05.png" x="115" y="382" width="67px"/>
+                      </g>
+                      
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -5], scale:[1,1.01], direction: '', seek:500, duration:3200,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:500, duration:3200,loop: true}" data-href="assets/img/bg02-ripples06.png" x="160" y="422" width="67px"/>
+                      </g>
           
           
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:1000, duration:4300,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,0.8], seek:1000, duration:4300,loop: true}" data-href="assets/img/bg02-ripples08.png" x="175" y="300" width="67px"/>
+                      </g>
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -8], scale:[1,1.01], direction: '', seek:2800, duration:3400,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2800, duration:3400,loop: true}" data-href="assets/img/bg02-ripples09.png" x="175" y="352" width="67px"/>
+                      </g>
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -6], scale:[1,1.01], direction: '', seek:3000, duration:4300,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:3000, duration:4300,loop: true}" data-href="assets/img/bg02-ripples10.png" x="225" y="312" width="67px"/>
+                      </g>
+          
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -6], scale:[1,1.01], direction: '', seek:1000, duration:3900,loop: true}">
+                        <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:1000, duration:3900,loop: true}" data-href="assets/img/bg02-ripples11.png" x="60" y="350" width="67px"/>
+                      </g>
+          
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:2000, duration:4000,loop: true}">
+                        <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2000, duration:4000,loop: true}" data-href="assets/img/bg02-ripples12.png" x="100" y="340" width="67px"/>
+                      </g>
+          
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -6], scale:[1,1.01], direction: '', seek:3000, duration:4300,loop: true}">
+                        <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:4000, duration:5000,loop: true}" data-href="assets/img/bg02-ripples13.png" x="225" y="370" width="67px"/>
+                      </g>
+          
+          
+          
+          
+          
+          
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -10], scale:[1,1.01], direction: '', seek:0, duration:3600,loop: true}">
+                        <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:0, duration:3600,loop: true}" data-href="assets/img/bg02-ripples14.png" x="662" y="295" width="35px"/>
+                      </g>
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 5], scale:[1,1.01], direction: '', seek:800, duration:3200,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:800, duration:3200,loop: true}" data-href="assets/img/bg02-ripples15.png" x="635" y="313" width="42px"/>
+                      </g>
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -8], scale:[1,1.01], direction: '', seek:3000, duration:3800,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:3000, duration:3800,loop: true}" data-href="assets/img/bg02-ripples16.png" x="726" y="322" width="76px"/>
+                      </g>
+                      
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:2500, duration:2800,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2500, duration:2800,loop: true}" data-href="assets/img/bg02-ripples18.png" x="715" y="382" width="37px"/>
+                      </g>
+                      
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -5], scale:[1,1.01], direction: '', seek:500, duration:3200,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:500, duration:3200,loop: true}" data-href="assets/img/bg02-ripples19.png" x="960" y="322" width="47px"/>
+                      </g>
+                      
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -10], scale:[1,1.01], direction: '', seek:2800, duration:4000,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2800, duration:4000,loop: true}" data-href="assets/img/bg02-ripples20.png" x="930" y="332" width="37px"/>
+                      </g>
+          
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -8], scale:[1,1.01], direction: '', seek:2800, duration:3400,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2800, duration:3400,loop: true}" data-href="assets/img/bg02-ripples22.png" x="775" y="352" width="37px"/>
+                      </g>
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -6], scale:[1,1.01], direction: '', seek:3000, duration:4300,loop: true}">
+                      <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:3000, duration:4300,loop: true}" data-href="assets/img/bg02-ripples23.png" x="825" y="312" width="47px"/>
+                      </g>
+          
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:1000, duration:3900,loop: true}">
+                        <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:1000, duration:3900,loop: true}" data-href="assets/img/bg02-ripples24.png" x="570" y="330" width="37px"/>
+                      </g>
+          
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:2000, duration:4000,loop: true}">
+                        <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2000, duration:4000,loop: true}" data-href="assets/img/bg02-ripples25.png" x="600" y="300" width="37px"/>
+                      </g>
+          
+                      <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -6], scale:[1,1.01], direction: '', seek:3000, duration:4300,loop: true}">
+                        <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:4000, duration:5000,loop: true}" data-href="assets/img/bg02-ripples26.png" x="825" y="370" width="47px"/>
+                      </g>
+          
+          
+          
+          
+          
+                        
+                      <image data-href="assets/img/bg02-cloud-right.png" x="730" y="35" height="286px"/>
+          
+                      <image data-href="assets/img/bg02-track.png" x="185" y="100" height="380px"/>
+                      <image style="transform-origin:0px 380px" anime="{ direction: 'alternate',rotate: [-3,3], seek:1200, duration:3600,loop: true,easing: 'swing'}"  data-href="assets/img/bg02-leaf01.png" x="-5" y="282" height="190px"/>
+                      <image style="transform-origin:50px 480px" anime="{ direction: 'alternate',rotate: [-2,2], seek:2600, duration:3600,loop: true,easing: 'swing'}"  data-href="assets/img/bg02-leaf02.png" x="0" y="402" height="80px"/>
+                      <image style="transform-origin:0px 480px" anime="{ direction: 'alternate',rotate: [-3,3], seek:3000, duration:3600,loop: true,easing: 'swing'}"  data-href="assets/img/bg02-leaf03.png" x="-5" y="294" height="190px"/>
+                      <image anime="{translateX: [0,0], translateY: [-3,3], direction: 'alternate',seek:2000, duration:3000,loop: true,easing: 'swing'}" data-href="assets/img/bg02-seed.png" x="0" y="282" height="180px"/>
                     </g>
 
 
@@ -446,7 +560,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 <p en="even you never think of …" zh="即使你未曾想像過 …"></p>
               </div>
             </div>
-            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg></arrows>
           </div>
 
           
@@ -455,7 +569,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               <cards>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Mentally<br/>Satisfied</p>
@@ -463,7 +577,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -471,7 +585,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Closely<br/>connected<br/>with God</p>
@@ -479,7 +593,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Catch up on<br/>technology</p>
@@ -487,7 +601,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -495,7 +609,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -505,8 +619,9 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               <bg style="display: flex;">
                 <img-container style="height:100%;transition:none;">
                   <!-- Specify height & width because svg cannot infer the width from height-->
-                  <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
+                  <svg scale-to-fit-parent-height style="height:480px; width: 893px; transform-origin: top left;">
                     <g slow-transition>
+                      <image data-href="assets/img/bg03-bg.jpg" x="0" y="0" height="480px"/>
           
           
                     </g>
@@ -526,7 +641,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 <p en="get what you want …" zh="想要便要 …"></p>
               </div>
             </div>
-            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg></arrows>
           </div>
 
           
@@ -535,7 +650,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               <cards>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Mentally<br/>Satisfied</p>
@@ -543,7 +658,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -551,7 +666,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Closely<br/>connected<br/>with God</p>
@@ -559,7 +674,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Catch up on<br/>technology</p>
@@ -567,7 +682,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -575,7 +690,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -587,6 +702,9 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
+                      <image data-href="assets/img/bg04-bg.jpg" x="0" y="0" height="480px"/>
+          
+          
           
           
                     </g>
@@ -606,7 +724,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 <p en="you can decide everything …" zh="一切由你決定 …"></p>
               </div>
             </div>
-            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg></arrows>
           </div>
 
 
@@ -615,7 +733,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               <cards>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Mentally<br/>Satisfied</p>
@@ -623,7 +741,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -631,7 +749,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Closely<br/>connected<br/>with God</p>
@@ -639,7 +757,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Catch up on<br/>technology</p>
@@ -647,7 +765,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -655,7 +773,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 </card>
                 <card drag="20">
                   <svg card-bg>
-                    <image xlink:href="" width="100px"  height="100px" />
+                    <image data-href="" width="100px"  height="100px" />
                   </svg>
                   <card-text>
                     <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
@@ -667,6 +785,9 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
+                      <image data-href="assets/img/bg05-bg.jpg" x="0" y="0" height="480px"/>
+          
+          
                     </g>
 
                   </svg>
@@ -679,7 +800,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 <p en="Almost time to go …" zh="差不多可以出發了 …"></p>
               </div>
             </div>
-            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg></arrows>
           </div>
 
 
@@ -697,7 +818,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-width style="height:480px; width: 360px; transform-origin: top left;">
                     <g slow-transition>
-                      <image xlink:href="assets/img/luggage.jpg" x="0" y="0" height="480px"/>
+                      <image data-href="assets/img/luggage.jpg" x="0" y="0" height="480px"/>
                     </g>
                   </svg>
                 </img-container>
@@ -724,7 +845,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               </cards>
 
             </div>
-            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use xlink:href="#arrow-svg"></use></svg></arrows>
+            <arrows><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg><svg viewBox="0 0 1000 1000" class="arrow"><use data-href="#arrow-svg"></use></svg></arrows>
 
           </div>
 
@@ -744,7 +865,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                   <!-- Specify height & width because svg cannot infer the width from height-->
                   <svg scale-to-fit-parent-height style="height:480px; width: 360px; transform-origin: top left;">
                     <g slow-transition>
-                      <image xlink:href="assets/img/contact.jpg" x="0" y="0" height="480px"/>
+                      <image data-href="assets/img/contact.jpg" x="0" y="0" height="480px"/>
                     </g>
                   </svg>
                 </img-container>
@@ -773,67 +894,67 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                 <img-container style="height:100%;transition:none;">
                   <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
                     <g slow-transition>
-                      <image xlink:href="assets/img/bg01-bg.jpg" x="0" y="0" height="480px"/>
-                      <image xlink:href="assets/img/bg01-greens.png" x="0" y="0" height="480px"/>
-                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave01.png" x="213px" y="0" height="480px"/>
-                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'swing'}" xlink:href="assets/img/bg01-wave02.png" x="213px" y="0" height="480px"/>
-                      <image xlink:href="assets/img/bg01-lotus.png" x="234px" y="0" height="480px"/>
+                      <image data-href="assets/img/bg01-bg.jpg" x="0" y="0" height="480px"/>
+                      <image data-href="assets/img/bg01-greens.png" x="0" y="0" height="480px"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.3], scale:[1,1.005], seek:0, duration:2800,loop: true,easing: 'swing'}" data-href="assets/img/bg01-wave01.png" x="213px" y="0" height="480px"/>
+                      <image anime="{ direction: 'alternate',opacity: [1,0.2], scale:[1,1.005], seek:1200, duration:2800,loop: true,easing: 'swing'}" data-href="assets/img/bg01-wave02.png" x="213px" y="0" height="480px"/>
+                      <image data-href="assets/img/bg01-lotus.png" x="234px" y="0" height="480px"/>
           
           
           
                       <g style="transform-origin:180px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1200, duration:2600,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch01.png" x="188px" y="-10px" width="11%"/>
+                        <image data-href="assets/img/bg01-branch01.png" x="188px" y="-10px" width="11%"/>
                       </g>
                       <g style="transform-origin:85px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:0, duration:3500,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch02.png" x="80px" y="0px" width="29px"/>
+                        <image data-href="assets/img/bg01-branch02.png" x="80px" y="0px" width="29px"/>
                       </g>
                       <g style="transform-origin:0px 196px" anime="{ direction: 'alternate',rotate: [-9,9], seek:1400, duration:4500,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch03.png" x="-3px" y="176px" width="38px"/>
+                        <image data-href="assets/img/bg01-branch03.png" x="-3px" y="176px" width="38px"/>
                       </g>
                       <g style="transform-origin:0px 136px" anime="{ direction: 'alternate',rotate: [0,9], seek:3300, duration:3200,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch04.png" x="0px" y="70px" width="64px"/>
+                        <image data-href="assets/img/bg01-branch04.png" x="0px" y="70px" width="64px"/>
                       </g>
                       <g style="transform-origin:400px 0px" anime="{ direction: 'alternate',rotate: [-5,5], seek:1500, duration:3000,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch05.png" x="340px" y="-10px" width="140px"/>
+                        <image data-href="assets/img/bg01-branch05.png" x="340px" y="-10px" width="140px"/>
                       </g>
                       <g style="transform-origin:110px 380px" anime="{ direction: 'alternate',rotate: [-0,9], seek:0, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch07.png" x="106px" y="302px" width="26px"/>
+                        <image data-href="assets/img/bg01-branch07.png" x="106px" y="302px" width="26px"/>
                       </g>
                       <g style="transform-origin:150px 400px" anime="{ direction: 'alternate',rotate: [-0,5], seek:2200, duration:2200,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch09.png" x="46px" y="268px" width="76px"/>
+                        <image data-href="assets/img/bg01-branch09.png" x="46px" y="268px" width="76px"/>
                       </g>
                       <g style="transform-origin:310px 480px" anime="{ direction: 'alternate',rotate: [-3,3], seek:0, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch10.png" x="292px" y="360px" width="113px"/>
+                        <image data-href="assets/img/bg01-branch10.png" x="292px" y="360px" width="113px"/>
                       </g>
                       <g style="transform-origin:70px 420px" anime="{ direction: 'alternate',rotate: [-3,0], seek:500, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch11.png" x="0px" y="328px" width="70px"/>
+                        <image data-href="assets/img/bg01-branch11.png" x="0px" y="328px" width="70px"/>
                       </g>
                       <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:0, duration:2000,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch12.png" x="646px" y="329px" width="46px"/>
+                        <image data-href="assets/img/bg01-branch12.png" x="646px" y="329px" width="46px"/>
                       </g>
                       <g style="transform-origin:646px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2000,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch13.png" x="550px" y="375px" width="100px"/>
+                        <image data-href="assets/img/bg01-branch13.png" x="550px" y="375px" width="100px"/>
                       </g>
                       <g style="transform-origin:776px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1300, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch14.png" x="750px" y="375px" width="50px"/>
+                        <image data-href="assets/img/bg01-branch14.png" x="750px" y="375px" width="50px"/>
                       </g>  
                       <g style="transform-origin:896px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:1800, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch15.png" x="870px" y="367px" width="36px"/>
+                        <image data-href="assets/img/bg01-branch15.png" x="870px" y="367px" width="36px"/>
                       </g>
                       <g style="transform-origin:916px 480px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2800,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch16.png" x="890px" y="357px" width="50px"/>
+                        <image data-href="assets/img/bg01-branch16.png" x="890px" y="357px" width="50px"/>
                       </g>
                       <g style="transform-origin:656px 280px" anime="{ direction: 'alternate',rotate: [-0,4], seek:2600, duration:2400,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch17.png" x="630px" y="197px" width="46px"/>
+                        <image data-href="assets/img/bg01-branch17.png" x="630px" y="197px" width="46px"/>
                       </g>
                       <g style="transform-origin:1120px 350px" anime="{ direction: 'alternate',rotate: [-0,2], seek:2600, duration:3200,loop: true,easing: 'swing'}" >
-                        <image xlink:href="assets/img/bg01-branch18.png" x="1000px" y="150px" width="80px"/>
+                        <image data-href="assets/img/bg01-branch18.png" x="1000px" y="150px" width="80px"/>
                       </g>
                       <g  >
-                        <image xlink:href="assets/img/bg01-branch06.png" x="0px" y="343px" width="165px"/>
+                        <image data-href="assets/img/bg01-branch06.png" x="0px" y="343px" width="165px"/>
                       </g>
                       <g  >
-                        <image xlink:href="assets/img/bg01-branch08.png" x="183px" y="388px" width="138px"/>
+                        <image data-href="assets/img/bg01-branch08.png" x="183px" y="388px" width="138px"/>
                       </g>
           
           
@@ -872,7 +993,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
 
 
 
-                <img style="clip-path: circle(50% at 50% 50%); -webkit-clip-path: circle(50% at 50% 50%);background:#fff;"/>
+                <image id="result-icon" style="clip-path: circle(50% at 50% 50%); -webkit-clip-path: circle(50% at 50% 50%);background:#fff;"/>
               </dounut-container>
               <learn-more en="Learn more", zh="了解更多">
               </learn-more>
@@ -957,7 +1078,8 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
 
                   </div>
                   <div flex-4 flex-column>
-                    <div style="height: fit-content; margin: auto" class="thin-body">
+                    <div style="height: fit-content; margin: auto; 
+                    text-shadow: 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff;" class="thin-body">
                       <p en="In your mind what does career planning do?" zh="你印象中生涯規劃係做咩？"></p>
                       <p en="Don’t know what you want?" zh="唔知自己想要啲咩？"></p>
                       <p en="Want to find/accomplish your goal?" zh="想搵／實踐自己嘅目標？"></p>
@@ -982,7 +1104,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
                                       <svg scale-to-fit-parent-width-middle-bottom style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
-                                        <image xlink:href="assets/img/contact-button-01.jpg" x="0" y="0" width="345px" height="280px"/>
+                                        <image data-href="assets/img/contact-button-01.jpg" x="0" y="0" width="345px" height="280px"/>
                                       </svg>
                                     </img-container>
                                   </bg>
@@ -996,7 +1118,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
                                       <svg scale-to-fit-parent-width-middle-top style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
-                                        <image xlink:href="assets/img/contact-button-02.jpg" x="0" y="0" width="345px" height="280px"/>
+                                        <image data-href="assets/img/contact-button-02.jpg" x="0" y="0" width="345px" height="280px"/>
                                       </svg>
                                     </img-container>
                                   </bg>
@@ -1015,7 +1137,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
                                       <svg scale-to-fit-parent-width-middle-top style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
-                                        <image xlink:href="assets/img/contact-button-03.jpg" x="0" y="0" width="345px" height="280px"/>
+                                        <image data-href="assets/img/contact-button-03.jpg" x="0" y="0" width="345px" height="280px"/>
                                       </svg>
                                     </img-container>
                                   </bg>
@@ -1031,7 +1153,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
                                       <svg scale-to-fit-parent-width-middle-top style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
-                                        <image xlink:href="assets/img/contact-button-04.jpg" x="0" y="0" width="345px" height="280px"/>
+                                        <image data-href="assets/img/contact-button-04.jpg" x="0" y="0" width="345px" height="280px"/>
                                       </svg>
                                     </img-container>
                                   </bg>
@@ -1051,7 +1173,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
                                       <svg scale-to-fit-parent-width-middle-top style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
-                                        <image xlink:href="assets/img/contact-button-05.jpg" x="0" y="0" width="345px" height="280px"/>
+                                        <image data-href="assets/img/contact-button-05.jpg" x="0" y="0" width="345px" height="280px"/>
                                       </svg>
                                     </img-container>
                                   </bg>
@@ -1066,7 +1188,7 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
                                   <bg style="display: flex;">
                                     <img-container style="height:100%;width:100%">
                                       <svg scale-to-fit-parent-width-middle-top style="height:280px;width:345px;" version="1.0" xmlns="http://www.w3.org/2000/svg">
-                                        <image xlink:href="assets/img/contact-button-06.jpg" x="0" y="0" width="345px" height="280px"/>
+                                        <image data-href="assets/img/contact-button-06.jpg" x="0" y="0" width="345px" height="280px"/>
                                       </svg>
                                     </img-container>
                                   </bg>

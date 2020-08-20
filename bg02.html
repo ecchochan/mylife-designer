@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<head>
+  <title>MyLife</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' >
+  <link rel="icon" type="image/png" href="">
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+      <link id="favicon" rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAMwElEQVR4Xu2dCZAU1RnHf70ulyIERU4v5BA5RFikUEm0wGjMgYXl7mJSScqIOcpUkjJWTEKMR0KlNMZKUjFJecSqHIbdTSRqDjUCankQBRUFERDBA4SV+z6W6dR/e8adbXrZ6Z6Znjc971Vt7c7Oe/197//93/W977126CTVz3WHpqo423UZ5zhMBs4DenVWzn5fEgR2Ai+4Losch6VVKV5rmOmsOZomTkdfpg0/B6gvSVWs0EIh0FCVYnZHRAgkQG2jOxv4MdC1UFrY55QUgYPAbU11jhp0u3QEAWob3deBMSVV1wovFgLLmuqcsdkPb0eA2kZ3PjC1WNLtc41AYEFTnTMto8lHBKhtdKcDDxuholWi2Ahc3lTnPCIhrQSY8ZDbr7qFdUCPYku2zzcCgX0t1Zw+7wqnuZUAdQ3uva7DLCNUs0rEgoDjcl9jvXOtUz/XHZGqYmUsUq0QoxCoSnGmU9fgXuU6PGiUZlaZWBBwXD4vAtzpOnw3FolWiFEIOC6/cGqb3IW4XGSUZlaZeBBweMqpbXTlPz4+HolWimEI7BIBXMOUsurEiIAlQIxgmyjKEsBEq8SokyVAjGCbKMoSwESrxKiTJUCMYJsoyhLARKvEqJMlQIxgmyjKEsBEq8SokyVAjGCbKMoSwESrxKiTJUCMYJsoyhLARKvEqJMlQIxgmyjKEsBEq8SokyVAjGCbKMoSwESrxKiTJUCMYJsoyhLARKvEqJMlQIxgmyjKEsBEq8SokyVAjGCbKMoSwESrxKiTJUCMYJsoyhLARKvEqJMlQIxgmyjKEsBnlRN7wJRTYeRJ0PdY6NkVelTDjv2wvwXWbodXNsL/3jfRnOF1sgRIYzZuAMwYCSNOhOqqowOps3QixL9Ww8NvhgfdpBKWAMDV42HaEOh6TDjTpFx4dSP8ahHsawlX1pTcFU0Ade2zauCCU6DKd2HeYRd2H4DtB9pM9bFucGxX6JLVQ6g3eHkD3P6cKSYNp0dFE+BL4+CyYXBMlkH3HoIX18MjK+F9HZz3JZHmoiFw8Rlwci/vlq2Dh+Fvb8A/ynA4qFgCqNVfM8Gb5GXSxt3wp6Xw0obOW5G/91ixGW5e2Hk503JULAG+PwUmDGwzx5Z9cM9ib4afa6oZBF+fCL27wYd74K5FsGZrrqXNyFeRBMg2nMzQkvJm8w3LwxllTD/45iQ4oQds3Qe/eRGWNYd7RqlzVyQBrhkPlwwFJz3x09r+loXhZ/LyF8yaAMd2sQQoNZEDJ2vTzoADh+G/vhvzb78YhvTxihxOwT9XwV90RXbIdPmZUDvaWz5q/vCzZ+GDXSEfUuLsiewBxg+AL58DA4+HPQfh/pfhufc8pM/uD9dNgj7dvc/5dN3ZPcniDXBHGS4FE0mA710AEwd5BtY6/am18LvF3ufsVqvPK7fATQuiNcMfTIHxA2G3j2TRnlaaUokkwE0Xwth+bYC+3gw/edr77B//n14Hd78UDfzhJ8KUU2DNNnjmnWjPKHWpRBLgsyNg6hBvdq45wBNvwd9XeFBn9w5RZ/+lNloh5UcmgBwhX5sIg3vBig/hD68UUq3iPevmC2F0uneQ/17zg3JtvYVAKTIB1JV+cqjnQ5fL9PrHC6FO8Z9x16WeC1dp2364+0V4bVPx5ZoqIRIBNLu+8QIYlL5gtlwJkM8KwFSDhtUrEgHOOxmurWnzo5cLAbI9dwJq/S744ZPhHUBhQTY5fyQCXDkKZpzVti1argQoF72LSaBIBPjiOPj0cDgm7UotFyD9PUCp9NYE+uOnwbmD4fTe0L2L5008dNj72bTH80/Igxm0JV1IQkQigHbAtMzKpFIBGRaIUhNA8YZ1Y2DSIDguh1dyigzyYfz5teIRoaIJkI8XMCz5Lh8J8k9o6zhs2rwXHngltziFsM+uaAJE3QUMA7K6+29NhnMGtA2ZYcpn8m7Z63ksC73dXNEEONACDy6D/6yOYpLOy8jfoNXSyL7pFzRmFdEexda9sGoLLN0ESzeCglIySRtaX5kA/Y/z/lOs2MOKJoCAlTdQrUtdc3VAVPDOA955AKVUCj7Y7X2W/19bvx21SLX8G86HMf3bG1/Bpqs2eyHlij08Wsr2WiqfQtF/+1K4qKXOaJo4Apw7CCad7FVbu4DLP2yDwD8J7AycXL5fvxPueP7IOIBvTIQLT28fbawW3rQcFqzt/Mlytmm3cUDPtrwKPlX5hwv4lsfEEeCrNaBAEK1Q1Upve6rN0VMMAgTtJwQFnIaNObxqLHxuRPtDKsXYvEocAbK7TS2jFK49Lx2u3REBNL6qdWlfXz+dpcxQIIOoS1+8vv0M3R9wqlDzB1+HJ3yRSR3JUcyCHG0KNctOlgCdWQbI3uxR9uxIHT8BZPh3tnsk6Ww8zkF0a5YgkuUaMj5pMHxmOIzoG7xisHOATqwQBL4/Vi+bIMVoUZ8aBl8YC92q25R94X1Y4jtrcHw3OK036PegntCnh1fGd0Cp9SEiavNuryfLZf6QK1mVL1FDQBAB1KXfuwRkBKVsAgjY+W/DPUvCQHb0vPWjQU6fzg6Y5iJRQ9iGXd5E9tGV7ZeJuZTPJU+iCBA0c9ZaXxG/j711JAH0H63B5zyTC1S55cmHAIdS3pJ07TZvTvHsu7nJzCdXogjgb+H67O/ms0PC9f27O+CGJ/KBsH3ZMASQwXWi6M3NpbtzIHEE8BvY3837A0YLHRTyidO8M4dyBGWSVgqbdnsbOvLrv73NC0cvtFs3Co0TRwC/gQWKJk6/T4eF+78vdFxg0DxkeTPcmo5KjmKkYpZJHAH8W9X+cf66cz0PXSYVYyXg74VMjjxKHAH8wSoydPa5gCCC5HM2IKh1+s8eiGSProK/Rjh+VszWr2cXhABhPV1RKqWuVXH+QUnn+zSRkrs1aB2e3QXPHAPTz2y/TCt0Fx00DMjTOH+tt69vUioIAVQhjaUC8uUPPGMEhTINPQEGpyOJVeaMPl5gqdbMA3tCVRV0r4Ze6aAJhUllws6OBppm0/NWeB49/9k/lcuOWPLHM+r7YnTRQZtBmS3g59+DheuKF+UThmCRCJC94RJGWLHy+mf6d14Cp/Zuk5ZNgKBZejHOBygW4NuTPW9fUJLO+w55qwHFAOoQq3wAImMmZbyFmfuLdKC1V3ev0WifQP9XI8l4D9UD/noRyPWca4pEAAUraCyV+7LUST2PNmO02ZIJqPjOZDj/lGAC+C+HUC7t7z/wKizMYZs2TH1Hn+TdH6DTU3EkOZBufDKcpEgEkIjLhkPtqPZ37IQT3XFuXb+mMVOtJBOQodbSvMcbarSOlpt03fbgbtR/Aji7B9AwdP1kOCkdaSMttE7/92rvfqBCJ/UEV58Do/rlNpxFka8hcPt+7wxk2FiByASQoqqcAh3H9vciaoLu2Wvdam2BlLxyhz1F9bccIur25KuXQZXU/RXijh3ppQ0ZhWKpq9SO4M+fb4PWv0zTNxqXf7koCvy5ldHQoxvJNDR1CXkfoSSoQYiowlJDlhqDsFq9NT+HUl4EyK3q5uXKPiGc0S7OCGGTEKlIAvjX6TJIuV7xki+ZKpIAQb6CHQc8d7F/3z5fgE0vX5EEOKuvF6uvkzqZVIyAS9ONL/0qkgCquH9TyHW9mL37DfPUFZtEFUuAoH37cr3pKx+SVCwB/JdcCMRCRwflY5i4ylYsAQSwrrhRTyCXq2Lv/vhqYU/dxGXEfORUNAHyAS4pZS0BkmLJiPWwBIgIXFKKWQIkxZIR62EJEBG4pBSzBEiKJSPWwxIgInBJKWYJkBRLRqyHJUBE4JJSzBIgKZaMWA9LgIjAJaWYJUBSLBmxHpYAEYFLSjFLgKRYMmI9LAEiApeUYpYASbFkxHpYAkQELinFLAGSYsmI9bAEiAhcUopZAiTFkhHrYQkQEbikFLMESIolI9bDEiAicEkpZgmQFEtGrIclQETgklJMBNgBxHSLTVJgS0w9dooAjwGXJqZKtiJhEHjcubLBvcVxuDlMKZs3GQi4LreqB5gBPJSMKtlahETgCqd+rjs0VUX6dQohi9vsZY1AVYphrZdM1ja6c4H6sq6NVT4sAg1Ndc7MVgKke4E3gBzeaR1Wjs1vIAIHq1KMapjprPnoJVW1je5s4KcGKmtVKjwCP2qqc+bose3eUlbb6OpG+zGFl2efaBACy5rqnLEZfY54TV1tozsfmGqQwlaVwiGwoKnOmZb9uKD3FGpSOB3QxNCA+8ALV/sKfpJeTD+zqc55xI9BIAGUacZDbr8uh5jjOsyqYODKvuqOy32HujB73hVOc1BlOiRAJnP9XHeE61AD1LhV1OC2/p313o+yxyhJFdiFwxInhd6FusRxWdIw01l1tAr+HyTaU941gN8IAAAAAElFTkSuQmCC">
+  <!--
+  <script src="assets/js/preload-it.min.js"></script>
+  <script src="assets/js/fastclick.min.js"></script>
+  <script src="assets/js/anime.min.js"></script>
+  -->
+  <script src="https://unpkg.com/loadjs@latest/dist/loadjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.0/anime.min.js"></script>
+  <script type="module" src="assets/js/curtain.js?v=1"></script>
+  <!--
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.1/dist/alpine.min.js" defer></script>-->
+  <link type="text/css" rel="stylesheet" href="assets/css/style.css?v=1" />
+
+</head> 
+
+<body style="overflow: scroll !important">
+
+
+  
+  <background style="overflow: scroll !important">
+    <cards>
+      <card drag="20">
+        <card-text>
+          <p>Mentally<br/>Satisfied</p>
+        </card-text>
+      </card>
+      <card drag="20">
+        <card-text>
+          <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+        </card-text>
+      </card>
+      <card drag="20">
+        <card-text>
+          <p>Closely<br/>connected<br/>with God</p>
+        </card-text>
+      </card>
+      <card drag="20">
+        <card-text>
+          <p>Catch up on<br/>technology</p>
+        </card-text>
+      </card>
+      <card drag="20">
+        <card-text>
+          <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+        </card-text>
+      </card>
+      <card drag="20">
+        <card-text>
+          <p>Got a comfortable<br/>inter-personal<br/>relationship</p>
+        </card-text>
+      </card>
+    </cards>
+    <bg style="transform: scale(2);display: flex; transform-origin: top left;">
+      <img-container style="height:100%;transition:none;background-color:#8ab086;">
+        <!-- Specify height & width because svg cannot infer the width from height-->
+        <svg scale-to-fit-parent-height style="height:480px; width: 1080px; transform-origin: top left;">
+          <g slow-transition>
+            <image xlink:href="assets/img/bg02-bg.jpg" x="0" y="0" height="480px"/>
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -10], scale:[1,1.01], direction: '', seek:0, duration:3600,loop: true}">
+              <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:0, duration:3600,loop: true}" xlink:href="assets/img/bg02-ripples01.png" x="62" y="295" width="35px"/>
+            </g>
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 5], scale:[1,1.01], direction: '', seek:800, duration:3200,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:800, duration:3200,loop: true}" xlink:href="assets/img/bg02-ripples02.png" x="35" y="313" width="42px"/>
+            </g>
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -8], scale:[1,1.01], direction: '', seek:3000, duration:3800,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:3000, duration:3800,loop: true}" xlink:href="assets/img/bg02-ripples03.png" x="126" y="322" width="76px"/>
+            </g>
+            
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 10], scale:[1,1.01], direction: '', seek:1100, duration:3700,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:1100, duration:3700,loop: true}" xlink:href="assets/img/bg02-ripples04.png" x="86" y="394" width="67px"/>
+            </g>
+            
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:2500, duration:2800,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2500, duration:2800,loop: true}" xlink:href="assets/img/bg02-ripples05.png" x="115" y="382" width="67px"/>
+            </g>
+            
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -5], scale:[1,1.01], direction: '', seek:500, duration:3200,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:500, duration:3200,loop: true}" xlink:href="assets/img/bg02-ripples06.png" x="160" y="422" width="67px"/>
+            </g>
+            
+
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:1000, duration:4300,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,0.8], seek:1000, duration:4300,loop: true}" xlink:href="assets/img/bg02-ripples08.png" x="175" y="300" width="67px"/>
+            </g>
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -8], scale:[1,1.01], direction: '', seek:2800, duration:3400,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2800, duration:3400,loop: true}" xlink:href="assets/img/bg02-ripples09.png" x="175" y="352" width="67px"/>
+            </g>
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -6], scale:[1,1.01], direction: '', seek:3000, duration:4300,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:3000, duration:4300,loop: true}" xlink:href="assets/img/bg02-ripples10.png" x="225" y="312" width="67px"/>
+            </g>
+
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -6], scale:[1,1.01], direction: '', seek:1000, duration:3900,loop: true}">
+              <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:1000, duration:3900,loop: true}" xlink:href="assets/img/bg02-ripples11.png" x="60" y="350" width="67px"/>
+            </g>
+
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:2000, duration:4000,loop: true}">
+              <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2000, duration:4000,loop: true}" xlink:href="assets/img/bg02-ripples12.png" x="100" y="340" width="67px"/>
+            </g>
+
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -6], scale:[1,1.01], direction: '', seek:3000, duration:4300,loop: true}">
+              <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:4000, duration:5000,loop: true}" xlink:href="assets/img/bg02-ripples13.png" x="225" y="370" width="67px"/>
+            </g>
+
+
+
+
+
+
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -10], scale:[1,1.01], direction: '', seek:0, duration:3600,loop: true}">
+              <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:0, duration:3600,loop: true}" xlink:href="assets/img/bg02-ripples14.png" x="662" y="295" width="35px"/>
+            </g>
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 5], scale:[1,1.01], direction: '', seek:800, duration:3200,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:800, duration:3200,loop: true}" xlink:href="assets/img/bg02-ripples15.png" x="635" y="313" width="42px"/>
+            </g>
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -8], scale:[1,1.01], direction: '', seek:3000, duration:3800,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:3000, duration:3800,loop: true}" xlink:href="assets/img/bg02-ripples16.png" x="726" y="322" width="76px"/>
+            </g>
+            
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:2500, duration:2800,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2500, duration:2800,loop: true}" xlink:href="assets/img/bg02-ripples18.png" x="715" y="382" width="37px"/>
+            </g>
+            
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -5], scale:[1,1.01], direction: '', seek:500, duration:3200,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:500, duration:3200,loop: true}" xlink:href="assets/img/bg02-ripples19.png" x="960" y="322" width="47px"/>
+            </g>
+            
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -10], scale:[1,1.01], direction: '', seek:2800, duration:4000,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2800, duration:4000,loop: true}" xlink:href="assets/img/bg02-ripples20.png" x="930" y="332" width="37px"/>
+            </g>
+
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -8], scale:[1,1.01], direction: '', seek:2800, duration:3400,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2800, duration:3400,loop: true}" xlink:href="assets/img/bg02-ripples22.png" x="775" y="352" width="37px"/>
+            </g>
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -6], scale:[1,1.01], direction: '', seek:3000, duration:4300,loop: true}">
+            <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:3000, duration:4300,loop: true}" xlink:href="assets/img/bg02-ripples23.png" x="825" y="312" width="47px"/>
+            </g>
+
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:1000, duration:3900,loop: true}">
+              <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:1000, duration:3900,loop: true}" xlink:href="assets/img/bg02-ripples24.png" x="570" y="330" width="37px"/>
+            </g>
+
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, 6], scale:[1,1.01], direction: '', seek:2000, duration:4000,loop: true}">
+              <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:2000, duration:4000,loop: true}" xlink:href="assets/img/bg02-ripples25.png" x="600" y="300" width="37px"/>
+            </g>
+
+            <g style="transform-origin: 62px 295px;" anime="{translateX: [0, -6], scale:[1,1.01], direction: '', seek:3000, duration:4300,loop: true}">
+              <image style="transform-origin: 62px 295px;" anime="{ direction: 'alternate',opacity: [0,1], seek:4000, duration:5000,loop: true}" xlink:href="assets/img/bg02-ripples26.png" x="825" y="370" width="47px"/>
+            </g>
+
+
+
+
+
+              
+            <image xlink:href="assets/img/bg02-cloud-right.png" x="730" y="35" height="286px"/>
+
+            <image xlink:href="assets/img/bg02-track.png" x="185" y="100" height="380px"/>
+            <image style="transform-origin:0px 380px" anime="{ direction: 'alternate',rotate: [-3,3], seek:1200, duration:3600,loop: true,easing: 'swing'}"  xlink:href="assets/img/bg02-leaf01.png" x="-5" y="282" height="190px"/>
+            <image style="transform-origin:50px 480px" anime="{ direction: 'alternate',rotate: [-2,2], seek:2600, duration:3600,loop: true,easing: 'swing'}"  xlink:href="assets/img/bg02-leaf02.png" x="0" y="402" height="80px"/>
+            <image style="transform-origin:0px 480px" anime="{ direction: 'alternate',rotate: [-3,3], seek:3000, duration:3600,loop: true,easing: 'swing'}"  xlink:href="assets/img/bg02-leaf03.png" x="-5" y="294" height="190px"/>
+            <image anime="{translateX: [0,0], translateY: [-3,3], direction: 'alternate',seek:2000, duration:3000,loop: true,easing: 'swing'}" xlink:href="assets/img/bg02-seed.png" x="" y="282" height="180px"/>
+          </g>
+        </svg>
+      </img-container>
+
+
+
+
+    </bg>
+  </background>
+
+  <script>
+    function styler(namespace, styles) {
+      var name = 'styler-' + (namespace || 'default');
+      var style_div = document.getElementById(name);
+      if (!style_div) {
+        style_div = document.createElement('style');
+        style_div.id = name
+        document.body.appendChild(style_div);
+      }
+      style_div.innerHTML = styles;
+    }
+
+    const id_seen = new Set();
+const makeid = ()=>{
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 6; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  if (id_seen.has(text))
+    return makeid()
+  id_seen.add(text);
+  return text;
+}
+
+const prefixes = ['-webkit-','-moz-','-o-','-webkit-',''];
+const generate_css = (config)=>{
+  var name = 'animation_'+ makeid();
+  var rotate = config.rotate;
+  var opacity = config.opacity;
+  var scale = config.scale;
+  var translateX = config.translateX;
+  var translateY = config.translateY;
+  var attr;
+  var frames = [];
+  var reverse = config.reverse
+  
+  var content = (config.direction=='alternate'?
+                  [[reverse?1:0,0],[reverse?0:1,50],[reverse?1:0,100]]:
+                  [[reverse?1:0,0],[reverse?0:1,100]]).map(e=>{
+      var i=e[0];
+      var percent=e[1];
+      var attrs = [];
+      if (rotate)attrs.push(`rotate(${rotate[i]}deg)`);
+      if (scale)attrs.push(`scale(${scale[i]})`);
+      if (translateX)attrs.push(`translateX(${translateX[i]}px)`);
+      if (translateY)attrs.push(`translateY(${translateY[i]}px)`);
+      var attr = attrs.join(' ')
+      return (
+        percent+
+        '%{'+
+        (attr?(prefixes.map(p=>`${p}transform:${attr}`).join(';')):"")+
+          (opacity?`opacity:${opacity[i]}`:"") + '}')
+  }).join('');
+  return [name, prefixes.map(p=>`@${p}keyframes ${name}{${content}}`).join('\n')];
+}
+
+const apply_css_from_animejs_config = (elem, config)=>{
+  var name_class = 'animation_'+ makeid();
+  var css = generate_css(config);
+  var css_name = css[0];
+  var css_keyframes = css[1];
+  config.duration *= 1.5;
+  var css_elem = prefixes.map(p=>`${p}animation: ${config.duration||0}ms cubic-bezier(0.5, 0, 0.5, 1) -${config.seek||0}ms infinite running ${css_name};`).join('');
+  var transformOrigin = elem.style.transformOrigin;
+  if (transformOrigin){
+    elem.style.webkitTransformOrigin = transformOrigin;
+    elem.style.mozTransformOrigin = transformOrigin;
+    elem.style.msTransformOrigin = transformOrigin;
+    elem.style.oTransformOrigin = transformOrigin;
+  }
+  styler(name_class,css_keyframes+`.${name_class}{${css_elem}}`)
+  elem.classList.add(name_class);
+
+}
+const activate_bg_animation = (background) =>{
+  var animes = background.querySelectorAll('[anime]');
+  animes.forEach(e=>{
+      var args = eval('('+e.getAttribute('anime')+')');
+      apply_css_from_animejs_config(e,args);
+
+      return;
+      args.targets = e;
+      args.autoplay = false;
+      var animation = anime(args);
+      e.anime = animation;
+      if (args.seek)
+        animation.seek(args.seek)
+      animation.play();
+  })
+}
+
+    activate_bg_animation(document.querySelector('background'));
+
+
+  </script>
+</body>

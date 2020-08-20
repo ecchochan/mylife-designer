@@ -1,5 +1,6 @@
 import { makeCurtains }  from './curtain.js';
 import {styler} from "./styler.min.js";
+const Canvg = canvg.Canvg;
 /*
 
   Configurations
@@ -29,7 +30,46 @@ DEBUG = urlParams.debug
 
 **/
 
+var counter = [0,0,0,0,0];
+var colors = "abdfbd,ffcfcd,aecfde,ffdc99,ccffff".split(',');
+var sharable_link;
+var best_type;
 
+const get_best_type = ()=>{
+
+  var all_chosen = CARDS.filter(e=>e.chosen).map(e=>e);
+
+  var counter_ = all_chosen.reduce((acc, curr)=>(acc[curr.type] ? acc[curr.type]++ : acc[curr.type] = 1)&&acc, {});
+  Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
+  var total = all_chosen.length;
+  var inner = document.querySelector('result-description-inner');
+  
+  var rows = Array.from(doc.querySelectorAll('row'));
+  rows.forEach((e,i)=>{e.dtype = i;e.score = counter[i]});
+  rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
+  doc.querySelectorAll('left h1').forEach((e, i)=>{
+    var p = parseInt((counter[i] / total)*100)
+    e.innerHTML = (p)+ '<span font-smaller>%</span>';
+  })
+
+
+  rows.forEach(e=>inner.appendChild(e));
+  best_type = rows[0].dtype;
+  var TYPE = CARDS_TYPES[best_type];
+  
+  var encoded = all_chosen.reduce(
+    (e, x, i)=>{
+      var temp = new BigNumber('1');
+      for (var j=0; j<i; j++)
+        temp = temp.multipliedBy(encoded_expand_base)
+      temp = temp.multipliedBy(x.id)
+      return e.plus(temp)
+    }, new BigNumber('0')
+  ).toString(encoded_base);
+  sharable_link = window.location.origin+'/'+TYPE.code+'-'+current_lang+'?d='+encoded;
+  LOGT(sharable_link);
+  return best_type;
+}
 
 function getRandomSubarray(arr, size) {
   if (size === undefined)size = arr.length;
@@ -438,14 +478,14 @@ doc.addEventListener("DOMContentLoaded", function(){
   update_vh();
 });
 
-if (DEBUG){
+if (true){
   document.querySelectorAll('#lang-switcher > span').forEach(e=>{
     e.classList.remove('display-none');
     let g = function(e){
       document.querySelectorAll('#lang-switcher > span').forEach(e=>e.classList.remove('display-none'));
       this.classList.add('display-none');
-      setLang(this.textContent);
-      current_lang = this.textContent;
+      setLang(this.getAttribute('data-lang'));
+      current_lang = this.getAttribute('data-lang');
   
     }
     e.addEventListener('click',g)
@@ -482,29 +522,29 @@ window.mobilecheck = function () {
 */
 
 var CARDS_RAW = `!內在滿足;;Intrinsic satisfaction
-精神層面上的\u200b滿足;;Mentally Satisfied
+精神層面上的\u200b滿足;;Mentally satisfied
 與神有親密連繫;;Closely connected with God
 持續的認識自我;;Continuous \u200bself-exploration
 擁有自我內心的\u200b空間;;Have an inner space 
-安全感;;Sense of secure
+安全感;;Sense of security
 內心的平靜;;Have an inner peace 
 新鮮感;;Sense of freshness
 感到自在;;Feel comfortable 
 
 !人際關係;;Inter-personal relationship
-擁有自在舒適的\u200b人際關係;;Got a comfortable \u200binter-personal \u200brelationship
+擁有自在舒適的\u200b人際關係;;Get a comfortable \u200binter-personal \u200brelationship
 美滿婚姻;;Happy marriage
-有交心知己;;Have Best Friend Forever
+有交心知己;;Have best friend forever
 有親近的好朋友;;Have good friends
 親密的家庭;;A close family 
-孝順父母;;Filial Piety
+孝順父母;;Filial piety
 和一群人一起打拼;;Work hard with others
 讚賞及鼓勵別人;;Appreciate and \u200bencourage others
 有意義的愛情;;A meaningful \u200blove-relationship  
 幫助別人;;Help others
 
 !物質享受;;Materialistic
-有車 / 有樓;;Own a Car/House
+有車 / 有樓;;Own a car/house
 賺大錢;;Be wealthy
 時尚的打扮;;Fashionable \u200bdress up
 錢夠用 \u200b(沒有經濟上的\u200b擔憂);;Sufficient amount of money \u200b(without financial burden)
@@ -658,15 +698,19 @@ if (d){
 */
 
 const bgs = Array.from(document.querySelectorAll('[id^="selection"] background')).filter(e=>e).map(e=>e.innerHTML);
+LOG(bgs);
 
 const skip = parseInt(urlParams.skip);
 if (skip){
   LOGT('Skipping '+skip+' stages');
   var stages_divs = Array.from(document.getElementById('stages').children);
   stages_divs.splice(1,skip).forEach(e=>{e.remove()});
+  document.querySelector('#lang-switcher').classList.add('hidden')
   
 }
 
+
+document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
 
 
 
@@ -678,11 +722,15 @@ if (skip){
   Resources Loading
 
 */
-
-
-
-var MUSIC_URL = 'assets/audio/bensound-beyondtheline.mp3';
-var files = `
+var files01 = `
+tick-01.png
+tick-02.png
+tick-03.png
+tick-04.png
+tick-05.png
+tick-06.png
+tick-07.png
+tick-08.png
 bg01-bg.jpg
 bg01-branch01.png
 bg01-branch02.png
@@ -717,7 +765,71 @@ bg01-card-bg-12.png
 bg01-greens.png
 bg01-lotus.png
 bg01-wave01.png
-bg01-wave02.png
+bg01-wave02.png`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+
+var files02 = `
+bg02-bg.jpg
+bg02-card-bg-01.png
+bg02-card-bg-02.png
+bg02-card-bg-03.png
+bg02-card-bg-04.png
+bg02-card-bg-06.png
+bg02-card-bg-07.png
+bg02-card-bg-08.png
+bg02-card-bg-09.png
+bg02-cloud-right.png
+bg02-leaf01.png
+bg02-leaf02.png
+bg02-leaf03.png
+bg02-ripples01.png
+bg02-ripples02.png
+bg02-ripples03.png
+bg02-ripples04.png
+bg02-ripples05.png
+bg02-ripples06.png
+bg02-ripples07.png
+bg02-ripples08.png
+bg02-ripples09.png
+bg02-ripples10.png
+bg02-ripples11.png
+bg02-ripples12.png
+bg02-ripples13.png
+bg02-ripples14.png
+bg02-ripples15.png
+bg02-ripples16.png
+bg02-ripples17.png
+bg02-ripples18.png
+bg02-ripples19.png
+bg02-ripples20.png
+bg02-ripples21.png
+bg02-ripples22.png
+bg02-ripples23.png
+bg02-ripples24.png
+bg02-ripples25.png
+bg02-ripples26.png
+bg02-ripples27.png
+bg02-seed.png
+bg02-track.png`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+var files03 = `
+bg03-bg.jpg
+`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+var files04 = `
+bg05-bg.jpg
+`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+var files05 = ``.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+var files06 = `
+luggage.jpg
+`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+var files07 = ``.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+var files08 = ``.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+
+var files00 = `
+buddy-figure-01.png
+buddy-figure-02.png
+buddy-figure-03.png
+buddy-figure-04.png
+buddy-figure-05.png
+buddy-figure-06.png
 cloud-bg.png
 cloud01.png
 cloud02.png
@@ -742,8 +854,12 @@ cover-stamen-02.png
 cover-stamen-03.png
 cover-wave.png
 cover.png
-intro.jpg
-luggage.jpg
+intro.jpg`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+
+
+var MUSIC_URL = 'assets/audio/bensound-beyondtheline.mp3';
+var files = `
+qr-code.svg
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var card_1_bgs = `
@@ -762,6 +878,14 @@ bg01-card-bg-12.png
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var card_2_bgs = `
+bg02-card-bg-01.png
+bg02-card-bg-02.png
+bg02-card-bg-03.png
+bg02-card-bg-04.png
+bg02-card-bg-06.png
+bg02-card-bg-07.png
+bg02-card-bg-08.png
+bg02-card-bg-09.png
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var card_3_bgs = `
@@ -781,12 +905,54 @@ var cards_bgs = [
   card_5_bgs,
 ]
 
+if (skip && skip == 8){
+  var best_type = get_best_type();
+  
+  files.push.apply(files, [files01,files02,files03,files04,files05,][best_type])
+}else{
+  files.push.apply(files, files00)
+  files.push.apply(files, files01)
+  files.push.apply(files, files02)
+  files.push.apply(files, files03)
+  files.push.apply(files, files04)
+  files.push.apply(files, files05)
+  files.push.apply(files, files06)
+  files.push.apply(files, files07)
+  files.push.apply(files, files08)
+  LOG('???')
 
+}
+/*
 
+  Set Landscape
 
+*/
 
+const LANDSCAPE_BG = 'assets/img/desktop-bg.jpg';
+const set_landscape = ()=>{
+  var is_landscape = window.orientation != 0;
+  if (window.orientation === undefined){
+    is_landscape = window.innerHeight < window.innerWidth
+  }
+  if (is_landscape){
+    document.body.setAttribute('is-landscape', '');
+    document.querySelector('landscape-hint bg image').setAttributeNS("http://www.w3.org/1999/xlink", 'href',LANDSCAPE_BG)
+  }else
+    document.body.removeAttribute('is-landscape');
 
+}
+window.addEventListener("orientationchange", set_landscape, false);
+set_landscape();
+if (window.matchMedia("(orientation: portrait)").matches) {
+  document.body.removeAttribute('is-landscape');
+}
 
+if (window.matchMedia("(orientation: landscape)").matches) {
+  document.body.setAttribute('is-landscape', '');
+  document.querySelector('landscape-hint bg image').setAttributeNS("http://www.w3.org/1999/xlink", 'href',LANDSCAPE_BG)
+}
+
+files.push(LANDSCAPE_BG);
 
 var files_loaded = 0;
 var files_total = files.length;
@@ -877,6 +1043,7 @@ const generate_css = (config)=>{
   var attr;
   var frames = [];
   var reverse = config.reverse
+  
   var content = (config.direction=='alternate'?
                   [[reverse?1:0,0],[reverse?0:1,50],[reverse?1:0,100]]:
                   [[reverse?1:0,0],[reverse?0:1,100]]).map(e=>{
@@ -907,7 +1074,7 @@ const apply_css_from_animejs_config = (elem, config)=>{
   var css_keyframes = css[1];
   config.duration *= 1.5;
   config.seek *= 1.5;
-  var timeing_func = EASINGS[config.easing];
+  var timeing_func = EASINGS[config.easing || 'linear'];
   var css_elem = prefixes.map(p=>`${p}animation: ${config.duration||0}ms ${timeing_func} -${config.seek||0}ms infinite running ${css_name};`).join('');
   var transformOrigin = elem.style.transformOrigin;
   if (transformOrigin){
@@ -998,6 +1165,7 @@ var volumeSwitchContainer = volumeButton.querySelector('.switchContainer');
 var audio = new Howl({
   src: [MUSIC_URL],
   loop: true,
+  html5: true,
   volume: MAX_AUDIO_VOL
 });
 window.audio = audio;
@@ -1042,11 +1210,13 @@ var toggleMusic = ()=>{
   if (AUDIO_ON) {
     AUDIO_ON = false;
     setVolume(0);
+    audio.pause();
     volumeSwitchContainer.classList.remove('switchOn');
     volumeSwitchContainer.classList.add('switchOff');
   }else{
     AUDIO_ON = true;
     setVolume(MAX_AUDIO_VOL);
+    audio.play();
     volumeSwitchContainer.classList.add('switchOn');
     volumeSwitchContainer.classList.remove('switchOff');
     playMusic();
@@ -1195,6 +1365,7 @@ window.intro_next = function (self){
   timeline([
     ()=> audio_can_start=true,
     ()=> audio_canplaythrough?document.getElementById('float-top-right').classList.remove('hidden'):0,
+    ()=> document.querySelector('#lang-switcher').classList.add('hidden'),
     ()=> sleep(500),
     ()=> playMusic(),
     ()=> sleep(500),
@@ -1508,13 +1679,13 @@ const move_bg = (obj, level, total)=>{
 
 const arrange_cards = (card_type, card_divs, right, full_height)=>{
   card_divs = Array.from(card_divs).filter(e=>e.classList.contains('active'));
-  var bgs = getRandomSubarray(cards_bgs[card_type]);
+  var _bgs = getRandomSubarray(cards_bgs[card_type]);
   card_divs.forEach((e, i)=>{
     var bg = e.querySelector('[card-bg]');
     var img = e.querySelector('image');
-    bg.style.display = bgs[i]?'unset':'none';
-    if (bgs[i])
-      img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', bgs[i] )
+    bg.style.display = _bgs[i]?'unset':'none';
+    if (_bgs[i])
+      img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', _bgs[i] )
   })
   
   var alt = right===undefined? Math.random() > 0.5: right;
@@ -1649,7 +1820,7 @@ window.stage_next = function(self){
 
   tl.push.apply(tl,[
     // Intro text
-      ()=> move_bg(obj, 0, max_i),
+    ()=> move_bg(obj, 0, max_i),
     ()=> sleep(1500),
     ()=> fadeIn(intro_texts, 600),
     ()=> sleep(500),
@@ -1818,7 +1989,6 @@ window.sort_start = function (self){
     Pre result
 */
 
-
 var result_bg_loaded = false;
 
 window.pre_result = function (self){
@@ -1828,47 +1998,20 @@ window.pre_result = function (self){
   var intro_texts = intro_text_container.querySelectorAll('p');
 
   obj = doc.getElementById('result')
-  document.querySelector('html').style.background = obj.style.background
-  var all_chosen = CARDS.filter(e=>e.chosen).map(e=>e);
+  document.querySelector('html').style.background = obj.style.background;
+  var best_type = get_best_type();
 
-
-  var counter_ = all_chosen.reduce((acc, curr)=>(acc[curr.type] ? acc[curr.type]++ : acc[curr.type] = 1)&&acc, {});
-  Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
-  var total = all_chosen.length;
-  var inner = document.querySelector('result-description-inner');
-  
-  var rows = Array.from(doc.querySelectorAll('row'));
-  rows.forEach((e,i)=>{e.dtype = i;e.score = counter[i]});
-  rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
-  doc.querySelectorAll('left h1').forEach((e, i)=>{
-    var p = parseInt((counter[i] / total)*100)
-    e.innerHTML = (p)+ '<span font-smaller>%</span>';
-  })
-
-
-  rows.forEach(e=>inner.appendChild(e));
-  var best_type = rows[0].dtype;
-  var TYPE = CARDS_TYPES[best_type];
-  
   document.querySelector('html').style.background = '#'+colors[best_type];
   document.getElementById('result').style.background = '#'+colors[best_type];
   var background = document.getElementById('result').querySelector('background');
-  background.innertHTML = bgs[best_type]
+  background.innerHTML = bgs[best_type]
+    
+  document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
+  document.getElementById('result-icon').setAttribute('src', 'assets/img/buddy-figure-0'+(best_type+1)+'.png');
 
   activate_bg_animation();
   result_bg_loaded = true;
 
-  var encoded = all_chosen.reduce(
-    (e, x, i)=>{
-      var temp = new BigNumber('1');
-      for (var j=0; j<i; j++)
-        temp = temp.multipliedBy(encoded_expand_base)
-      temp = temp.multipliedBy(x.id)
-      return e.plus(temp)
-    }, new BigNumber('0')
-  ).toString(encoded_base);
-  sharable_link = window.location.origin+'/'+TYPE.code+'-'+current_lang+'?d='+encoded;
-  LOGT(sharable_link);
 
 
 
@@ -1887,9 +2030,6 @@ window.pre_result = function (self){
     Show result
 */
 
-var counter = [0,0,0,0,0];
-var colors = "abdfbd,ffcfcd,aecfde,ffdc99,ccffff".split(',');
-var sharable_link;
 window.show_result = function (self){
   var obj = self.obj;
   obj = doc.getElementById('result')
@@ -1915,14 +2055,16 @@ window.show_result = function (self){
   
   
     rows.forEach(e=>inner.appendChild(e));
-    var best_type = rows[0].dtype;
+    best_type = rows[0].dtype;
     var TYPE = CARDS_TYPES[best_type];
     
     document.querySelector('html').style.background = '#'+colors[best_type];
     document.getElementById('result').style.background = '#'+colors[best_type];
     var background = document.getElementById('result').querySelector('background');
-    background.innertHTML = bgs[best_type]
+    background.innerHTML = bgs[best_type];
   
+    document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
+    document.getElementById('result-icon').setAttribute('src', 'assets/img/buddy-figure-0'+(best_type+1)+'.png');
     activate_bg_animation();
     
 
@@ -2033,26 +2175,88 @@ if (skip){
 // setInterval(update_vh,1000)
 
 
-const set_landscape = ()=>{
-  var is_landscape = window.orientation != 0;
-  if (window.orientation === undefined){
-    is_landscape = window.innerHeight < window.innerWidth
-  }
-  if (is_landscape)
-    doc.body.setAttribute('is-landscape', '');
-  else
-    doc.body.removeAttribute('is-landscape');
-
-}
-window.addEventListener("orientationchange", set_landscape, false);
-set_landscape();
-if (window.matchMedia("(orientation: portrait)").matches) {
-  doc.body.removeAttribute('is-landscape');
-}
-
-if (window.matchMedia("(orientation: landscape)").matches) {
-  doc.body.setAttribute('is-landscape', '');
-}
 
 
 setInterval(update_vh,4000);
+
+const generate_result = ()=>{
+  var queue = new createjs.LoadQueue(false);
+  queue.loadFile({id:"icon", src:window.location.origin+`/assets/img/result-0${best_type+1}.jpg`});
+  queue.loadFile({id:"bg", src:window.location.origin+`/assets/img/buddy-figure-0${best_type+1}.png`});
+  queue.on("complete", _generate_result, this);
+}
+
+const _generate_result = ()=>{
+  const canvas = document.createElement('canvas');
+  canvas.width  = 630;
+  canvas.height = 1260;
+  LOG(canvas);
+  const ctx = canvas.getContext('2d');
+  var dounuts = Array.from(document.querySelectorAll('dounut-container > svg')).map(e=>e.cloneNode(true));
+
+  var back = dounuts[0].querySelector('circle');
+  back.removeAttribute('style');
+  back.removeAttribute('class');
+  back.setAttribute('cy', "180");
+  LOG(best_type);
+
+  var svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 315 756">
+  <image x="0px" y="0px" width="315px" height="630px" xlink:href="`+window.location.origin+`/assets/img/result-0${best_type+1}.jpg" >
+  </image>
+  `;
+  svg += back.outerHTML + '\n';
+
+  dounuts.slice(1).forEach((dounut)=>{
+      var circle = dounut.querySelector('circle');
+
+      circle.removeAttribute('class');
+      circle.setAttribute('cy', "180");
+      circle.setAttribute('style', 'transform:'+ dounut.style.transform + ';transform-origin: 157.5px 180px; ');
+      svg += circle.outerHTML + '\n';
+  })
+  svg += `
+  <rect fill="#fff" x="31.5" y="54" clip-path="url(#circle-inner)" width="252px" height="252px" ></rect>
+  <image x="31.5" y="54" clip-path="url(#circle-inner)" width="252px" height="252px" xlink:href="`+window.location.origin+`/assets/img/buddy-figure-0${best_type+1}.png" 
+  preserveAspectRatio="xMinYMin slice" >
+  </image>
+  <clipPath id="circle-inner">
+      <circle id="dounut-5" cx="50%" cy="180" r="124" ></circle>
+  </clipPath>`;
+
+  svg += "</svg>";
+  LOG(svg);
+
+  let v = canvg.Canvg.fromString(ctx, svg);
+
+  v.start();
+  canvas.addEventListener('load', e=>LOG('?????'));
+
+  setTimeout(()=>{
+    return;
+
+    var MIME_TYPE = "image/png";
+
+    var imgURL = canvas.toDataURL(MIME_TYPE);
+  
+    var dlLink = document.createElement('a');
+    dlLink.download = "result";
+    dlLink.href = imgURL;
+  
+    document.body.appendChild(dlLink);
+    dlLink.click();
+    document.body.removeChild(dlLink);
+
+  }, 0)
+  
+}
+window.generate_result = generate_result;
+
+
+setInterval(update_vh,4000);
+
+
+
+setTimeout(e=>{
+
+  document.querySelector('.font_preload').classList.add('tick')
+},1000)

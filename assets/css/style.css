@@ -555,14 +555,14 @@ landscape-hint {
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 9999999;
+  z-index: 9999;
   height: 100%;
   width: 100%;
   padding: 35vh 20vw;
   background: white;
 }
 
-landscape-hint svg {
+landscape-hint > svg {
   height: 100%;
   margin: auto;
   display: -webkit-box;
@@ -609,6 +609,7 @@ landscape-hint p {
 }
 
 body, html {
+  font-family: 'Kalam', 'setofont', 'Noto Sans TC', sans-serif;
   -webkit-text-size-adjust: none !important;
      -moz-text-size-adjust: none !important;
       -ms-text-size-adjust: none !important;
@@ -629,7 +630,7 @@ body, html {
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 5px;
   height: 0px;
   background-color: rgba(245, 245, 245, 0);
 }
@@ -1055,7 +1056,7 @@ block {
 #loading-wrapper {
   position: absolute;
   background: white;
-  z-index: 999;
+  z-index: 999999;
 }
 
 #loading-wrapper > div {
@@ -1133,6 +1134,15 @@ bg {
   background: #5554;
 }
 
+#lang-switcher {
+  position: absolute;
+  z-index: 9999;
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
 #lang-switcher > span {
   padding: 0.5em;
 }
@@ -1141,7 +1151,7 @@ bg {
   -webkit-user-select: none;
   /* disable selection/Copy of UIWebView */
   -webkit-touch-callout: none;
-  /* disable the IOS popup when long-press on a link */
+  /* dis able the IOS popup when long-press on a link */
 }
 
 .cards {
@@ -1255,23 +1265,24 @@ card-text p:before {
   position: absolute;
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-     -moz-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-       -o-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%) scale(1.2);
+     -moz-transform: translate(-50%, -50%) scale(1.2);
+      -ms-transform: translate(-50%, -50%) scale(1.2);
+       -o-transform: translate(-50%, -50%) scale(1.2);
+          transform: translate(-50%, -50%) scale(1.2);
   height: 100%;
   width: 100%;
-  -webkit-border-radius: 100%;
-     -moz-border-radius: 100%;
-          border-radius: 100%;
-  -webkit-transition: background 0.5s ease-out, -webkit-box-shadow 0.5s ease-out;
-  transition: background 0.5s ease-out, -webkit-box-shadow 0.5s ease-out;
-  -o-transition: background 0.5s ease-out, box-shadow 0.5s ease-out;
-  -moz-transition: background 0.5s ease-out, box-shadow 0.5s ease-out, -moz-box-shadow 0.5s ease-out;
-  transition: background 0.5s ease-out, box-shadow 0.5s ease-out;
-  transition: background 0.5s ease-out, box-shadow 0.5s ease-out, -webkit-box-shadow 0.5s ease-out, -moz-box-shadow 0.5s ease-out;
-  background: #fff0;
+  -webkit-transition: -webkit-box-shadow 0.5s ease-out;
+  transition: -webkit-box-shadow 0.5s ease-out;
+  -o-transition: box-shadow 0.5s ease-out;
+  -moz-transition: box-shadow 0.5s ease-out, -moz-box-shadow 0.5s ease-out;
+  transition: box-shadow 0.5s ease-out;
+  transition: box-shadow 0.5s ease-out, -webkit-box-shadow 0.5s ease-out, -moz-box-shadow 0.5s ease-out;
+  background-position-x: center;
+  background-repeat: no-repeat;
+  -webkit-background-size: 100% 100%;
+     -moz-background-size: 100% 100%;
+          background-size: 100% 100%;
   width: -webkit-calc(100% + 2em);
   width: -moz-calc(100% + 2em);
   width: calc(100% + 2em);
@@ -1280,8 +1291,167 @@ card-text p:before {
   height: calc(100% + 2em);
 }
 
-.chosen card-text p:before {
-  background: #fff5;
+@-webkit-keyframes tick {
+  0% {
+    background-image: none;
+  }
+  12.5% {
+    background-image: url("../img/tick-01.png");
+  }
+  25% {
+    background-image: url("../img/tick-02.png");
+  }
+  37.5% {
+    background-image: url("../img/tick-03.png");
+  }
+  50% {
+    background-image: url("../img/tick-04.png");
+  }
+  62.5% {
+    background-image: url("../img/tick-06.png");
+  }
+  75% {
+    background-image: url("../img/tick-06.png");
+  }
+  87.5% {
+    background-image: url("../img/tick-07.png");
+  }
+  100% {
+    background-image: url("../img/tick-08.png");
+  }
+}
+
+@-moz-keyframes tick {
+  0% {
+    background-image: none;
+  }
+  12.5% {
+    background-image: url("../img/tick-01.png");
+  }
+  25% {
+    background-image: url("../img/tick-02.png");
+  }
+  37.5% {
+    background-image: url("../img/tick-03.png");
+  }
+  50% {
+    background-image: url("../img/tick-04.png");
+  }
+  62.5% {
+    background-image: url("../img/tick-06.png");
+  }
+  75% {
+    background-image: url("../img/tick-06.png");
+  }
+  87.5% {
+    background-image: url("../img/tick-07.png");
+  }
+  100% {
+    background-image: url("../img/tick-08.png");
+  }
+}
+
+@-o-keyframes tick {
+  0% {
+    background-image: none;
+  }
+  12.5% {
+    background-image: url("../img/tick-01.png");
+  }
+  25% {
+    background-image: url("../img/tick-02.png");
+  }
+  37.5% {
+    background-image: url("../img/tick-03.png");
+  }
+  50% {
+    background-image: url("../img/tick-04.png");
+  }
+  62.5% {
+    background-image: url("../img/tick-06.png");
+  }
+  75% {
+    background-image: url("../img/tick-06.png");
+  }
+  87.5% {
+    background-image: url("../img/tick-07.png");
+  }
+  100% {
+    background-image: url("../img/tick-08.png");
+  }
+}
+
+@keyframes tick {
+  0% {
+    background-image: none;
+  }
+  12.5% {
+    background-image: url("../img/tick-01.png");
+  }
+  25% {
+    background-image: url("../img/tick-02.png");
+  }
+  37.5% {
+    background-image: url("../img/tick-03.png");
+  }
+  50% {
+    background-image: url("../img/tick-04.png");
+  }
+  62.5% {
+    background-image: url("../img/tick-06.png");
+  }
+  75% {
+    background-image: url("../img/tick-06.png");
+  }
+  87.5% {
+    background-image: url("../img/tick-07.png");
+  }
+  100% {
+    background-image: url("../img/tick-08.png");
+  }
+}
+
+.tick:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%) scale(1.2);
+     -moz-transform: translate(-50%, -50%) scale(1.2);
+      -ms-transform: translate(-50%, -50%) scale(1.2);
+       -o-transform: translate(-50%, -50%) scale(1.2);
+          transform: translate(-50%, -50%) scale(1.2);
+  height: 100%;
+  width: 100%;
+  -webkit-transition: -webkit-box-shadow 0.5s ease-out;
+  transition: -webkit-box-shadow 0.5s ease-out;
+  -o-transition: box-shadow 0.5s ease-out;
+  -moz-transition: box-shadow 0.5s ease-out, -moz-box-shadow 0.5s ease-out;
+  transition: box-shadow 0.5s ease-out;
+  transition: box-shadow 0.5s ease-out, -webkit-box-shadow 0.5s ease-out, -moz-box-shadow 0.5s ease-out;
+  background-position-x: center;
+  background-repeat: no-repeat;
+  -webkit-background-size: 100% 100%;
+     -moz-background-size: 100% 100%;
+          background-size: 100% 100%;
+  width: -webkit-calc(100% + 2em);
+  width: -moz-calc(100% + 2em);
+  width: calc(100% + 2em);
+  height: -webkit-calc(100% + 2em);
+  height: -moz-calc(100% + 2em);
+  height: calc(100% + 2em);
+}
+
+.chosen card-text p:before, .tick:before {
+  -webkit-animation-name: tick;
+     -moz-animation-name: tick;
+       -o-animation-name: tick;
+          animation-name: tick;
+  -webkit-animation-duration: 0.3s;
+     -moz-animation-duration: 0.3s;
+       -o-animation-duration: 0.3s;
+          animation-duration: 0.3s;
+  background-image: url("../img/tick-08.png");
 }
 
 card.card-sort {
@@ -2209,4 +2379,36 @@ popup li img {
   height: 4em;
   right: 0;
   opacity: 0;
+}
+
+#selection-1 > background > cards > card > card-text > p {
+  color: #e6fde7 !important;
+}
+
+#selection-2 > background > cards > card > card-text > p {
+  color: #e6433c !important;
+}
+
+#selection-3 > .thin-body p {
+  color: #e6fde7 !important;
+}
+
+#selection-4 > .thin-body p {
+  color: #000 !important;
+  text-shadow: 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff;
+}
+
+#selection-3 > background > cards > card > card-text > p {
+  color: #fff !important;
+  text-shadow: 0px 0px 10px #0008;
+}
+
+#selection-4 > background > cards > card > card-text > p {
+  color: #000 !important;
+  text-shadow: 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff;
+}
+
+#selection-5 > background > cards > card > card-text > p {
+  color: #000 !important;
+  text-shadow: 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff;
 }
