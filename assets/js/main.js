@@ -698,7 +698,6 @@ if (d){
 */
 
 const bgs = Array.from(document.querySelectorAll('[id^="selection"] background')).filter(e=>e).map(e=>e.innerHTML);
-LOG(bgs);
 
 const skip = parseInt(urlParams.skip);
 if (skip){
