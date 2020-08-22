@@ -55,6 +55,7 @@ const get_best_type = ()=>{
 
   rows.forEach(e=>inner.appendChild(e));
   best_type = rows[0].dtype;
+  document.getElementById('body').setAttribute('best_type', ''+best_type);
   var TYPE = CARDS_TYPES[best_type];
   
   var encoded = all_chosen.reduce(
@@ -479,9 +480,12 @@ doc.addEventListener("DOMContentLoaded", function(){
 });
 
 if (true){
+  var touched = false;
   document.querySelectorAll('#lang-switcher > span').forEach(e=>{
     e.classList.remove('display-none');
     let g = function(e){
+      if (e.type == 'touchstart') touched = true;
+      if (e.type == 'click' && touched) return;
       document.querySelectorAll('#lang-switcher > span').forEach(e=>e.classList.remove('display-none'));
       this.classList.add('display-none');
       setLang(this.getAttribute('data-lang'));
@@ -813,9 +817,12 @@ var files03 = `
 bg03-bg.jpg
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files04 = `
+bg04-bg.jpg
+
+`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+var files05 = `
 bg05-bg.jpg
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
-var files05 = ``.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files06 = `
 luggage.jpg
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
@@ -906,6 +913,7 @@ var cards_bgs = [
 
 if (skip && skip == 8){
   var best_type = get_best_type();
+  document.getElementById('body').setAttribute('best_type', ''+best_type);
   
   files.push.apply(files, [files01,files02,files03,files04,files05,][best_type])
 }else{
@@ -1836,7 +1844,7 @@ window.stage_next = function(self){
       ()=> set_card_divs(card_divs, current_cards_i++),
       ()=> arrange_cards(card_type, card_divs, (i==max_i-1)?!last_page_is_left():undefined, (i==max_i-1)?true:undefined),
       ()=> fadeIn(getRandomSubarray(card_divs)),
-      ()=> sleep(1500),
+      ()=> sleep(800),
       ()=> (i==max_i-1)?1:wait_for_arrows(obj),
     ])
   }
@@ -1999,6 +2007,7 @@ window.pre_result = function (self){
   obj = doc.getElementById('result')
   document.querySelector('html').style.background = obj.style.background;
   var best_type = get_best_type();
+  document.getElementById('body').setAttribute('best_type', ''+best_type);
 
   document.querySelector('html').style.background = '#'+colors[best_type];
   document.getElementById('result').style.background = '#'+colors[best_type];
@@ -2055,6 +2064,7 @@ window.show_result = function (self){
   
     rows.forEach(e=>inner.appendChild(e));
     best_type = rows[0].dtype;
+    document.getElementById('body').setAttribute('best_type', ''+best_type);
     var TYPE = CARDS_TYPES[best_type];
     
     document.querySelector('html').style.background = '#'+colors[best_type];
@@ -2152,11 +2162,14 @@ var curtains = makeCurtains(doc.getElementById('stages') );
 activate_bg_animation(doc.getElementById('intro').querySelector('background'));
 
 if (urlParams.chosen || urlParams.num_cards){
+  let wanted_type = urlParams.type;
   let debug_chosen_count = 0;
   urlParams.num_cards = urlParams.num_cards || urlParams.chosen || 1;
   getRandomSubarray(CARDS).forEach(e=>{
     if (urlParams.num_cards && debug_chosen_count >= urlParams.num_cards)
       return;
+    if (wanted_type !== undefined && e.type != wanted_type)
+      return ;
 
     e.chosen=true;
     debug_chosen_count += 1

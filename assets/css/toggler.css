@@ -19,18 +19,13 @@
   display: inline-block;
   position: absolute;
   -webkit-transform: translate(-50%, -50%);
-     -moz-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-       -o-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
 }
 
 .switchBtn {
   width: 60px;
   height: 60px;
-  -webkit-border-radius: 50%;
-     -moz-border-radius: 50%;
-          border-radius: 50%;
+  border-radius: 50%;
   display: inline-block;
   position: absolute;
   left: 0px;
@@ -39,8 +34,6 @@
 .switchBtn {
   background: #ffffff;
   -webkit-transition: 300ms all ease;
-  -o-transition: 300ms all ease;
-  -moz-transition: 300ms all ease;
   transition: 300ms all ease;
 }
 
@@ -51,16 +44,12 @@
 .switchContainer.switchOn .switchBtn,
 .switchContainer.switchOn + .music-score {
   -webkit-animation: switchOn 250ms linear forwards;
-     -moz-animation: switchOn 250ms linear forwards;
-       -o-animation: switchOn 250ms linear forwards;
           animation: switchOn 250ms linear forwards;
 }
 
 .switchContainer.switchOff .switchBtn,
 .switchContainer.switchOff + .music-score {
   -webkit-animation: switchOff 250ms linear forwards;
-     -moz-animation: switchOff 250ms linear forwards;
-       -o-animation: switchOff 250ms linear forwards;
           animation: switchOff 250ms linear forwards;
 }
 
@@ -87,83 +76,25 @@
   }
 }
 
-@-moz-keyframes switchOn {
-  0% {
-    -moz-transform: scaleX(1) scaleY(1);
-         transform: scaleX(1) scaleY(1);
-    -moz-transform-origin: center;
-         transform-origin: center;
-  }
-  40% {
-    -moz-transform: scaleX(1.2) scaleY(0.8);
-         transform: scaleX(1.2) scaleY(0.8);
-    -moz-transform-origin: center;
-         transform-origin: center;
-  }
-  70% {
-    -moz-transform: scaleX(0.9) scaleY(1.15);
-         transform: scaleX(0.9) scaleY(1.15);
-  }
-  100% {
-    -moz-transform: scaleX(1) scaleY(1);
-         transform: scaleX(1) scaleY(1);
-  }
-}
-
-@-o-keyframes switchOn {
-  0% {
-    -o-transform: scaleX(1) scaleY(1);
-       transform: scaleX(1) scaleY(1);
-    -o-transform-origin: center;
-       transform-origin: center;
-  }
-  40% {
-    -o-transform: scaleX(1.2) scaleY(0.8);
-       transform: scaleX(1.2) scaleY(0.8);
-    -o-transform-origin: center;
-       transform-origin: center;
-  }
-  70% {
-    -o-transform: scaleX(0.9) scaleY(1.15);
-       transform: scaleX(0.9) scaleY(1.15);
-  }
-  100% {
-    -o-transform: scaleX(1) scaleY(1);
-       transform: scaleX(1) scaleY(1);
-  }
-}
-
 @keyframes switchOn {
   0% {
     -webkit-transform: scaleX(1) scaleY(1);
-       -moz-transform: scaleX(1) scaleY(1);
-         -o-transform: scaleX(1) scaleY(1);
             transform: scaleX(1) scaleY(1);
     -webkit-transform-origin: center;
-       -moz-transform-origin: center;
-         -o-transform-origin: center;
             transform-origin: center;
   }
   40% {
     -webkit-transform: scaleX(1.2) scaleY(0.8);
-       -moz-transform: scaleX(1.2) scaleY(0.8);
-         -o-transform: scaleX(1.2) scaleY(0.8);
             transform: scaleX(1.2) scaleY(0.8);
     -webkit-transform-origin: center;
-       -moz-transform-origin: center;
-         -o-transform-origin: center;
             transform-origin: center;
   }
   70% {
     -webkit-transform: scaleX(0.9) scaleY(1.15);
-       -moz-transform: scaleX(0.9) scaleY(1.15);
-         -o-transform: scaleX(0.9) scaleY(1.15);
             transform: scaleX(0.9) scaleY(1.15);
   }
   100% {
     -webkit-transform: scaleX(1) scaleY(1);
-       -moz-transform: scaleX(1) scaleY(1);
-         -o-transform: scaleX(1) scaleY(1);
             transform: scaleX(1) scaleY(1);
   }
 }
@@ -191,83 +122,25 @@
   }
 }
 
-@-moz-keyframes switchOff {
-  0% {
-    -moz-transform: scaleX(1) scaleY(1);
-         transform: scaleX(1) scaleY(1);
-    -moz-transform-origin: center;
-         transform-origin: center;
-  }
-  40% {
-    -moz-transform: scaleX(1.2) scaleY(0.8);
-         transform: scaleX(1.2) scaleY(0.8);
-    -moz-transform-origin: center;
-         transform-origin: center;
-  }
-  70% {
-    -moz-transform: scaleX(0.9) scaleY(1.15);
-         transform: scaleX(0.9) scaleY(1.15);
-  }
-  100% {
-    -moz-transform: scaleX(1) scaleY(1);
-         transform: scaleX(1) scaleY(1);
-  }
-}
-
-@-o-keyframes switchOff {
-  0% {
-    -o-transform: scaleX(1) scaleY(1);
-       transform: scaleX(1) scaleY(1);
-    -o-transform-origin: center;
-       transform-origin: center;
-  }
-  40% {
-    -o-transform: scaleX(1.2) scaleY(0.8);
-       transform: scaleX(1.2) scaleY(0.8);
-    -o-transform-origin: center;
-       transform-origin: center;
-  }
-  70% {
-    -o-transform: scaleX(0.9) scaleY(1.15);
-       transform: scaleX(0.9) scaleY(1.15);
-  }
-  100% {
-    -o-transform: scaleX(1) scaleY(1);
-       transform: scaleX(1) scaleY(1);
-  }
-}
-
 @keyframes switchOff {
   0% {
     -webkit-transform: scaleX(1) scaleY(1);
-       -moz-transform: scaleX(1) scaleY(1);
-         -o-transform: scaleX(1) scaleY(1);
             transform: scaleX(1) scaleY(1);
     -webkit-transform-origin: center;
-       -moz-transform-origin: center;
-         -o-transform-origin: center;
             transform-origin: center;
   }
   40% {
     -webkit-transform: scaleX(1.2) scaleY(0.8);
-       -moz-transform: scaleX(1.2) scaleY(0.8);
-         -o-transform: scaleX(1.2) scaleY(0.8);
             transform: scaleX(1.2) scaleY(0.8);
     -webkit-transform-origin: center;
-       -moz-transform-origin: center;
-         -o-transform-origin: center;
             transform-origin: center;
   }
   70% {
     -webkit-transform: scaleX(0.9) scaleY(1.15);
-       -moz-transform: scaleX(0.9) scaleY(1.15);
-         -o-transform: scaleX(0.9) scaleY(1.15);
             transform: scaleX(0.9) scaleY(1.15);
   }
   100% {
     -webkit-transform: scaleX(1) scaleY(1);
-       -moz-transform: scaleX(1) scaleY(1);
-         -o-transform: scaleX(1) scaleY(1);
             transform: scaleX(1) scaleY(1);
   }
 }
@@ -286,14 +159,8 @@
   height: 60px;
   position: relative;
   -webkit-transform: scale(0.6);
-     -moz-transform: scale(0.6);
-      -ms-transform: scale(0.6);
-       -o-transform: scale(0.6);
           transform: scale(0.6);
   -webkit-transform-origin: left top;
-     -moz-transform-origin: left top;
-      -ms-transform-origin: left top;
-       -o-transform-origin: left top;
           transform-origin: left top;
   display: inline-block;
   font-family: sans-serif;
@@ -301,8 +168,6 @@
 
 .music-score {
   display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
   display: -ms-flexbox;
   display: flex;
   color: #5fd698;
@@ -316,8 +181,6 @@
           user-select: none;
   opacity: 1;
   -webkit-transition: 300ms all cubic-bezier(0.18, -0.55, 0, 1.33);
-  -o-transition: 300ms all cubic-bezier(0.18, -0.55, 0, 1.33);
-  -moz-transition: 300ms all cubic-bezier(0.18, -0.55, 0, 1.33);
   transition: 300ms all cubic-bezier(0.18, -0.55, 0, 1.33);
   text-shadow: 1px 1px 0px #5fd698;
   text-shadow: 1px 1px 0px #5fd698, 1px 1px 0px #5fd698;
@@ -337,33 +200,20 @@
   left: 41px;
   background: #d65f5f;
   -webkit-transition: 300ms all cubic-bezier(0.46, 0, 0, 1.35);
-  -o-transition: 300ms all cubic-bezier(0.46, 0, 0, 1.35);
-  -moz-transition: 300ms all cubic-bezier(0.46, 0, 0, 1.35);
   transition: 300ms all cubic-bezier(0.46, 0, 0, 1.35);
   border: 5px solid white;
   border-top: none;
   border-bottom: none;
   -webkit-transition-delay: 0.13s;
-     -moz-transition-delay: 0.13s;
-       -o-transition-delay: 0.13s;
           transition-delay: 0.13s;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
   background-clip: padding-box;
   -webkit-transform-origin: top;
-     -moz-transform-origin: top;
-      -ms-transform-origin: top;
-       -o-transform-origin: top;
           transform-origin: top;
   -webkit-transform: rotate(65deg) scale(0.5);
-     -moz-transform: rotate(65deg) scale(0.5);
-      -ms-transform: rotate(65deg) scale(0.5);
-       -o-transform: rotate(65deg) scale(0.5);
           transform: rotate(65deg) scale(0.5);
   height: 75px;
   width: 6px;
   -webkit-box-sizing: content-box;
-     -moz-box-sizing: content-box;
           box-sizing: content-box;
   pointer-events: none;
 }
@@ -371,11 +221,8 @@
 .switchContainer.switchOn + .music-score + .music-score-slash {
   height: 0;
   -webkit-transition: none;
-  -o-transition: none;
-  -moz-transition: none;
   transition: none;
   -webkit-transition-delay: 0s;
-     -moz-transition-delay: 0s;
-       -o-transition-delay: 0s;
           transition-delay: 0s;
 }
+/*# sourceMappingURL=toggler.css.map */

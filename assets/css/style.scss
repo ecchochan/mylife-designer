@@ -211,6 +211,7 @@ landscape-hint {
     margin: auto;
     display: flex;
     transform: translate(0, 40%);
+    filter: drop-shadow(0 0 10px #fff) drop-shadow(0 0 10px #fff)drop-shadow(0 0 10px #fff) drop-shadow(0 0 10px #fff);
   }
   p{
     position: absolute;
@@ -220,6 +221,7 @@ landscape-hint {
     font-family: 'Kalam', 'setofont', 'Noto Sans TC', sans-serif;
     text-align: center;
     font-size: calc(var(--window-width, 100vw) * 5 / 100);
+    text-shadow: 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff;
 
   }
 }
@@ -555,6 +557,8 @@ bg {
   position: absolute;
   z-index: 9999;
   transition: all 0.5s ease;
+  left: 0;
+  top: 0;
   & > span {
     padding:0.5em;
   }
@@ -780,6 +784,18 @@ card p {
   .contact-us{
     transition: all 0.5s ease;
     opacity: 0;
+    &:before{
+      content: "";
+      position: absolute;
+      opacity: 0;
+      height: 2.9em;
+      width: 2.9em;
+      background: #ffffff6e;
+      border-radius: 10em;
+      z-index: -1;
+      transition: opacity 1.5s ease, transform 1.0s cubic-bezier(0.2, 0.9, 0.25, 1);
+      box-shadow: 0 0 30px 0px #fff, 0 0 30px 0px #fff, 0 0 30px 0px #fffa;
+    }
   }
   &.switch{
     result-container{
@@ -809,7 +825,15 @@ card p {
             $td: ($i*.1+.9s);
             $ts: ($i*.08+.4s);
             transition: $ts cubic-bezier($smooth) $td;
+            &:before{
+              transition: $ts cubic-bezier($smooth) $td;
+
+            }
         }
+
+      }
+      &:before{
+        opacity: 1;
       }
       opacity: 1;
     }
@@ -1029,7 +1053,7 @@ learn-more-container {
 .contact-us-opened{
   learn-more-content{
     & > * {
-      & > *:not(.contact-us), & > .contact-us > svg{
+      & > *:not(.contact-us), & > .contact-us > svg, & > .contact-us:before{
         transition: all 1s ease !important;
         opacity: 0 !important;
       }
@@ -1050,8 +1074,7 @@ popup{
 
   popup-inner{
     position:absolute;
-    background: #fffe;
-    background: #f5fffce0;
+    background: #fff9;
     width: calc(100% - 2 * 2 * var(--window-width, 100vw) / 100);
     height: calc(100% - 4em);
     top: 0;
@@ -1197,4 +1220,172 @@ popup{
 #selection-5 > background > cards > card > card-text > p {
   color: #000 !important;
   text-shadow: 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff, 0px 0px 10px #fff;
+}
+
+
+
+
+
+
+
+
+
+
+$SNOWDROPS_LENGTH: 105;
+
+
+.snow {
+  opacity: 1;
+  animation-name: snow-drop;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  
+  // Bases of random snows effect
+  $snow-size-base: 10;
+  $browser-buffer: 50;
+  $left-position: 100 + $browser-buffer;
+  $animate-speed-base: 15000;
+  $minimum-falling-speed: 10000;
+  $animate-delay-base: 15000;
+  $blur-base: 5;
+
+  @for $i from 1 through $SNOWDROPS_LENGTH {
+    $size: abs(random($snow-size-base) - random($snow-size-base)) + 2px;
+
+    &:nth-child(#{$i}) {
+      $speed: abs(random($animate-speed-base) - random($animate-speed-base)) + $minimum-falling-speed;
+      animation-duration: $speed + 0ms;
+      animation-delay: -(abs(random($speed)) + 0ms);
+      filter: blur(abs(random($blur-base) - random($blur-base)) + 0px);
+
+
+      g {
+        transform: translateX(abs(random($left-position) - random($left-position)) + 0%);
+
+        image {
+          width: $size;
+          height: $size;
+          animation-name: snow-drop2;
+          animation-iteration-count: infinite;
+          animation-timing-function: linear;
+          animation-fill-mode: forwards;
+          animation-duration: $speed + 0ms;
+          animation-delay: -(abs(random($speed)) + 0ms);
+
+        }
+        
+      }
+
+
+    }
+  }
+} 
+
+  
+  
+@keyframes snow-drop {
+  $window-height-threshold: 2;
+
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.5;
+    margin-left: 0;
+  }
+
+  10% {
+    margin-left: 15px;
+  }
+
+  20% {
+    margin-left: 20px;
+  }
+
+  25% {
+    transform: translate(0, 250px / $window-height-threshold);
+    opacity: 0.75;
+  }
+
+  30% {
+    margin-left: 15px;
+  }
+
+  40% {
+    margin-left: 0;
+  }
+
+  50% {
+    transform: translate(0, 500px / $window-height-threshold);
+    opacity: 1;
+    margin-left: -15px;
+  }
+
+  60% {
+    margin-left: -20px;
+  }
+
+  70% {
+    margin-left: -15px;
+  }
+
+  75% {
+    transform: translate(0, 750px / $window-height-threshold);
+    opacity: 0.5;
+  }
+
+  80% {
+    margin-left: 0;
+  }
+
+  100% {
+    transform: translate(0, 1000px / $window-height-threshold);
+    opacity: 0;
+  }
+}
+  
+@keyframes snow-drop2 {
+  $window-height-threshold: 1.5;
+
+  0% {
+    transform: translateX(0);
+  }
+
+  10% {
+    transform: translateX(15px);
+  }
+
+  20% {
+    transform: translateX(20px);
+  }
+
+  25% {
+  }
+
+  30% {
+    transform: translateX(15px);
+  }
+
+  40% {
+    transform: translateX(0px);
+  }
+
+  50% {
+    transform: translateX(-15px);
+  }
+
+  60% {
+    transform: translateX(-20px);
+  }
+
+  70% {
+    transform: translateX(-15px);
+  }
+
+
+  80% {
+    transform: translateX(0);
+  }
+
+  100% {
+  }
 }
