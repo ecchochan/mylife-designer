@@ -595,10 +595,10 @@ bg {
   left: 0;
   bottom: 0;
   .credit &{
-    transition: all 0.5s ease 1.5s;
+    transition: all 0.5s ease;
     opacity: 1 !important;
     & > span {
-      transition: all 0.5s ease 1.5s;
+      transition: all 0.5s ease;
       font-size:0.45em !important;
     }
 
