@@ -595,12 +595,11 @@ bg {
   left: 0;
   bottom: 0;
   .credit &{
-    display:block !important;
     transition: all 0.5s ease 1.5;
     opacity: 1 !important;
     & > span {
       transition: all 0.5s ease 1.5;
-      font-size:0.7em !important;
+      font-size:0.45em !important;
     }
 
 
@@ -642,13 +641,12 @@ bg {
   left: 0;
   bottom: 0.3em;
   .credit &{
-    display:block !important;
     transition: all 0.5s ease 1.5s;
     opacity: 1 !important;
-    bottom: 0.9em;
+    bottom: 0.5em;
     & > span {
       transition: all 0.5s ease 1.5s;
-      font-size:0.7em !important;
+      font-size:0.5em !important;
     }
 
 
@@ -700,6 +698,7 @@ bg {
     opacity: 1 !important;
     bottom: 1.5em;
     width: 14em;
+    max-width: 50vw;
 
   }
   body > & {
@@ -1544,5 +1543,34 @@ $SNOWDROPS_LENGTH: 105;
   }
 
   100% {
+  }
+}
+
+
+@keyframes twinkle {
+  0% {
+    opacity: 1;
+  }
+  3%, 13%, 23%, 41%, 63%, 77%, 95%,
+  5%, 15%, 25%, 43%, 65%, 79%, 97% {
+    opacity: 1.0;
+  }
+  4%, 14%, 24%, 42%, 64%, 78%, 96% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes twinkle2 {
+  0% {
+    opacity: 1;
+  }
+  30%, 70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
