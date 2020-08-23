@@ -595,10 +595,10 @@ bg {
   left: 0;
   bottom: 0;
   .credit &{
-    transition: all 0.5s ease 1.5;
+    transition: all 0.5s ease 1.5s;
     opacity: 1 !important;
     & > span {
-      transition: all 0.5s ease 1.5;
+      transition: all 0.5s ease 1.5s;
       font-size:0.45em !important;
     }
 
@@ -607,11 +607,12 @@ bg {
   & > span {
     letter-spacing: -0.05em;
     font-size:  0.3em;
+    font-weight: 800;
     line-height: 1em;
     color: #fff;
     display:block;
     text-shadow: 0px 0px 1px #0006;
-    opacity: 0.5;
+    opacity: 0.6;
     transition: all 0.5s ease;
 
     [is-landscape] &{
@@ -641,11 +642,11 @@ bg {
   left: 0;
   bottom: 0.3em;
   .credit &{
-    transition: all 0.5s ease 1.5s;
+    transition: all 0.5s ease;
     opacity: 1 !important;
     bottom: 0.5em;
     & > span {
-      transition: all 0.5s ease 1.5s;
+      transition: all 0.5s ease ;
       font-size:0.5em !important;
     }
 
@@ -654,12 +655,13 @@ bg {
   & > span {
     letter-spacing: -0.05em;
     font-size: 0.3em;
+    font-weight: 800;
     color: #fff;
     line-height: 1em;
     display:block;
     text-shadow: 0px 0px 1px #0006;
     transition: all 0.5s ease;
-    opacity: 0.5;
+    opacity: 0.6;
 
     [is-landscape] &{
       font-size: 1vw;
@@ -692,7 +694,8 @@ bg {
   padding:0.2em;
   right: 0.3em;
   bottom: -0.5em;
-  width: 5em;
+  width: calc(100% - 11em);
+  max-width:7em;
   .credit &{
     transition: opacity 0.5s ease 1.5s, bottom 0.5s ease 1.5s;
     opacity: 1 !important;
