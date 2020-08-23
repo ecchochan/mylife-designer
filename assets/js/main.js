@@ -75,8 +75,8 @@ const get_best_type = ()=>{
 
 
 const hide_footer2 = ()=>{
-  var footer2 = doc.getElementById('footer2');
-  var footer3 = doc.getElementById('footer3');
+  var footer2 = doc.querySelector('#body .footer2');
+  var footer3 = doc.querySelector('#body .footer3');
   footer2.style.opacity = 0;
   footer3.style.opacity = 0;
   setTimeout(()=>{

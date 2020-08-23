@@ -586,7 +586,7 @@ bg {
 
 }
 
-#footer{
+.footer{
   pointer-events: none;
   position: absolute;
   z-index: 9999;
@@ -607,7 +607,7 @@ bg {
   }
   & > span {
     letter-spacing: -0.05em;
-    font-size: 0.5em;
+    font-size:  0.3em;
     line-height: 1em;
     color: #fff;
     display:block;
@@ -616,23 +616,31 @@ bg {
     transition: all 0.5s ease;
 
     [is-landscape] &{
-      font-size: 2vw;
+      font-size: 1vw;
       text-shadow: 0px 0px 2px #0006, 0px 0px 2px #0006;
       opacity: 1.0;
 
     }
 
   }
+  body > & {
+    display: none;
+
+  }
+  [is-landscape] > &{
+    opacity: 1 !important;
+    display: block;
+  }
 
 }
-#footer2{
+.footer2{
   pointer-events: none;
   position: absolute;
   z-index: 9999;
   transition: all 0.5s ease;
   padding:0.2em;
   left: 0;
-  bottom: 0.5em;
+  bottom: 0.3em;
   .credit &{
     display:block !important;
     transition: all 0.5s ease 1.5s;
@@ -647,7 +655,7 @@ bg {
   }
   & > span {
     letter-spacing: -0.05em;
-    font-size: 0.5em;
+    font-size: 0.3em;
     color: #fff;
     line-height: 1em;
     display:block;
@@ -656,7 +664,7 @@ bg {
     opacity: 0.5;
 
     [is-landscape] &{
-      font-size: 2vw;
+      font-size: 1vw;
       text-shadow: 0px 0px 2px #0006, 0px 0px 2px #0006;
       opacity: 1.0;
 
@@ -664,20 +672,29 @@ bg {
 
   }
   [is-landscape] &{
-    bottom: 2vw;
+    bottom: 1vw;
+    opacity: 1 !important;
   }
 
+  body > & {
+    display: none;
+
+  }
+  [is-landscape] > &{
+    opacity: 1 !important;
+    display: block;
+  }
 }
 
-#footer3{
+.footer3{
   pointer-events: none;
   position: absolute;
   z-index: 9999;
   transition: all 0.5s ease;
   padding:0.2em;
-  right: 1em;
-  bottom: 0em;
-  width: 8em;
+  right: 0.3em;
+  bottom: -0.5em;
+  width: 5em;
   .credit &{
     transition: opacity 0.5s ease 1.5s, bottom 0.5s ease 1.5s;
     opacity: 1 !important;
@@ -685,9 +702,16 @@ bg {
     width: 14em;
 
   }
-  [is-landscape] &{
-    width:20%;
+  body > & {
+    display: none;
 
+  }
+  [is-landscape] > &{
+    opacity: 1 !important;
+    display: block;
+  }
+  [is-landscape] > &{
+    width:15%;
   }
   img {
     width: 100%;
