@@ -72,6 +72,21 @@ const get_best_type = ()=>{
   return best_type;
 }
 
+
+
+const hide_footer2 = ()=>{
+  var footer2 = doc.getElementById('footer2');
+  var footer3 = doc.getElementById('footer3');
+  footer2.style.opacity = 0;
+  footer3.style.opacity = 0;
+  setTimeout(()=>{
+    // footer2.style.display = "none";
+    // footer3.style.display = "none";
+  }, 1000)
+}
+
+
+
 function getRandomSubarray(arr, size) {
   if (size === undefined)size = arr.length;
   var shuffled = arr.slice(0), i = arr.length, temp, index;
@@ -726,14 +741,6 @@ document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www
 
 */
 var files01 = `
-tick-01.png
-tick-02.png
-tick-03.png
-tick-04.png
-tick-05.png
-tick-06.png
-tick-07.png
-tick-08.png
 bg01-bg.jpg
 bg01-branch01.png
 bg01-branch02.png
@@ -753,18 +760,6 @@ bg01-branch15.png
 bg01-branch16.png
 bg01-branch17.png
 bg01-branch18.png
-bg01-card-bg-01.png
-bg01-card-bg-02.png
-bg01-card-bg-03.png
-bg01-card-bg-04.png
-bg01-card-bg-05.png
-bg01-card-bg-06.png
-bg01-card-bg-07.png
-bg01-card-bg-08.png
-bg01-card-bg-09.png
-bg01-card-bg-10.png
-bg01-card-bg-11.png
-bg01-card-bg-12.png
 bg01-greens.png
 bg01-lotus.png
 bg01-wave01.png
@@ -772,14 +767,6 @@ bg01-wave02.png`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var files02 = `
 bg02-bg.jpg
-bg02-card-bg-01.png
-bg02-card-bg-02.png
-bg02-card-bg-03.png
-bg02-card-bg-04.png
-bg02-card-bg-06.png
-bg02-card-bg-07.png
-bg02-card-bg-08.png
-bg02-card-bg-09.png
 bg02-cloud-right.png
 bg02-leaf01.png
 bg02-leaf02.png
@@ -815,13 +802,34 @@ bg02-seed.png
 bg02-track.png`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files03 = `
 bg03-bg.jpg
+bg03-star.png
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files04 = `
 bg04-bg.jpg
-
+bg04-flower01.png
+bg04-flower02.png
+bg04-flower03.png
+bg04-flower04.png
+bg04-flower05.png
+bg04-flower06.png
+bg04-flower07.png
+bg04-flower08.png
+bg04-flower09.png
+bg04-flower10.png
+bg04-flower11.png
+bg04-flower12.png
+bg04-flower13.png
+bg04-flower14.png
+bg04-flower15.png
+bg04-flower17.png
+bg04-flower18.png
+bg04-cloud.png
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files05 = `
 bg05-bg.jpg
+bg05-layer01.png
+bg05-layer02.png
+bg05-snow.png
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files06 = `
 luggage.jpg
@@ -830,6 +838,15 @@ var files07 = ``.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files08 = ``.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var files00 = `
+ICYSC.png
+tick-01.png
+tick-02.png
+tick-03.png
+tick-04.png
+tick-05.png
+tick-06.png
+tick-07.png
+tick-08.png
 buddy-figure-01.png
 buddy-figure-02.png
 buddy-figure-03.png
@@ -910,6 +927,15 @@ var cards_bgs = [
   card_4_bgs,
   card_5_bgs,
 ]
+const svgs = document.getElementById('svgs');
+cards_bgs.forEach(e=>e.forEach(card_bg=>{
+  var image = document.createElementNS('http://www.w3.org/2000/svg', 'image')
+  image.setAttributeNS("http://www.w3.org/1999/xlink", 'href',card_bg)
+  image.setAttribute('id', card_bg.split('/').slice(-1)[0].split('.')[0])
+  image.setAttribute('width', "100px")
+  image.setAttribute('height', "100px")
+  svgs.appendChild(image)
+}))
 
 if (skip && skip == 8){
   var best_type = get_best_type();
@@ -959,7 +985,6 @@ if (window.matchMedia("(orientation: landscape)").matches) {
   document.querySelector('landscape-hint bg image').setAttributeNS("http://www.w3.org/1999/xlink", 'href',LANDSCAPE_BG)
 }
 
-files.push(LANDSCAPE_BG);
 
 var files_loaded = 0;
 var files_total = files.length;
@@ -1373,6 +1398,7 @@ window.intro_next = function (self){
     ()=> audio_can_start=true,
     ()=> audio_canplaythrough?document.getElementById('float-top-right').classList.remove('hidden'):0,
     ()=> document.querySelector('#lang-switcher').classList.add('hidden'),
+    ()=> hide_footer2(),
     ()=> sleep(500),
     ()=> playMusic(),
     ()=> sleep(500),
@@ -1492,6 +1518,7 @@ const card_click_listener = function(e){
       var container = document.getElementById('result');
       if (is_scroll)return;
       container.classList.toggle('switch')
+      document.body.classList.toggle('credit')
     }
 
     var u = e.target;
@@ -1689,10 +1716,10 @@ const arrange_cards = (card_type, card_divs, right, full_height)=>{
   var _bgs = getRandomSubarray(cards_bgs[card_type]);
   card_divs.forEach((e, i)=>{
     var bg = e.querySelector('[card-bg]');
-    var img = e.querySelector('image');
+    var img = e.querySelector('use');
     bg.style.display = _bgs[i]?'unset':'none';
     if (_bgs[i])
-      img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', _bgs[i] )
+      img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#'+_bgs[i].split('/').slice(-1)[0].split('.')[0] )
   })
   
   var alt = right===undefined? Math.random() > 0.5: right;
@@ -2176,13 +2203,12 @@ if (urlParams.chosen || urlParams.num_cards){
 
   })
 }
-
-
 /*
     Skip
 */
 if (skip){
   current_cards_i = [0,0,3,6,8,10,12][skip];
+  hide_footer2()
 }
 // setInterval(update_vh,1000)
 
