@@ -587,6 +587,7 @@ bg {
 }
 
 .footer{
+  z-index: 999;
   pointer-events: none;
   position: absolute;
   z-index: 9999;
@@ -597,6 +598,8 @@ bg {
   .credit &{
     transition: all 0.5s ease;
     opacity: 1 !important;
+    text-align: center;
+    width:100%;
     & > span {
       transition: all 0.5s ease;
       font-size:0.45em !important;
@@ -634,6 +637,7 @@ bg {
 
 }
 .footer2{
+  z-index: 999;
   pointer-events: none;
   position: absolute;
   z-index: 9999;
@@ -645,6 +649,8 @@ bg {
     transition: all 0.5s ease;
     opacity: 1 !important;
     bottom: 0.5em;
+    text-align: center;
+    width:100%;
     & > span {
       transition: all 0.5s ease ;
       font-size:0.5em !important;
@@ -689,19 +695,22 @@ bg {
 .footer3{
   pointer-events: none;
   position: absolute;
-  z-index: 9999;
+  z-index: 999999;
   transition: all 0.5s ease;
   padding:0.2em;
   right: 0.3em;
   bottom: -0.5em;
   width: calc(100% - 11em);
   max-width:7em;
+  transform: translateZ(1px);
   .credit &{
     transition: opacity 0.5s ease 1.5s, bottom 0.5s ease 1.5s;
     opacity: 1 !important;
-    bottom: 1.5em;
+    bottom: 1.2em;
     width: 14em;
     max-width: 50vw;
+    right:50%;
+    transform: translate3d(50%, 0, 1px) !important;
 
   }
   body > & {
@@ -714,6 +723,7 @@ bg {
   }
   [is-landscape] > &{
     width:15%;
+    max-width: 15% !important;
   }
   img {
     width: 100%;
