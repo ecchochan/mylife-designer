@@ -43,8 +43,11 @@ const get_best_type = ()=>{
   Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
   var total = all_chosen.length;
   var inner = document.querySelector('result-description-inner');
+  LOG(counter_, )
   
   var rows = Array.from(doc.querySelectorAll('row'));
+  rows.sort((a,b)=>parseInt(a.getAttribute('data-type')) == parseInt(b.getAttribute('data-type'))? 0: (parseInt(a.getAttribute('data-type')) > parseInt(b.getAttribute('data-type')) ? 1 : -1));
+
   rows.forEach((e,i)=>{e.dtype = i;e.score = counter[i]});
   rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
   doc.querySelectorAll('left h1').forEach((e, i)=>{
@@ -728,6 +731,22 @@ if (skip){
 }
 
 
+if (urlParams.chosen || urlParams.num_cards){
+  let wanted_type = urlParams.type;
+  let debug_chosen_count = 0;
+  urlParams.num_cards = urlParams.num_cards || urlParams.chosen || 1;
+  getRandomSubarray(CARDS).forEach(e=>{
+    if (urlParams.num_cards && debug_chosen_count >= urlParams.num_cards)
+      return;
+    if (wanted_type !== undefined && e.type != wanted_type)
+      return ;
+
+    e.chosen=true;
+    debug_chosen_count += 1
+
+  })
+}
+
 document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
 
 
@@ -942,6 +961,7 @@ if (skip && skip == 8){
   document.getElementById('body').setAttribute('best_type', ''+best_type);
   
   files.push.apply(files, [files01,files02,files03,files04,files05,][best_type])
+  LOG(files, best_type);
 }else{
   files.push.apply(files, files00)
   files.push.apply(files, files01)
@@ -952,7 +972,6 @@ if (skip && skip == 8){
   files.push.apply(files, files06)
   files.push.apply(files, files07)
   files.push.apply(files, files08)
-  LOG('???')
 
 }
 /*
@@ -1251,12 +1270,57 @@ var toggleMusic = ()=>{
     audio.play();
     volumeSwitchContainer.classList.add('switchOn');
     volumeSwitchContainer.classList.remove('switchOff');
-    playMusic();
   }
 }
 volumeButton.onclick = toggleMusic;
 volumeButton.ontouchstart = toggleMusic;
 
+(function() {
+  var hidden = "hidden";
+
+  // Standards:
+  if (hidden in document)
+    document.addEventListener("visibilitychange", onchange);
+  else if ((hidden = "mozHidden") in document)
+    document.addEventListener("mozvisibilitychange", onchange);
+  else if ((hidden = "webkitHidden") in document)
+    document.addEventListener("webkitvisibilitychange", onchange);
+  else if ((hidden = "msHidden") in document)
+    document.addEventListener("msvisibilitychange", onchange);
+  // IE 9 and lower:
+  else if ("onfocusin" in document)
+    document.onfocusin = document.onfocusout = onchange;
+  // All others:
+  else
+    window.onpageshow = window.onpagehide
+    = window.onfocus = window.onblur = onchange;
+
+  function onchange (evt) {
+    var v = "visible", h = "hidden",
+        evtMap = {
+          focus:v, focusin:v, pageshow:v, blur:h, focusout:h, pagehide:h
+        };
+
+    evt = evt || window.event;
+    var visible = false;
+    if (evt.type in evtMap)
+      visible = evtMap[evt.type] == "visible";
+    else
+      visible = !this[hidden];
+
+    LOG(visible);
+    if (visible && AUDIO_ON){
+      audio.play();
+    }else{
+      audio.pause();
+    }
+      
+  }
+
+  // set the initial state (but only if browser supports the Page Visibility API)
+  if( document[hidden] !== undefined )
+    onchange({type: document[hidden] ? "blur" : "focus"});
+})();
 
 
 /*
@@ -1277,7 +1341,7 @@ var start = function () {
     curtains[0].show();
     curtains[0].endCurtain(true);
     deactivate_bg_animation(doc.getElementById('intro').querySelector('background'));
-    activate_bg_animation(doc.getElementById('intro').querySelectorAll('background')[1]);
+    // activate_bg_animation(doc.getElementById('intro').querySelectorAll('background')[1]);
     setTimeout(update_vh,100)
     document.getElementById('float-top-right').classList.remove('hidden');
     playMusic();
@@ -1482,6 +1546,24 @@ const card_click_listener = function(e){
   }
   
   if (current_stage == 8){
+
+
+    /*
+    if (!is_scroll){
+      var u = e.target;
+      while (u && u.tagName != "LEFT")
+        u = u.parentElement;
+  
+      if (u){
+        LOG(u);
+        u.parentElement.classList.toggle('show-cards');
+        return;
+
+      }
+    }*/
+
+
+
     var u = e.target;
     while (u && u.tagName != "RESULT-DESCRIPTION")
       u = u.parentElement;
@@ -2039,14 +2121,15 @@ window.pre_result = function (self){
   document.querySelector('html').style.background = '#'+colors[best_type];
   document.getElementById('result').style.background = '#'+colors[best_type];
   var background = document.getElementById('result').querySelector('background');
-  background.innerHTML = bgs[best_type]
+  background.innerHTML = bgs[best_type];
     
   document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
   document.getElementById('result-icon').setAttribute('src', 'assets/img/buddy-figure-0'+(best_type+1)+'.png');
 
   activate_bg_animation();
   result_bg_loaded = true;
-
+  setTimeout(()=>  Array.from(document.querySelectorAll('.snow')).filter(e=>e.getBoundingClientRect().x > 500).forEach(e=>e.style.display = "none"), 200)
+  setTimeout(()=>  Array.from(document.querySelectorAll('.star')).filter(e=>e.getBoundingClientRect().x > 500).forEach(e=>e.style.display = "none"), 200)
 
 
 
@@ -2077,19 +2160,43 @@ window.show_result = function (self){
   Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
   var total = all_chosen.length;
   var inner = document.querySelector('result-description-inner');
+  LOG(counter_);
 
   if (!result_bg_loaded){
     
     var rows = Array.from(doc.querySelectorAll('row'));
-    rows.forEach((e,i)=>{e.dtype = i;e.score = counter[i]});
+    rows.sort((a,b)=>parseInt(a.getAttribute('data-type')) == parseInt(b.getAttribute('data-type'))? 0: (parseInt(a.getAttribute('data-type')) > parseInt(b.getAttribute('data-type')) ? 1 : -1));
+
+    LOG(rows.map(e=>[counter[e.getAttribute('data-type')], e.getAttribute('data-type')]));
+    LOG(rows);
+    rows.forEach((e,i)=>{
+      e.dtype = i;
+      e.score = counter[i];
+      e.querySelector('left h1').innerHTML = (parseInt((counter[i] / total)*100))+ '<span font-smaller>%</span>' + ``;
+      
+      var history = e.querySelector('.chosen-history');
+      var this_chosen = all_chosen.filter(e=>e.type == i);
+      if (this_chosen.length == 0){
+        history.nextElementSibling.remove();
+        history.remove();
+      }else{
+        this_chosen.forEach(e=>{
+          var li = doc.createElement('li');
+          li.setAttribute('en', e.name.en);
+          li.setAttribute('zh', e.name.zh);
+          history.nextElementSibling.appendChild(li)
+
+        })
+        setLang();
+      }
+      
+    });
     rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
-    doc.querySelectorAll('left h1').forEach((e, i)=>{
-      var p = parseInt((counter[i] / total)*100)
-      e.innerHTML = (p)+ '<span font-smaller>%</span>';
-    })
+    LOG(rows);
   
   
     rows.forEach(e=>inner.appendChild(e));
+    inner.appendChild(doc.getElementById('result-credit'));
     best_type = rows[0].dtype;
     document.getElementById('body').setAttribute('best_type', ''+best_type);
     var TYPE = CARDS_TYPES[best_type];
@@ -2102,6 +2209,8 @@ window.show_result = function (self){
     document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
     document.getElementById('result-icon').setAttribute('src', 'assets/img/buddy-figure-0'+(best_type+1)+'.png');
     activate_bg_animation();
+    setTimeout(()=>  Array.from(document.querySelectorAll('.snow')).filter(e=>e.getBoundingClientRect().x > 500).forEach(e=>e.style.display = "none"), 200)
+    setTimeout(()=>  Array.from(document.querySelectorAll('.star')).filter(e=>e.getBoundingClientRect().x > 500).forEach(e=>e.style.display = "none"), 200)
     
 
     var encoded = all_chosen.reduce(
@@ -2186,23 +2295,6 @@ window.show_result = function (self){
 
 var curtains = makeCurtains(doc.getElementById('stages') );
 
-activate_bg_animation(doc.getElementById('intro').querySelector('background'));
-
-if (urlParams.chosen || urlParams.num_cards){
-  let wanted_type = urlParams.type;
-  let debug_chosen_count = 0;
-  urlParams.num_cards = urlParams.num_cards || urlParams.chosen || 1;
-  getRandomSubarray(CARDS).forEach(e=>{
-    if (urlParams.num_cards && debug_chosen_count >= urlParams.num_cards)
-      return;
-    if (wanted_type !== undefined && e.type != wanted_type)
-      return ;
-
-    e.chosen=true;
-    debug_chosen_count += 1
-
-  })
-}
 /*
     Skip
 */
@@ -2218,13 +2310,6 @@ if (skip){
 setInterval(update_vh,4000);
 
 const generate_result = ()=>{
-  var queue = new createjs.LoadQueue(false);
-  queue.loadFile({id:"icon", src:window.location.origin+`/assets/img/result-0${best_type+1}.jpg`});
-  queue.loadFile({id:"bg", src:window.location.origin+`/assets/img/buddy-figure-0${best_type+1}.png`});
-  queue.on("complete", _generate_result, this);
-}
-
-const _generate_result = ()=>{
   const canvas = document.createElement('canvas');
   canvas.width  = 630;
   canvas.height = 1260;
@@ -2238,53 +2323,93 @@ const _generate_result = ()=>{
   back.setAttribute('cy', "180");
   LOG(best_type);
 
-  var svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 315 756">
-  <image x="0px" y="0px" width="315px" height="630px" xlink:href="`+window.location.origin+`/assets/img/result-0${best_type+1}.jpg" >
-  </image>
-  `;
-  svg += back.outerHTML + '\n';
-
-  dounuts.slice(1).forEach((dounut)=>{
-      var circle = dounut.querySelector('circle');
-
-      circle.removeAttribute('class');
-      circle.setAttribute('cy', "180");
-      circle.setAttribute('style', 'transform:'+ dounut.style.transform + ';transform-origin: 157.5px 180px; ');
-      svg += circle.outerHTML + '\n';
-  })
-  svg += `
-  <rect fill="#fff" x="31.5" y="54" clip-path="url(#circle-inner)" width="252px" height="252px" ></rect>
-  <image x="31.5" y="54" clip-path="url(#circle-inner)" width="252px" height="252px" xlink:href="`+window.location.origin+`/assets/img/buddy-figure-0${best_type+1}.png" 
-  preserveAspectRatio="xMinYMin slice" >
-  </image>
-  <clipPath id="circle-inner">
-      <circle id="dounut-5" cx="50%" cy="180" r="124" ></circle>
-  </clipPath>`;
-
-  svg += "</svg>";
-  LOG(svg);
-
-  let v = canvg.Canvg.fromString(ctx, svg);
-
-  v.start();
-  canvas.addEventListener('load', e=>LOG('?????'));
-
-  setTimeout(()=>{
-    return;
-
-    var MIME_TYPE = "image/png";
-
-    var imgURL = canvas.toDataURL(MIME_TYPE);
+  var preload = new createjs.LoadQueue(true, null, true);
+  preload.setMaxConnections(100);
+  var bg_pic = `result-0${best_type+1}.jpg`;
+  var icon_pic = `buddy-figure-0${best_type+1}.png`;
+  preload.loadManifest([
+    `/assets/img/` + bg_pic,
+    `/assets/img/` + icon_pic,
+  ])
   
-    var dlLink = document.createElement('a');
-    dlLink.download = "result";
-    dlLink.href = imgURL;
-  
-    document.body.appendChild(dlLink);
-    dlLink.click();
-    document.body.removeChild(dlLink);
+  var qrcode_blob = new QRious({
+    value: sharable_link,
+    size: 60,
+    level: "H",
+    backgroundAlpha: 0,
+  }).toDataURL();
+  var qrcode_blob_2 = new QRious({
+    value: sharable_link,
+    size: 60,
+    foreground: "white",
+    level: "H",
+    backgroundAlpha: 0,
+  }).toDataURL();
+  LOG(qrcode_blob);
 
-  }, 0)
+  LOG(qrcode_blob_2);
+
+
+  preload.addEventListener("complete", (e)=>{
+    var bg_blob = URL.createObjectURL(preload.getResult(`/assets/img/` + bg_pic, true));
+    var icon_blob = URL.createObjectURL(preload.getResult(`/assets/img/` + icon_pic, true));
+    
+    var svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 315 630">
+    <image x="0px" y="0px" width="315px" height="630px" xlink:href="`+bg_blob+`" >
+    </image>
+    `;
+    svg += back.outerHTML + '\n';
+  
+    dounuts.slice(1).forEach((dounut)=>{
+        var circle = dounut.querySelector('circle');
+  
+        circle.removeAttribute('class');
+        circle.setAttribute('cy', "180");
+        circle.setAttribute('style', 'transform:'+ dounut.style.transform + ';transform-origin: 157.5px 180px; ');
+        svg += circle.outerHTML + '\n';
+    })
+    svg += `
+    <rect fill="#fff" x="31.5" y="54" clip-path="url(#circle-inner)" width="252px" height="252px" ></rect>
+    <image x="31.5" y="54" clip-path="url(#circle-inner)" width="252px" height="252px" xlink:href="`+icon_blob+`" 
+    preserveAspectRatio="xMinYMin slice" >
+    </image>
+    <clipPath id="circle-inner">
+        <circle id="dounut-5" cx="50%" cy="180" r="124" ></circle>
+    </clipPath>
+    
+    <image x="31.5" y="154" width="252px" height="252px" xlink:href="`+icon_blob+`" 
+    preserveAspectRatio="xMinYMin slice" >
+    </image>
+    
+    
+    `;
+  
+    svg += "</svg>";
+    LOG(svg);
+  
+    let v = canvg.Canvg.fromString(ctx, svg);
+  
+    v.start();
+  
+    setTimeout(()=>{
+      var MIME_TYPE = "image/png";
+  
+      var imgURL = canvas.toDataURL(MIME_TYPE);
+    
+      var dlLink = document.createElement('a');
+      dlLink.download = "result";
+      dlLink.href = imgURL;
+    
+      document.body.appendChild(dlLink);
+      dlLink.click();
+      document.body.removeChild(dlLink);
+  
+    }, 100)
+    
+  });
+
+
+  return;
   
 }
 window.generate_result = generate_result;
@@ -2298,3 +2423,8 @@ setTimeout(e=>{
 
   document.querySelector('.font_preload').classList.add('tick')
 },1000)
+
+
+
+
+

@@ -53,6 +53,7 @@
   <script type="module" src="assets/js/BigNumber.min.js"></script>
   <script type="module" src="assets/js/canvg.min.js"></script>
 
+  <script type="module" src="assets/js/qrious.min.js"></script>
   
   <link type="text/css" rel="stylesheet" href="assets/css/style.css?v=3" />
 
@@ -103,9 +104,6 @@ For optimized mobile experience "></p>
   <div class="footer2"><span en="Acknowledgement: Home Affairs Bureau, Youth Development Commission" zh="鳴謝：民政事務局、青年發展委員會"></span></div>
   <div class="footer3"><img src="assets/img/ICYSC.png" /></div>
   <div id="body">
-    <div class="footer"><span en="Copyright ©️ 2020 Baptist Oi Kwan Social Service Youth Life World Design Service " zh="版權所有 ©️ 2020 浸信會愛羣社會服務處 青年生活世界設計計劃"></span></div>
-    <div class="footer2"><span en="Acknowledgement: Home Affairs Bureau, Youth Development Commission" zh="鳴謝：民政事務局、青年發展委員會"></span></div>
-    <div class="footer3"><img src="assets/img/ICYSC.png" /></div>
 
     <div id="debug" style="display:none;">
       <div id="debug-message"></div>
@@ -129,6 +127,9 @@ For optimized mobile experience "></p>
 
 
     <div id="app" class="hidden">
+      <div class="footer"><span en="Copyright ©️ 2020 Baptist Oi Kwan Social Service Youth Life World Design Service " zh="版權所有 ©️ 2020 浸信會愛羣社會服務處 青年生活世界設計計劃"></span></div>
+      <div class="footer2"><span en="Acknowledgement: Home Affairs Bureau, Youth Development Commission" zh="鳴謝：民政事務局、青年發展委員會"></span></div>
+      <div class="footer3"><img src="assets/img/ICYSC.png" /></div>
 
 
       <div id="desktop"><span>Use Desktop</span></div>
@@ -1209,65 +1210,79 @@ JOURNEY" zh="探索你的旅程" id="zh-title-fix"></p>
               </learn-more>
               <result-description>
                 <result-description-inner>
-                  <row>
+                  <row data-type="0">
                     <left style="background:#c3f3d4cc;">
-                      <h1 middle-align width-100p>30%</h4>
+                      <h1 middle-align width-100p>30%</h1>
                     </left>
                     <right style="background:#e0ffebcc;">
                       <h3 zh="內在滿足" en="Intrinsic satisfaction">
                       </h3>
                       <p zh="你不介意付出或作取捨，以換取心靈的滿足及內心的渴望。" en="You’re willing to compromise or scarifice, in order to gain intrinsic fulfillment and desire.">
                       </p>
+                      <p class="chosen-history" zh="你選擇過：" en="You chose:"></p>
+                      <ul></ul>
                     </right>
                   </row>
 
 
 
 
-                  <row>
+                  <row data-type="1">
                     <left style="background:#ffdddccc;">
-                      <h1 middle-align width-100p>30%</h4>
+                      <h1 middle-align width-100p>30%</h1>
                     </left>
                     <right style="background:#fdededcc;">
                       <h3 zh="人際關係" en="Inter-personal relationship">
                       </h3>
                       <p zh="你很著重人際關係，並願意花費心力、時間去經營每一段關係。" en="Inter-personal relationships are important to you, and you’re willing to pay effort and time to maintain each relationship.">
                       </p>
+                      <p class="chosen-history" zh="你選擇過：" en="You chose:"></p>
+                      <ul></ul>
                     </right>
                   </row>
-                  <row>
+                  <row data-type="2">
                     <left style="background:#c1e4f4cc;">
-                      <h1 middle-align width-100p>30%</h4>
+                      <h1 middle-align width-100p>30%</h1>
                     </left>
                     <right style="background:#e4f7ffcc;">
                       <h3 zh="物質享受" en="Materialistic">
                       </h3>
                       <p zh="你很享受高質、有品味的物質生活，不介意花錢換取更舒適的生活。" en="You enjoy high quality materialistic life, and do not mind to pay for more comfortable life.">
                       </p>
+                      <p class="chosen-history" zh="你選擇過：" en="You chose:"></p>
+                      <ul></ul>
                     </right>
                   </row>
-                  <row>
+                  <row data-type="3">
                     <left style="background:#ffebc2cc;">
-                      <h1 middle-align width-100p>30%</h4>
+                      <h1 middle-align width-100p>30%</h1>
                     </left>
                     <right style="background:#fff8e9cc;">
                       <h3 zh="生活模式" en="Life style">
                       </h3>
                       <p zh="你希望建立自己嚮往的生活模式，而且不用受到別人的限制。" en="You hope to build your own ideal lifestyle, and not be restricted by others.">
                       </p>
+                      <p class="chosen-history" zh="你選擇過：" en="You chose:"></p>
+                      <ul></ul>
                     </right>
                   </row>
-                  <row>
+                  <row data-type="4">
                     <left style="background:#daffffcc;">
-                      <h1 middle-align width-100p>30%</h4>
+                      <h1 middle-align width-100p>30%</h1>
                     </left>
                     <right style="background:#f0ffffcc;">
                       <h3 zh="自我形象" en="Self-image">
                       </h3>
                       <p zh="有些價值是你一定要堅守的，抱持信念才是你的人生。" en="You have your own values and you must stick with your faith.">
                       </p>
+                      <p class="chosen-history" zh="你選擇過：" en="You chose:"></p>
+                      <ul></ul>
                     </right>
                   </row>
+
+                  <div id="result-credit">
+                    <img src="assets/img/ICYSC.png" />
+                  </div>
 
 
 
