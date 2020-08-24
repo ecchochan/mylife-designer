@@ -48,6 +48,30 @@ const get_best_type = ()=>{
   var rows = Array.from(doc.querySelectorAll('row'));
   rows.sort((a,b)=>parseInt(a.getAttribute('data-type')) == parseInt(b.getAttribute('data-type'))? 0: (parseInt(a.getAttribute('data-type')) > parseInt(b.getAttribute('data-type')) ? 1 : -1));
 
+  rows.forEach((e,i)=>{
+    e.dtype = i;
+    e.score = counter[i];
+    e.querySelector('left h1').innerHTML = (parseInt((counter[i] / total)*100))+ '<span font-smaller>%</span>' + ``;
+    
+    var history = e.querySelector('.chosen-history');
+    var this_chosen = all_chosen.filter(e=>e.type == i);
+    if (this_chosen.length == 0){
+      history.nextElementSibling.remove();
+      history.remove();
+    }else{
+      this_chosen.forEach(e=>{
+        var li = doc.createElement('li');
+        li.setAttribute('en', e.name.en);
+        li.setAttribute('zh', e.name.zh);
+        history.nextElementSibling.appendChild(li)
+
+      })
+      setLang();
+    }
+    
+  });
+  rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
+
   rows.forEach((e,i)=>{e.dtype = i;e.score = counter[i]});
   rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
   doc.querySelectorAll('left h1').forEach((e, i)=>{
@@ -2168,8 +2192,6 @@ window.show_result = function (self){
     var rows = Array.from(doc.querySelectorAll('row'));
     rows.sort((a,b)=>parseInt(a.getAttribute('data-type')) == parseInt(b.getAttribute('data-type'))? 0: (parseInt(a.getAttribute('data-type')) > parseInt(b.getAttribute('data-type')) ? 1 : -1));
 
-    LOG(rows.map(e=>[counter[e.getAttribute('data-type')], e.getAttribute('data-type')]));
-    LOG(rows);
     rows.forEach((e,i)=>{
       e.dtype = i;
       e.score = counter[i];
@@ -2193,7 +2215,6 @@ window.show_result = function (self){
       
     });
     rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
-    LOG(rows);
   
   
     rows.forEach(e=>inner.appendChild(e));
