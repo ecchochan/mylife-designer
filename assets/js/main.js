@@ -57,6 +57,7 @@ const get_best_type = ()=>{
 
 
   rows.forEach(e=>inner.appendChild(e));
+  inner.appendChild(doc.getElementById('result-credit'));
   best_type = rows[0].dtype;
   document.getElementById('body').setAttribute('best_type', ''+best_type);
   var TYPE = CARDS_TYPES[best_type];
