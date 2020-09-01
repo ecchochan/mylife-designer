@@ -2153,7 +2153,7 @@ window.pre_result = function (self){
   document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
   document.getElementById('result-icon').setAttribute('src', 'assets/img/buddy-figure-0'+(best_type+1)+'.png');
 
-  activate_bg_animation();
+  activate_bg_animation(background);
   result_bg_loaded = true;
   setTimeout(()=>  Array.from(document.querySelectorAll('.snow')).filter(e=>e.getBoundingClientRect().x > 500).forEach(e=>e.style.display = "none"), 200)
   setTimeout(()=>  Array.from(document.querySelectorAll('.star')).filter(e=>e.getBoundingClientRect().x > 500).forEach(e=>e.style.display = "none"), 200)
@@ -2235,7 +2235,7 @@ window.show_result = function (self){
   
     document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
     document.getElementById('result-icon').setAttribute('src', 'assets/img/buddy-figure-0'+(best_type+1)+'.png');
-    activate_bg_animation();
+    activate_bg_animation(background);
     setTimeout(()=>  Array.from(document.querySelectorAll('.snow')).filter(e=>e.getBoundingClientRect().x > 500).forEach(e=>e.style.display = "none"), 200)
     setTimeout(()=>  Array.from(document.querySelectorAll('.star')).filter(e=>e.getBoundingClientRect().x > 500).forEach(e=>e.style.display = "none"), 200)
     
