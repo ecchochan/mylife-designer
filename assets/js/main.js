@@ -109,6 +109,7 @@ const hide_footer2 = ()=>{
   var footer3 = doc.querySelector('#body .footer3');
   footer2.style.opacity = 0;
   footer3.style.opacity = 0;
+  footer3.style.pointerEvents = "none";
   setTimeout(()=>{
     // footer2.style.display = "none";
     // footer3.style.display = "none";
