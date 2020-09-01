@@ -54,19 +54,22 @@ const get_best_type = ()=>{
     e.querySelector('left h1').innerHTML = (parseInt((counter[i] / total)*100))+ '<span font-smaller>%</span>' + ``;
     
     var history = e.querySelector('.chosen-history');
-    var this_chosen = all_chosen.filter(e=>e.type == i);
-    if (this_chosen.length == 0){
-      history.nextElementSibling.remove();
-      history.remove();
-    }else{
-      this_chosen.forEach(e=>{
-        var li = doc.createElement('li');
-        li.setAttribute('en', e.name.en);
-        li.setAttribute('zh', e.name.zh);
-        history.nextElementSibling.appendChild(li)
+    if (history){
+      var this_chosen = all_chosen.filter(e=>e.type == i);
+      if (this_chosen.length == 0){
+        history.nextElementSibling.remove();
+        history.remove();
+      }else{
+        this_chosen.forEach(e=>{
+          var li = doc.createElement('li');
+          li.setAttribute('en', e.name.en);
+          li.setAttribute('zh', e.name.zh);
+          history.nextElementSibling.appendChild(li)
+  
+        })
+        setLang();
+      }
 
-      })
-      setLang();
     }
     
   });
