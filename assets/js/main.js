@@ -70,9 +70,7 @@ const get_best_type = ()=>{
     }
     
   });
-  rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
 
-  rows.forEach((e,i)=>{e.dtype = i;e.score = counter[i]});
   rows.sort((a,b)=>a.score == b.score? 0: (a.score < b.score ? 1 : -1))
   doc.querySelectorAll('left h1').forEach((e, i)=>{
     var p = parseInt((counter[i] / total)*100)
@@ -2199,18 +2197,20 @@ window.show_result = function (self){
       
       var history = e.querySelector('.chosen-history');
       var this_chosen = all_chosen.filter(e=>e.type == i);
-      if (this_chosen.length == 0){
-        history.nextElementSibling.remove();
-        history.remove();
-      }else{
-        this_chosen.forEach(e=>{
-          var li = doc.createElement('li');
-          li.setAttribute('en', e.name.en);
-          li.setAttribute('zh', e.name.zh);
-          history.nextElementSibling.appendChild(li)
-
-        })
-        setLang();
+      if (history){
+        if (this_chosen.length == 0){
+          history.nextElementSibling.remove();
+          history.remove();
+        }else{
+          this_chosen.forEach(e=>{
+            var li = doc.createElement('li');
+            li.setAttribute('en', e.name.en);
+            li.setAttribute('zh', e.name.zh);
+            history.nextElementSibling.appendChild(li)
+  
+          })
+          setLang();
+        }
       }
       
     });
