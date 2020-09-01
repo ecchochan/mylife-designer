@@ -60,6 +60,7 @@ const get_best_type = ()=>{
         history.nextElementSibling.remove();
         history.remove();
       }else{
+        history.nextElementSibling.innerHTML = "";
         this_chosen.forEach(e=>{
           var li = doc.createElement('li');
           li.setAttribute('en', e.name.en);
@@ -2205,6 +2206,7 @@ window.show_result = function (self){
           history.nextElementSibling.remove();
           history.remove();
         }else{
+          history.nextElementSibling.innerHTML = "";
           this_chosen.forEach(e=>{
             var li = doc.createElement('li');
             li.setAttribute('en', e.name.en);
