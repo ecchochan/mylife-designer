@@ -2152,7 +2152,7 @@ window.pre_result = function (self){
   background.innerHTML = bgs[best_type];
     
   document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
-  document.getElementById('result-icon').setAttribute('src', 'assets/img/buddy-figure-0'+(best_type+1)+'.png');
+  document.getElementById('result-icon').setAttribute('src', 'assets/img/icon-0'+(best_type+1)+'.jpg');
 
   activate_bg_animation(background);
   result_bg_loaded = true;
@@ -2235,7 +2235,7 @@ window.show_result = function (self){
     background.innerHTML = bgs[best_type];
   
     document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
-    document.getElementById('result-icon').setAttribute('src', 'assets/img/buddy-figure-0'+(best_type+1)+'.png');
+    document.getElementById('result-icon').setAttribute('src', 'assets/img/icon-0'+(best_type+1)+'.jpg');
     activate_bg_animation(background);
     setTimeout(()=>  Array.from(document.querySelectorAll('.snow')).filter(e=>e.getBoundingClientRect().x > 500).forEach(e=>e.style.display = "none"), 200)
     setTimeout(()=>  Array.from(document.querySelectorAll('.star')).filter(e=>e.getBoundingClientRect().x > 500).forEach(e=>e.style.display = "none"), 200)
@@ -2354,7 +2354,7 @@ const generate_result = ()=>{
   var preload = new createjs.LoadQueue(true, null, true);
   preload.setMaxConnections(100);
   var bg_pic = `result-0${best_type+1}.jpg`;
-  var icon_pic = `buddy-figure-0${best_type+1}.png`;
+  var icon_pic = `icon-0${best_type+1}.jpg`;
   preload.loadManifest([
     `/assets/img/` + bg_pic,
     `/assets/img/` + icon_pic,
