@@ -378,7 +378,7 @@ block {
   margin-top: 0.4em;
 }
 
-#desktop{
+#desktop, #super-overlay{
   position: absolute;
   left: 0;
   z-index: 99999;
@@ -393,6 +393,28 @@ block {
     //display: flex;
   }
 
+
+}
+
+#super-overlay{
+  background: #fffe;
+  span{
+    margin: auto;
+  }
+  display: flex;
+  visibility: hidden;
+  pointer-events: none;
+
+  opacity: 0;
+  transition: opacity 0.4s ease, visibility 0s ease 0.4s;
+  &.show{
+    visibility: visible;
+    transition: opacity 0.4s ease;
+    pointer-events: all;
+    opacity: 1;
+
+  }
+  
 
 }
 

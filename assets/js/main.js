@@ -2372,6 +2372,7 @@ const generate_result = ()=>{
     document.body.removeChild(dlLink);
     return;
   }
+  document.querySelector('#super-overlay').classList.add('show');
     
   generating = true;
   const canvas = document.createElement('canvas');
@@ -2457,6 +2458,7 @@ const generate_result = ()=>{
       dlLink.click();
       document.body.removeChild(dlLink);
 
+      document.querySelector('#super-overlay').classList.remove('show');
       generating = false;
   
     }, 100)
