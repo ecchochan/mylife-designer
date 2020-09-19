@@ -43,7 +43,6 @@ const get_best_type = ()=>{
   Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
   var total = all_chosen.length;
   var inner = document.querySelector('result-description-inner');
-  LOG(counter_, )
   
   var rows = Array.from(doc.querySelectorAll('row'));
   rows.sort((a,b)=>parseInt(a.getAttribute('data-type')) == parseInt(b.getAttribute('data-type'))? 0: (parseInt(a.getAttribute('data-type')) > parseInt(b.getAttribute('data-type')) ? 1 : -1));
@@ -98,7 +97,6 @@ const get_best_type = ()=>{
     }, new BigNumber('0')
   ).toString(encoded_base);
   sharable_link = window.location.origin+'/'+TYPE.code+'-'+current_lang+'?d='+encoded;
-  LOGT(sharable_link);
   return best_type;
 }
 
@@ -751,7 +749,6 @@ const bgs = Array.from(document.querySelectorAll('[id^="selection"] background')
 
 const skip = parseInt(urlParams.skip);
 if (skip){
-  LOGT('Skipping '+skip+' stages');
   var stages_divs = Array.from(document.getElementById('stages').children);
   stages_divs.splice(1,skip).forEach(e=>{e.remove()});
   document.querySelector('#lang-switcher').classList.add('hidden')
@@ -989,7 +986,6 @@ if (skip && skip == 8){
   document.getElementById('body').setAttribute('best_type', ''+best_type);
   
   files.push.apply(files, [files01,files02,files03,files04,files05,][best_type])
-  LOG(files, best_type);
 }else{
   files.push.apply(files, files00)
   files.push.apply(files, files01)
@@ -1044,7 +1040,6 @@ var increment_files_loaded = function (e) {
   load_counter.textContent = files_total?parseInt(++files_loaded / files_total * 100):100;
   files_obj[e.item.id] = e.result
   if (files_loaded == files_total){
-    LOGT('All assets loaded.');
 
     start();
     update_vh();
@@ -1341,7 +1336,6 @@ volumeButton.ontouchstart = toggleMusic;
     else
       visible = !this[hidden];
 
-    LOG(visible);
     if (visible && AUDIO_ON){
       audio.play();
     }else{
@@ -1362,7 +1356,6 @@ volumeButton.ontouchstart = toggleMusic;
 
 var start = function () {
   goNextFade(0, load_wrapper, e => {
-    LOGT('Load wrapper removed.');
     if (!skip){{
       curtains[0].show();
       curtains[0].nextClick.push(e=>{
@@ -1817,7 +1810,6 @@ const stage_get_arrows = (obj)=>{
   return Array.from(obj.children).filter(e=>e.tagName == 'ARROWS')[0]
 }
 const move_bg = (obj, level, total)=>{
-  LOG('level:',level,'/',total);
   return new Promise(function(resolve, reject) {
     var img = Array.from(obj.children).filter(e=>e.tagName == 'BACKGROUND')[0].querySelector('bg g');
     img.translateX = "calc((-100% + var(--window-width, 100vw)) / "+total+" * "+level+")";
@@ -1984,7 +1976,6 @@ window.stage_next = function(self){
       ()=> move_bg(obj, i+1, max_i),
       ()=> sleep(2000),
       ()=>{
-        console.log(max_i);
         Array.from(obj.querySelectorAll('[anime]')).filter(e=>(parseInt(e.getAttribute('x')) + parseInt(e.getAttribute('width'))) < 600 / max_i).forEach(e=>{
           Array.from(e.classList).forEach(c=>{
             if (c.startsWith('animation_'))
@@ -2051,8 +2042,6 @@ window.sort_start = function (self){
     }
   }
 
-  console.log('chosen:',all_chosen)
-  console.log('stats:',counter);
 
   if (all_chosen.length == 0){
     intro_texts[0].setAttribute('zh','認真聆聽你內心的聲音，有什麼是你想要的？');
@@ -2202,8 +2191,7 @@ window.show_result = function (self){
   Object.keys(counter_).forEach(k=>counter[k]=counter_[k]);
   var total = all_chosen.length;
   var inner = document.querySelector('result-description-inner');
-  LOG(counter_);
-
+  
   if (!result_bg_loaded){
     
     var rows = Array.from(doc.querySelectorAll('row'));
@@ -2265,7 +2253,7 @@ window.show_result = function (self){
       }, new BigNumber('0')
     ).toString(encoded_base);
     sharable_link = window.location.origin+'/'+TYPE.code+'-'+current_lang+'?d='+encoded;
-    LOGT(sharable_link);
+    
 
 
 
@@ -2320,7 +2308,8 @@ window.show_result = function (self){
     ()=> doc.querySelector('learn-more').classList.add('active'),
     ()=> resize_result_desc_inner(),
     ()=> current_stage = 8,
-    ()=> sleep(3500),
+    ()=> sleep(1000),
+    ()=> allow_get_icon(),
 
   ])
 }
@@ -2349,16 +2338,46 @@ if (skip){
 }
 // setInterval(update_vh,1000)
 
+const allow_get_icon = function (){
+  const result_icon = doc.getElementById('result-icon');
+  if (result_icon.addEventListener) {
+    result_icon.addEventListener('contextmenu', function(e) {
+      generate_result();
+      e.preventDefault();
+    }, false);
+  } else {
+    result_icon.attachEvent('oncontextmenu', function() {
+      generate_result();
+      window.event.returnValue = false;
+    });
+  }
 
-
-
+}
 setInterval(update_vh,4000);
 
+var generating = false;
+var resultURL = null;
+
 const generate_result = ()=>{
+  if (generating)
+    return;
+
+  if (resultURL){
+    var dlLink = document.createElement('a');
+    dlLink.download = "result";
+    dlLink.href = resultURL;
+  
+    document.body.appendChild(dlLink);
+    dlLink.click();
+    document.body.removeChild(dlLink);
+    return;
+  }
+    
+  generating = true;
   const canvas = document.createElement('canvas');
   canvas.width  = 630;
   canvas.height = 1260;
-  LOG(canvas);
+  
   const ctx = canvas.getContext('2d');
   var dounuts = Array.from(document.querySelectorAll('dounut-container > svg')).map(e=>e.cloneNode(true));
 
@@ -2366,17 +2385,17 @@ const generate_result = ()=>{
   back.removeAttribute('style');
   back.removeAttribute('class');
   back.setAttribute('cy', "180");
-  LOG(best_type);
 
   var preload = new createjs.LoadQueue(true, null, true);
   preload.setMaxConnections(100);
-  var bg_pic = `result-0${best_type+1}.jpg`;
-  var icon_pic = `icon-0${best_type+1}.jpg`;
+  var L = current_lang == 'zh'?'c':'e';
+  var bg_pic = `00${best_type+1}-result-bg_${L}.jpg`;
+  // var icon_pic = `icon-0${best_type+1}.jpg`;
   preload.loadManifest([
     `/assets/img/` + bg_pic,
-    `/assets/img/` + icon_pic,
+    // `/assets/img/` + icon_pic,
   ])
-  
+  /*
   var qrcode_blob = new QRious({
     value: sharable_link,
     size: 120,
@@ -2386,25 +2405,25 @@ const generate_result = ()=>{
   var qrcode_blob_2 = new QRious({
     value: sharable_link,
     size: 120,
-    foreground: "white",
+    foreground: "#FFF8",
     level: "H",
     backgroundAlpha: 0,
   }).toDataURL();
-  LOG(qrcode_blob);
-
-  LOG(qrcode_blob_2);
+  */
 
 
   preload.addEventListener("complete", (e)=>{
     var bg_blob = URL.createObjectURL(preload.getResult(`/assets/img/` + bg_pic, true));
-    var icon_blob = URL.createObjectURL(preload.getResult(`/assets/img/` + icon_pic, true));
+    // var icon_blob = URL.createObjectURL(preload.getResult(`/assets/img/` + icon_pic, true));
     
     var svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 315 630">
     <image x="0px" y="0px" width="315px" height="630px" xlink:href="`+bg_blob+`" >
     </image>
     `;
-    svg += back.outerHTML + '\n';
-  
+    // svg += back.outerHTML + '\n';
+
+  svg += `
+  <g style="transform:scale(0.858) translate(26px, 14.5px);tr  nsform-origin: 157.5px 180px; ">`
     dounuts.slice(1).forEach((dounut)=>{
         var circle = dounut.querySelector('circle');
   
@@ -2414,23 +2433,10 @@ const generate_result = ()=>{
         svg += circle.outerHTML + '\n';
     })
     svg += `
-    <rect fill="#fff" x="31.5" y="54" clip-path="url(#circle-inner)" width="252px" height="252px" ></rect>
-    <image x="31.5" y="54" clip-path="url(#circle-inner)" width="252px" height="252px" xlink:href="`+icon_blob+`" 
-    preserveAspectRatio="xMinYMin slice" >
-    </image>
-    <clipPath id="circle-inner">
-        <circle id="dounut-5" cx="50%" cy="180" r="124" ></circle>
-    </clipPath>
-    
-    <image x="235" y="550" width="60px" height="60px" xlink:href="`+qrcode_blob_2+`" 
-    preserveAspectRatio="xMinYMin slice" >
-    </image>
-    
-    
+    </g>
     `;
   
     svg += "</svg>";
-    LOG(svg);
   
     let v = canvg.Canvg.fromString(ctx, svg);
   
@@ -2440,6 +2446,8 @@ const generate_result = ()=>{
       var MIME_TYPE = "image/png";
   
       var imgURL = canvas.toDataURL(MIME_TYPE);
+
+      resultURL = imgURL;
     
       var dlLink = document.createElement('a');
       dlLink.download = "result";
@@ -2448,6 +2456,8 @@ const generate_result = ()=>{
       document.body.appendChild(dlLink);
       dlLink.click();
       document.body.removeChild(dlLink);
+
+      generating = false;
   
     }, 100)
     
