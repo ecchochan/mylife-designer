@@ -881,6 +881,7 @@ var files07 = ``.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files08 = ``.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var files00 = `
+contact.jpg
 ICYSC.png
 buddy-figure-01.png
 buddy-figure-02.png
@@ -899,7 +900,6 @@ cloud01.png
 cloud02.png
 cloud03.png
 cloud04.png
-contact.jpg
 cover-bg.jpg
 cover-buddy.png
 cover-greens.png
@@ -976,8 +976,8 @@ if (skip && skip == 8){
   files.push.apply(files, files00)
   files.push.apply(files, [files01,files02,files03,files04,files05,][best_type])
 }else{
-  files.push.apply(files, files_stages)
   files.push.apply(files, files00)
+  files.push.apply(files, files_stages)
   files.push.apply(files, files01)
   files.push.apply(files, files02)
   files.push.apply(files, files03)
@@ -1036,6 +1036,12 @@ var files_obj = {}
 var increment_files_loaded = function (e) {
   load_counter.textContent = files_total?parseInt(++files_loaded / files_total * 100):100;
   files_obj[e.item.id] = e.result
+  if (e.item.id == 'assets/img/contact.jpg'){
+    let img = doc.querySelector('#loading-bg image');
+    img.setAttributeNS("http://www.w3.org/1999/xlink", 'href', 'assets/img/contact.jpg');
+    doc.querySelector('#loading-bg background').style.opacity = 1;
+    // doc.getElementById('loading-wrapper').style.backgroundImage = 'url(assets/img/contact.jpg)';
+  }
   if (files_loaded == files_total){
     start();
     update_vh();
@@ -2008,7 +2014,8 @@ window.stage_next = function(self){
       ()=> move_bg(obj, i+1, max_i),
       ()=> sleep(2000),
       ()=>{
-        Array.from(obj.querySelectorAll('[anime]')).filter(e=>(parseInt(e.getAttribute('x')) + parseInt(e.getAttribute('width'))) < 600 / max_i).forEach(e=>{
+        return ;
+        Array.from(obj.querySelector('background').querySelectorAll('[anime]')).filter(e=>(parseInt(e.getAttribute('x')) + parseInt(e.getAttribute('width'))) < 600 / max_i).forEach(e=>{
           Array.from(e.classList).forEach(c=>{
             if (c.startsWith('animation_'))
               e.classList.remove(c);

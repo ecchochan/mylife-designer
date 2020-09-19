@@ -510,7 +510,9 @@ block {
 
 #loading-wrapper {
   position:absolute;
-  background:white;
+  background:#e2fdf6;
+  transition: background-image 2s;
+  background-size: cover;
   z-index:999999;
 
   > div {
@@ -523,6 +525,20 @@ block {
 
   }
 
+}
+
+#loading-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  & background {
+    opacity: 0;
+    transition: opacity 2s ease;
+
+  }
 }
 
 #float-top-right {
@@ -1449,6 +1465,24 @@ popup{
 
 $SNOWDROPS_LENGTH: 105;
 
+.star{
+  @for $i from 1 through 60 {
+    $r: random(1700)/100 + 7.5;
+    $r2: random(1200)/100;
+    &:nth-child(#{$i}) {
+      animation: twinkle $r+s alternate infinite; 
+      animation-delay: -($r2)+s;
+      & image {
+        $r3: random(1700)/100 + 7.5;
+        $r4: random(100)/100 * $r3;
+        animation: twinkle2 $r3+s alternate infinite; 
+        animation-delay: -$r4+s;
+
+      }
+    }
+  }
+  
+}
 
 .snow {
   opacity: 1;
