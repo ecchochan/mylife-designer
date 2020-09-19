@@ -772,9 +772,6 @@ if (urlParams.chosen || urlParams.num_cards){
   })
 }
 
-document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
-
-
 
 
 
@@ -831,17 +828,14 @@ bg02-ripples13.png
 bg02-ripples14.png
 bg02-ripples15.png
 bg02-ripples16.png
-bg02-ripples17.png
 bg02-ripples18.png
 bg02-ripples19.png
 bg02-ripples20.png
-bg02-ripples21.png
 bg02-ripples22.png
 bg02-ripples23.png
 bg02-ripples24.png
 bg02-ripples25.png
 bg02-ripples26.png
-bg02-ripples27.png
 bg02-seed.png
 bg02-track.png`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files03 = `
@@ -850,6 +844,7 @@ bg03-star.png
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files04 = `
 bg04-bg.jpg
+bg04-cloud.png
 bg04-flower01.png
 bg04-flower02.png
 bg04-flower03.png
@@ -867,7 +862,6 @@ bg04-flower14.png
 bg04-flower15.png
 bg04-flower17.png
 bg04-flower18.png
-bg04-cloud.png
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files05 = `
 bg05-bg.jpg
@@ -883,6 +877,26 @@ var files08 = ``.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var files00 = `
 ICYSC.png
+buddy-figure-01.png
+buddy-figure-02.png
+buddy-figure-03.png
+buddy-figure-04.png
+buddy-figure-05.png
+buddy-figure-06.png
+contact-button-01.jpg
+contact-button-02.jpg
+contact-button-03.jpg
+contact-button-04.jpg
+contact-button-05.jpg
+contact-button-06.jpg
+contact.jpg`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+
+var files_cover = `
+icon-01.jpg
+icon-02.jpg
+icon-03.jpg
+icon-04.jpg
+icon-05.jpg
 tick-01.png
 tick-02.png
 tick-03.png
@@ -891,24 +905,11 @@ tick-05.png
 tick-06.png
 tick-07.png
 tick-08.png
-buddy-figure-01.png
-buddy-figure-02.png
-buddy-figure-03.png
-buddy-figure-04.png
-buddy-figure-05.png
-buddy-figure-06.png
 cloud-bg.png
 cloud01.png
 cloud02.png
 cloud03.png
 cloud04.png
-contact-button-01.jpg
-contact-button-02.jpg
-contact-button-03.jpg
-contact-button-04.jpg
-contact-button-05.jpg
-contact-button-06.jpg
-contact.jpg
 cover-bg.jpg
 cover-buddy.png
 cover-greens.png
@@ -922,11 +923,8 @@ cover-stamen-03.png
 cover-wave.png
 cover.png
 intro.jpg`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
-
-
 var MUSIC_URL = 'assets/audio/bensound-beyondtheline.mp3';
 var files = `
-qr-code.svg
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var card_1_bgs = `
@@ -972,7 +970,9 @@ var cards_bgs = [
   card_5_bgs,
 ]
 const svgs = document.getElementById('svgs');
-cards_bgs.forEach(e=>e.forEach(card_bg=>{
+cards_bgs.forEach((e, i)=>e.forEach(card_bg=>{
+  if (i+1 < skip)
+    return;
   var image = document.createElementNS('http://www.w3.org/2000/svg', 'image')
   image.setAttributeNS("http://www.w3.org/1999/xlink", 'href',card_bg)
   image.setAttribute('id', card_bg.split('/').slice(-1)[0].split('.')[0])
@@ -984,9 +984,10 @@ cards_bgs.forEach(e=>e.forEach(card_bg=>{
 if (skip && skip == 8){
   var best_type = get_best_type();
   document.getElementById('body').setAttribute('best_type', ''+best_type);
-  
   files.push.apply(files, [files01,files02,files03,files04,files05,][best_type])
 }else{
+  files.push.apply(files, files_cover)
+  
   files.push.apply(files, files00)
   files.push.apply(files, files01)
   files.push.apply(files, files02)
@@ -998,6 +999,7 @@ if (skip && skip == 8){
   files.push.apply(files, files08)
 
 }
+LOG(files);
 /*
 
   Set Landscape
@@ -1037,14 +1039,12 @@ var load_wrapper = doc.getElementById('loading-wrapper');
 var files_obj = {}
 window.files_obj = files_obj;
 var increment_files_loaded = function (e) {
+  LOG(e);
   load_counter.textContent = files_total?parseInt(++files_loaded / files_total * 100):100;
   files_obj[e.item.id] = e.result
   if (files_loaded == files_total){
-
     start();
     update_vh();
-
-
     /*
 
       Fix old browser for unable to infer height/width automatically when not specified
@@ -1064,7 +1064,6 @@ var increment_files_loaded = function (e) {
       var w = e.getAttribute('width');
       var h = e.getAttribute('height');
       var container = closest(e,'SVG');
-      var container_height = 
 
       h = h?parseFloat(h):h;
       w = w?parseFloat(w):w;
@@ -1078,12 +1077,14 @@ var increment_files_loaded = function (e) {
   }
 };
 var preload = new createjs.LoadQueue(false);
-preload.setMaxConnections(100);
+preload.setMaxConnections(10);
 preload.addEventListener("fileload", increment_files_loaded);
-preload.loadManifest(files);
+preload.addEventListener("complete", function(e){
+});
+preload.loadManifest(files.map(e=>{return{"id":e, "src":e, "timeout": 1000000}}));
 
 if (files_total == 0)
-document.addEventListener("DOMContentLoaded", increment_files_loaded);
+  document.addEventListener("DOMContentLoaded", increment_files_loaded);
 
 
 
@@ -2476,6 +2477,9 @@ setInterval(update_vh,4000);
 
 
 
+document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
+
+if (skip != 8)
 setTimeout(e=>{
 
   document.querySelector('.font_preload').classList.add('tick')
