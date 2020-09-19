@@ -1195,17 +1195,22 @@ const activate_bg_animation = (background) =>{
   })
 }
 
-
 const deactivate_bg_animation = (background) =>{
   if (!background) return;
   var animes = background.querySelectorAll('[anime]');
   animes.forEach(e=>{
+    Array.from(e.classList).forEach(c=>{
+      if (c.startsWith('animation_'))
+        e.classList.remove(c);
+      
+    })
     if (e.anime){
       anime.remove(e)
 
     }
   })
 }
+window.activate_bg_animation = activate_bg_animation;
 window.deactivate_bg_animation = deactivate_bg_animation;
 
 var goNextFade = function(delay, targets, callback){
@@ -1369,7 +1374,7 @@ var start = function () {
     curtains[0].show();
     curtains[0].endCurtain(true);
     deactivate_bg_animation(doc.getElementById('intro').querySelector('background'));
-    // activate_bg_animation(doc.getElementById('intro').querySelectorAll('background')[1]);
+    activate_bg_animation(doc.getElementById('intro').querySelectorAll('background')[1]);
     setTimeout(update_vh,100)
     document.getElementById('float-top-right').classList.remove('hidden');
     playMusic();
@@ -1978,6 +1983,15 @@ window.stage_next = function(self){
       ()=> sleep(500),
       ()=> move_bg(obj, i+1, max_i),
       ()=> sleep(2000),
+      ()=>{
+        console.log(max_i);
+        Array.from(obj.querySelectorAll('[anime]')).filter(e=>(parseInt(e.getAttribute('x')) + parseInt(e.getAttribute('width'))) < 600 / max_i).forEach(e=>{
+          Array.from(e.classList).forEach(c=>{
+            if (c.startsWith('animation_'))
+              e.classList.remove(c);
+            
+          })})
+      },
       ()=> set_card_divs(card_divs, current_cards_i++),
       ()=> arrange_cards(card_type, card_divs, (i==max_i-1)?!last_page_is_left():undefined, (i==max_i-1)?true:undefined),
       ()=> fadeIn(getRandomSubarray(card_divs)),
@@ -2329,6 +2343,9 @@ var curtains = makeCurtains(doc.getElementById('stages') );
 if (skip){
   current_cards_i = [0,0,3,6,8,10,12][skip];
   hide_footer2()
+}else{
+  
+  activate_bg_animation(doc.getElementById('intro').querySelectorAll('background')[0]);
 }
 // setInterval(update_vh,1000)
 
@@ -2362,13 +2379,13 @@ const generate_result = ()=>{
   
   var qrcode_blob = new QRious({
     value: sharable_link,
-    size: 60,
+    size: 120,
     level: "H",
     backgroundAlpha: 0,
   }).toDataURL();
   var qrcode_blob_2 = new QRious({
     value: sharable_link,
-    size: 60,
+    size: 120,
     foreground: "white",
     level: "H",
     backgroundAlpha: 0,
@@ -2405,7 +2422,7 @@ const generate_result = ()=>{
         <circle id="dounut-5" cx="50%" cy="180" r="124" ></circle>
     </clipPath>
     
-    <image x="31.5" y="154" width="252px" height="252px" xlink:href="`+icon_blob+`" 
+    <image x="235" y="550" width="60px" height="60px" xlink:href="`+qrcode_blob_2+`" 
     preserveAspectRatio="xMinYMin slice" >
     </image>
     
