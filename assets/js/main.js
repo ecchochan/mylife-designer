@@ -2002,7 +2002,7 @@ window.stage_next = function(self){
     ()=> move_bg(obj, 0, max_i),
     ()=> sleep(1500),
     ()=> fadeIn(intro_texts, 600),
-    ()=> deactivate_bg_animation( Array.from(obj.parent.children).filter(e=>e.tagName == 'BACKGROUND')[0]),
+    ()=> deactivate_bg_animation( Array.from(obj.parentElement.children).filter(e=>e.tagName == 'BACKGROUND')[0]),
     ()=> sleep(500),
     ()=> wait_for_arrows(obj),
     ()=> hide(intro_text_container),
