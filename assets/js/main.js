@@ -2382,17 +2382,36 @@ if (skip){
 
 const allow_get_icon = function (){
   const result_icon = doc.getElementById('result-icon');
-  if (result_icon.addEventListener) {
-    result_icon.addEventListener('contextmenu', function(e) {
-      generate_result();
-      e.preventDefault();
-    }, false);
-  } else {
-    result_icon.attachEvent('oncontextmenu', function() {
-      generate_result();
-      window.event.returnValue = false;
-    });
+  var timerLongTouch;
+  var longTouch = false;
+
+  var callback = function(e) {
+    generate_result();
+    e.preventDefault();
   }
+  result_icon.addEventListener('contextmenu', callback, false);
+
+  result_icon.addEventListener('touchstart', function(event){
+    setTimeout(function(){
+      result_icon.removeEventListener('contextmenu', callback, false);
+    },200);
+    event.preventDefault();
+    timerLongTouch = setTimeout(function() {
+      generate_result();
+        
+    }, 600);
+
+  })
+  var clearLongTouch = function(event){
+    event.preventDefault();
+    clearTimeout(timerLongTouch);
+    if(longTouch)
+        longTouch = false;
+    
+  }
+  result_icon.addEventListener('touchmove', clearLongTouch);
+  result_icon.addEventListener('touchend', clearLongTouch);
+
 
 }
 setInterval(update_vh,4000);
