@@ -1410,7 +1410,7 @@ const FADE_DURATION = DEBUG?0:200;
 const defaultNextCutain = (self) => {
   return [function () {
     var nextCurtain = self.obj.querySelector('.curtain-page');
-    deactivate_bg_animation(self.obj.querySelector('background'));
+    //deactivate_bg_animation(self.obj.querySelector('background'));
     if (nextCurtain) {
       activate_bg_animation(nextCurtain.querySelector('background'));
       nextCurtain.curtain.show();
@@ -2002,6 +2002,7 @@ window.stage_next = function(self){
     ()=> move_bg(obj, 0, max_i),
     ()=> sleep(1500),
     ()=> fadeIn(intro_texts, 600),
+    ()=> deactivate_bg_animation( obj.parentElement.querySelector('background')),
     ()=> sleep(500),
     ()=> wait_for_arrows(obj),
     ()=> hide(intro_text_container),
@@ -2014,7 +2015,6 @@ window.stage_next = function(self){
       ()=> move_bg(obj, i+1, max_i),
       ()=> sleep(2000),
       ()=>{
-        return ;
         Array.from(obj.querySelector('background').querySelectorAll('[anime]')).filter(e=>(parseInt(e.getAttribute('x')) + parseInt(e.getAttribute('width'))) < 600 / max_i).forEach(e=>{
           Array.from(e.classList).forEach(c=>{
             if (c.startsWith('animation_'))
@@ -2110,6 +2110,9 @@ window.sort_start = function (self){
     nextCurtain.style.transition = "0.5s ease all";
     nextCurtain.curtain.finishCurtain();
     obj.offsetHeight; // no need to store this anywhere, the reference is enough
+    setTimeout(()=>{
+      deactivate_bg_animation( obj.parentElement.querySelector('background'))
+    }, 1500);
     setTimeout(()=>{
       nextCurtain.style.opacity = 1;
       setTimeout(()=>{
