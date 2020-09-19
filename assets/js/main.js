@@ -782,6 +782,7 @@ if (urlParams.chosen || urlParams.num_cards){
 
 */
 var files01 = `
+icon-01.jpg
 bg01-bg.jpg
 bg01-branch01.png
 bg01-branch02.png
@@ -807,6 +808,7 @@ bg01-wave01.png
 bg01-wave02.png`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 
 var files02 = `
+icon-02.jpg
 bg02-bg.jpg
 bg02-cloud-right.png
 bg02-leaf01.png
@@ -839,10 +841,12 @@ bg02-ripples26.png
 bg02-seed.png
 bg02-track.png`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files03 = `
+icon-03.jpg
 bg03-bg.jpg
 bg03-star.png
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files04 = `
+icon-04.jpg
 bg04-bg.jpg
 bg04-cloud.png
 bg04-flower01.png
@@ -864,6 +868,7 @@ bg04-flower17.png
 bg04-flower18.png
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var files05 = `
+icon-05.jpg
 bg05-bg.jpg
 bg05-layer01.png
 bg05-layer02.png
@@ -889,27 +894,12 @@ contact-button-03.jpg
 contact-button-04.jpg
 contact-button-05.jpg
 contact-button-06.jpg
-contact.jpg`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
-
-var files_cover = `
-icon-01.jpg
-icon-02.jpg
-icon-03.jpg
-icon-04.jpg
-icon-05.jpg
-tick-01.png
-tick-02.png
-tick-03.png
-tick-04.png
-tick-05.png
-tick-06.png
-tick-07.png
-tick-08.png
 cloud-bg.png
 cloud01.png
 cloud02.png
 cloud03.png
 cloud04.png
+contact.jpg
 cover-bg.jpg
 cover-buddy.png
 cover-greens.png
@@ -923,6 +913,16 @@ cover-stamen-03.png
 cover-wave.png
 cover.png
 intro.jpg`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
+
+var files_stages = `
+tick-01.png
+tick-02.png
+tick-03.png
+tick-04.png
+tick-05.png
+tick-06.png
+tick-07.png
+tick-08.png`.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
 var MUSIC_URL = 'assets/audio/bensound-beyondtheline.mp3';
 var files = `
 `.split('\n').filter(e=>e).map(e=>'assets/img/'+e);
@@ -969,25 +969,14 @@ var cards_bgs = [
   card_4_bgs,
   card_5_bgs,
 ]
-const svgs = document.getElementById('svgs');
-cards_bgs.forEach((e, i)=>e.forEach(card_bg=>{
-  if (i+1 < skip)
-    return;
-  var image = document.createElementNS('http://www.w3.org/2000/svg', 'image')
-  image.setAttributeNS("http://www.w3.org/1999/xlink", 'href',card_bg)
-  image.setAttribute('id', card_bg.split('/').slice(-1)[0].split('.')[0])
-  image.setAttribute('width', "100px")
-  image.setAttribute('height', "100px")
-  svgs.appendChild(image)
-}))
 
 if (skip && skip == 8){
   var best_type = get_best_type();
   document.getElementById('body').setAttribute('best_type', ''+best_type);
+  files.push.apply(files, files00)
   files.push.apply(files, [files01,files02,files03,files04,files05,][best_type])
 }else{
-  files.push.apply(files, files_cover)
-  
+  files.push.apply(files, files_stages)
   files.push.apply(files, files00)
   files.push.apply(files, files01)
   files.push.apply(files, files02)
@@ -997,9 +986,14 @@ if (skip && skip == 8){
   files.push.apply(files, files06)
   files.push.apply(files, files07)
   files.push.apply(files, files08)
+  cards_bgs.forEach((e, i)=>{
+    if ((i+1) >= skip){
+      files.push.apply(files, e)
+    }
+
+  })
 
 }
-LOG(files);
 /*
 
   Set Landscape
@@ -1037,9 +1031,9 @@ var files_total = files.length;
 var load_counter = doc.getElementById('load-percent');
 var load_wrapper = doc.getElementById('loading-wrapper');
 var files_obj = {}
-window.files_obj = files_obj;
+
+
 var increment_files_loaded = function (e) {
-  LOG(e);
   load_counter.textContent = files_total?parseInt(++files_loaded / files_total * 100):100;
   files_obj[e.item.id] = e.result
   if (files_loaded == files_total){
@@ -1057,13 +1051,15 @@ var increment_files_loaded = function (e) {
 
     }
     document.querySelectorAll('image').forEach(e=>{
-      var src = e.getAttributeNS('http://www.w3.org/1999/xlink', 'href')
+      var src = e.getAttributeNS('http://www.w3.org/1999/xlink', 'href');
+      var src = e.getAttribute('data-href');
       var obj = files_obj[src];
       if (!obj) return;
+      e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href'));
       var real_size = obj;
       var w = e.getAttribute('width');
       var h = e.getAttribute('height');
-      var container = closest(e,'SVG');
+      // var container = closest(e,'SVG');
 
       h = h?parseFloat(h):h;
       w = w?parseFloat(w):w;
@@ -1073,15 +1069,34 @@ var increment_files_loaded = function (e) {
       
     })
 
+    const svgs = document.getElementById('svgs');
+    cards_bgs.forEach((e, i)=>e.forEach(card_bg=>{
+      if ((i+1) < skip)
+        return;
+      
+      var image = document.createElementNS('http://www.w3.org/2000/svg', 'image')
+      image.setAttributeNS("http://www.w3.org/1999/xlink", 'href',card_bg)
+      image.setAttribute('id', card_bg.split('/').slice(-1)[0].split('.')[0])
+      image.setAttribute('width', "100px")
+      image.setAttribute('height', "100px")
+      svgs.appendChild(image)
+    }))
+    document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')));
+
+        
+    if (skip != 8)
+      setTimeout(e=>{
+        document.querySelector('.font_preload').classList.add('tick')
+      },1000)
 
   }
 };
 var preload = new createjs.LoadQueue(false);
-preload.setMaxConnections(10);
+preload.setMaxConnections(100);
 preload.addEventListener("fileload", increment_files_loaded);
 preload.addEventListener("complete", function(e){
 });
-preload.loadManifest(files.map(e=>{return{"id":e, "src":e, "timeout": 1000000}}));
+preload.loadManifest(files.map(e=>{return{"id":e, "src":e, "timeout": 100000000, "loadTimeout": 100000000}}));
 
 if (files_total == 0)
   document.addEventListener("DOMContentLoaded", increment_files_loaded);
@@ -1356,6 +1371,8 @@ volumeButton.ontouchstart = toggleMusic;
 */
 
 var start = function () {
+  // document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
+  
   goNextFade(0, load_wrapper, e => {
     if (!skip){{
       curtains[0].show();
@@ -1375,7 +1392,6 @@ var start = function () {
 
   }
 }
-
 
 
 
@@ -1822,12 +1838,27 @@ const move_bg = (obj, level, total)=>{
 const arrange_cards = (card_type, card_divs, right, full_height)=>{
   card_divs = Array.from(card_divs).filter(e=>e.classList.contains('active'));
   var _bgs = getRandomSubarray(cards_bgs[card_type]);
+  var swaps = [];
   card_divs.forEach((e, i)=>{
     var bg = e.querySelector('[card-bg]');
-    var img = e.querySelector('use');
+    var img = e.querySelector('image');
     bg.style.display = _bgs[i]?'unset':'none';
-    if (_bgs[i])
-      img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#'+_bgs[i].split('/').slice(-1)[0].split('.')[0] )
+    if (_bgs[i]){
+      let _id = _bgs[i].split('/').slice(-1)[0].split('.')[0];
+      swaps.push([
+        img.parentNode, doc.getElementById(_id), img
+      ])
+    }
+      // img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', _bgs[i] )
+      //img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#'+_bgs[i].split('/').slice(-1)[0].split('.')[0] )
+  })
+  var swapped = [];
+  swaps.forEach(e=>{
+    swapped.push(e[1]);
+    if (!swapped.some(a=>a == e[2]))
+      svgs.append(e[2]);
+    e[0].appendChild(e[1]);
+
   })
   
   var alt = right===undefined? Math.random() > 0.5: right;
@@ -2155,7 +2186,7 @@ window.pre_result = function (self){
   var background = document.getElementById('result').querySelector('background');
   background.innerHTML = bgs[best_type];
     
-  document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
+  // document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
   document.getElementById('result-icon').setAttribute('src', 'assets/img/icon-0'+(best_type+1)+'.jpg');
 
   activate_bg_animation(background);
@@ -2237,7 +2268,7 @@ window.show_result = function (self){
     var background = document.getElementById('result').querySelector('background');
     background.innerHTML = bgs[best_type];
   
-    document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
+    // document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
     document.getElementById('result-icon').setAttribute('src', 'assets/img/icon-0'+(best_type+1)+'.jpg');
     activate_bg_animation(background);
     setTimeout(()=>  Array.from(document.querySelectorAll('.snow')).filter(e=>e.getBoundingClientRect().x > 500).forEach(e=>e.style.display = "none"), 200)
@@ -2477,13 +2508,6 @@ setInterval(update_vh,4000);
 
 
 
-document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
-
-if (skip != 8)
-setTimeout(e=>{
-
-  document.querySelector('.font_preload').classList.add('tick')
-},1000)
 
 
 
