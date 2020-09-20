@@ -114,7 +114,28 @@ const hide_footer2 = ()=>{
   }, 1000)
 }
 
+/**
+ * http://stackoverflow.com/a/10997390/11236
+ */
+function updateURLParameter(url, param, paramVal){
+  var newAdditionalURL = "";
+  var tempArray = url.split("?");
+  var baseURL = tempArray[0];
+  var additionalURL = tempArray[1];
+  var temp = "";
+  if (additionalURL) {
+      tempArray = additionalURL.split("&");
+      for (var i=0; i<tempArray.length; i++){
+          if(tempArray[i].split('=')[0] != param){
+              newAdditionalURL += temp + tempArray[i];
+              temp = "&";
+          }
+      }
+  }
 
+  var rows_txt = temp + "" + param + "=" + paramVal;
+  return baseURL + "?" + newAdditionalURL + rows_txt;
+}
 
 function getRandomSubarray(arr, size) {
   if (size === undefined)size = arr.length;
@@ -515,6 +536,8 @@ var setLang = function(L){
     }
   })
   window.dispatchEvent(new Event('set-lang'));
+  window.history.replaceState('', '', updateURLParameter(window.location.href, "lang", L));
+  current_lang = L;
 
 }
 
@@ -2295,6 +2318,8 @@ window.show_result = function (self){
       }, new BigNumber('0')
     ).toString(encoded_base);
     sharable_link = window.location.origin+'/'+TYPE.code+'-'+current_lang+'?d='+encoded;
+      
+    window.history.replaceState('', '', updateURLParameter(window.location.href, "d", encoded));
     
 
 

@@ -1688,12 +1688,4 @@ ul {
   font-size: 0.8em;
   padding-left: 1.5em;
 
-  li::before {
-    content: "-";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
-    color: black; /* Change the color */
-    font-weight: bold; /* If you want it to be bold */
-    display: inline-block; /* Needed to add space between the bullet and the text */
-    width: 1em; /* Also needed for space (tweak if needed) */
-    margin-left: -1em; /* Also needed for space (tweak if needed) */
-  }
 }
