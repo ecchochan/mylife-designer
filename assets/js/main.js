@@ -2219,7 +2219,7 @@ window.pre_result = function (self){
   var background = document.getElementById('result').querySelector('background');
   background.innerHTML = bgs[best_type];
     
-  // document.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
+  background.querySelectorAll('[data-href]').forEach(e=>e.setAttributeNS("http://www.w3.org/1999/xlink", 'href', e.getAttribute('data-href')))
   document.getElementById('result-icon').setAttribute('src', 'assets/img/icon-0'+(best_type+1)+'.jpg');
 
   activate_bg_animation(background);
