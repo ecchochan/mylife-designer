@@ -2566,4 +2566,17 @@ setInterval(update_vh,4000);
 
 
 
-
+window.onload = function () {
+  var prevButtonPrompt = {
+    en: 'Are you sure to start over?',
+    zh: '你確定要重新開始嗎？'
+  }
+  if (typeof history.pushState === "function") {
+      history.pushState("jibberish", null, null);
+      window.onpopstate = function () {
+          history.pushState('newjibberish', null, null);
+          if (confirm(prevButtonPrompt[current_lang]))
+            window.location = '/?lang='+current_lang
+      };
+  }
+}
