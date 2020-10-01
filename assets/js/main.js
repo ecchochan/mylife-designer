@@ -2416,26 +2416,35 @@ const allow_get_icon = function (){
   }
   result_icon.addEventListener('contextmenu', callback, false);
 
+  var last_cursor;
   result_icon.addEventListener('touchstart', function(event){
     setTimeout(function(){
       result_icon.removeEventListener('contextmenu', callback, false);
     },200);
     event.preventDefault();
+    last_cursor = pointerEventToXY(event);
     timerLongTouch = setTimeout(function() {
       generate_result();
         
     }, 600);
 
   })
-  var clearLongTouch = function(event){
+  result_icon.addEventListener('touchmove', function(event){
+    event.preventDefault();
+    var cursor = pointerEventToXY(event);
+    if (last_start_cursor !== null && Math.sqrt(Math.pow(cursor.x - last_start_cursor.x,2) + Math.pow(cursor.y - last_start_cursor.y,2)) > 20){
+      clearTimeout(timerLongTouch);
+      longTouch = false;
+    }
+    
+  });
+  result_icon.addEventListener('touchend', function(event){
     event.preventDefault();
     clearTimeout(timerLongTouch);
     if(longTouch)
         longTouch = false;
     
-  }
-  result_icon.addEventListener('touchmove', clearLongTouch);
-  result_icon.addEventListener('touchend', clearLongTouch);
+  });
 
 
 }
