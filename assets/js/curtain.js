@@ -607,7 +607,7 @@ var makeCurtain = (function () {
           self.update(self, percent_done, (percent_done/0.6)**3)
         }
   
-        if (false){
+        if (true){
           obj.style.display = 'inline-flex';
           obj.offsetHeight; // no need to store this anywhere, the reference is enough
           obj.style.display = 'flex';
