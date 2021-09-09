@@ -28,6 +28,7 @@ var makeCurtain = (function () {
   /*creates formated path string for SVG cubic path element*/
   function path(x1,y1,px1,py1,px2,py2,x2,y2)
   {
+    return x1.toFixed(0)+" "+y1.toFixed(0)+" C "+px1.toFixed(0)+" "+py1.toFixed(0)+" "+px2.toFixed(0)+" "+py2.toFixed(0)+" "+x2.toFixed(0)+" "+y2.toFixed(0);
     return x1+" "+y1+" C "+px1+" "+py1+" "+px2+" "+py2+" "+x2+" "+y2;
     return (x1+'').substring(0,8)+" "+(y1+'').substring(0,8)+" C "+(px1+'').substring(0,8)+" "+(py1+'').substring(0,8)+" "+(px2+'').substring(0,8)+" "+(py2+'').substring(0,8)+" "+(x2+'').substring(0,8)+" "+(y2+'').substring(0,8);
   }
@@ -257,9 +258,9 @@ var makeCurtain = (function () {
 
     // TODO: update when curtain moves;
     var offset = obj.getBoundingClientRect();
-    setInterval(function(){
+    setTimeout(function(){
       offset = obj.getBoundingClientRect();
-    },1000)
+    },2000)
 
     obj.insertBefore(arrow, obj.firstChild);
     var self = Object.assign({}, defaults, config);
@@ -364,6 +365,8 @@ var makeCurtain = (function () {
       if (deltaY < deltaY_min)
         deltaY = deltaY_min;
 
+      const x = self.x
+
       if (!self.start && self.x > -1) {
         deltaX = 60 + right_pad;
       }
@@ -418,7 +421,6 @@ var makeCurtain = (function () {
         // self.x = -(+ Date.now() % 3000) / 3000 * width;
       //}
 
-      var x = self.x;
       var but_y = but_y_pos_actual + self.y;
       var arrow_x = (1-min(1,max(0,x) / (right_pad+but_size/2))) *  (right_pad/4+50) -50;
       arrow.style.top = but_y + 'px';
@@ -520,7 +522,10 @@ var makeCurtain = (function () {
       var ad_x = adjust_x(middle_zx, min_x, min_x_mag, percent_done);
 
       hh = width - right_pad + x5 - middle_zx4;
-      let points = [
+      var points = [
+        [width + 200, but_y - height - 120],
+        [-200, but_y - height - 110],
+        [width + 200, but_y - height - 110],
         [width + 200, but_y - height - 100],
         [width - right_pad + x5, but_y - height - 100],
         [width - right_pad + x5, but_y - height - 100],
@@ -541,6 +546,9 @@ var makeCurtain = (function () {
         [width - right_pad + x5, but_y + height + 100],
         [width - right_pad + x5, but_y + height + 100],
         [width + 200, height + 200],
+        [width + 200, height + 210],
+        [-200, height + 210],
+        [width + 200, height + 220],
       ];
       var tt = 7,
         L = points.length; 
@@ -578,8 +586,8 @@ var makeCurtain = (function () {
         max(-100,min(height+100,height - e[1]))
       ])*/
       points = points.map((e, i) => [
-        e[0],
-        height - e[1]
+        (e[0]),
+        (height - e[1])
       ])
 
       const pointsPositions = pointsPositionsCalc(points, width, height, {
@@ -599,7 +607,7 @@ var makeCurtain = (function () {
           self.update(self, percent_done, (percent_done/0.6)**3)
         }
   
-        if (true){
+        if (false){
           obj.style.display = 'inline-flex';
           obj.offsetHeight; // no need to store this anywhere, the reference is enough
           obj.style.display = 'flex';
@@ -658,9 +666,9 @@ var makeCurtain = (function () {
       hasBeenTouchedRecently = true;
       setTimeout(() => { hasBeenTouchedRecently = false; }, 300);
       
-      let _x, _y;
-      let path = e.composedPath();
-      let next_curtain = self.obj.querySelector('.curtain-page');
+      var _x, _y;
+      var path = e.composedPath();
+      var next_curtain = self.obj.querySelector('.curtain-page');
       
       if (self.closed || !self.start || (!self.obj.contains(path[0]) || (next_curtain && next_curtain.contains(path[0]))))
         return;
@@ -741,7 +749,7 @@ var makeCurtain = (function () {
       }
 
 
-      let _x, _y;
+      var _x, _y;
       var pos = pointerEventToXY(e);
       
       _x = (pos.x - offset.x)/scale;
